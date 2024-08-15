@@ -8,9 +8,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class ByfApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(ByfApplication.class, args);
-		log.info("BYF backend has been started!");
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(ByfApplication.class, args);
+        log.info("BYF backend has been started!");
+    }
 
 }

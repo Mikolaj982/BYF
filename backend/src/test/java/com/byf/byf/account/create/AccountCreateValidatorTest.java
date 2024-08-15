@@ -1,6 +1,7 @@
-package com.byf.byf.account;
+package com.byf.byf.account.create;
 
-import com.byf.byf.account.create.AccountCreateValidator;
+import com.byf.byf.TestApplication;
+import com.byf.byf.account.AccountRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -16,8 +17,8 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
-@SpringBootTest
-public class CreateAccountValidatorTest {
+@SpringBootTest(classes = TestApplication.class)
+public class AccountCreateValidatorTest {
 
     @MockBean
     AccountRepository accountRepository;
@@ -52,7 +53,7 @@ public class CreateAccountValidatorTest {
         when(accountRepository.countByUsername(anyString())).thenReturn(0);
 
         //then
-        assertThrows(AccountValidationException.class, () -> accountCreateValidator.validateInput(username, email, password));
+        assertThrows(AccountCreateValidationException.class, () -> accountCreateValidator.validateInput(username, email, password));
     }
 
     @Test
@@ -67,7 +68,22 @@ public class CreateAccountValidatorTest {
         when(accountRepository.countByUsername(anyString())).thenReturn(1);
 
         //then
-        assertThrows(AccountValidationException.class, () -> accountCreateValidator.validateInput(username, email, password));
+        assertThrows(AccountCreateValidationException.class, () -> accountCreateValidator.validateInput(username, email, password));
+    }
+
+    @Test
+    void shouldThrowExceptionWhenUsernameContainsForbiddenCharacters() {
+        //given
+        String username = "incorrectUsername@";
+        String email = "correstEmail@test.com";
+        String password = "correctPassword";
+
+        //when
+        when(accountRepository.countByEmail(anyString())).thenReturn(0);
+        when(accountRepository.countByUsername(anyString())).thenReturn(0);
+
+        //then
+        assertThrows(AccountCreateValidationException.class, () -> accountCreateValidator.validateInput(username, email, password));
     }
 
     @ParameterizedTest
@@ -77,7 +93,7 @@ public class CreateAccountValidatorTest {
         when(accountRepository.countByEmail(anyString())).thenReturn(0);
         when(accountRepository.countByUsername(anyString())).thenReturn(0);
 
-        assertThrows(AccountValidationException.class, () -> accountCreateValidator.validateInput(username, email, password));
+        assertThrows(AccountCreateValidationException.class, () -> accountCreateValidator.validateInput(username, email, password));
     }
 
     private static Stream<Arguments> getInvalidFields() {

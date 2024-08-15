@@ -1,7 +1,8 @@
-package com.byf.byf.account;
+package com.byf.byf.account.create;
 
-import com.byf.byf.account.create.AccountCreateService;
-import com.byf.byf.account.create.AccountCreateValidator;
+import com.byf.byf.TestApplication;
+import com.byf.byf.account.AccountEntity;
+import com.byf.byf.account.AccountRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -12,7 +13,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.*;
 
-@SpringBootTest
+@SpringBootTest(classes = TestApplication.class)
 public class AccountCreateServiceTest {
 
     @MockBean
@@ -25,7 +26,7 @@ public class AccountCreateServiceTest {
     AccountCreateService accountCreateService;
 
     @Test
-    void shouldCreateAccount() throws AccountValidationException {
+    void shouldCreateAccount() throws AccountCreateValidationException {
         //given
         String username = "correctUsername";
         String email = "correstEmail@test.com";
@@ -42,9 +43,9 @@ public class AccountCreateServiceTest {
         AccountEntity account = accountCreateService.createAccount(username, email, password);
 
         //then
-        assertEquals(username, account.username);
-        assertEquals(email, account.email);
-        assertTrue(new BCryptPasswordEncoder().matches(password, account.password));
+        assertEquals(username, account.getUsername());
+        assertEquals(email, account.getEmail());
+        assertTrue(new BCryptPasswordEncoder().matches(password, account.getPassword()));
         verify(accountCreateValidator, times(1)).validateInput(username, email, password);
     }
 }
