@@ -4,6 +4,10 @@ services:
     ports:
       - 5432:5432
     environment:
-      - POSTGRES_PASSWORD=<password>
-      - POSTGRES_USER=<username>
+      - POSTGRES_PASSWORD=jlDbNJ8hVlg7Aq65npn2owIfnewARqf1SIWHZfnEkpkTj2ZrSguZfCm8cUL4GD46
+      - POSTGRES_USER=byf-writer
       - POSTGRES_DB=byf
+  byf:
+    image: adrgor/byf-backend:latest
+    ports:
+      - 8080:8080
