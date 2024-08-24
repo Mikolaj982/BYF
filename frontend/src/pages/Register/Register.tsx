@@ -8,7 +8,8 @@ import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import { EmailRounded } from '@mui/icons-material';
 import { VerifiedUserRounded } from '@mui/icons-material';
 import useAlerts from '../../assets/hooks/useAlerts';
-import '../../../src/index.css'
+import { useNavigate } from 'react-router-dom';
+import '../../../src/index.css';
 
 interface User {
     username: string,
@@ -24,10 +25,10 @@ const Register = () => {
         password: '',
         confirmPassword: ''
     });
-    const [errors, setErrors] = useState<object>({})
     const [visiblePassword, setIsVisiblePassword] = useState<boolean>(false);
     const [visibleConfirmPassword, setIsVisibleConfirmPassword] = useState<boolean>(false);
     const { alerts, removeAlert, addAlert } = useAlerts();
+    const navigate = useNavigate();
 
     const handleUserData = async (e: FormEvent) => {
         e.preventDefault();
@@ -54,12 +55,12 @@ const Register = () => {
     const handleClickShowPassword = (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
         setIsVisiblePassword((prev) => !prev)
-    }
+    };
 
     const handleClickShowConfirmPassword = (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
         setIsVisibleConfirmPassword((prev) => !prev)
-    }
+    };
 
     const validate = () => {
         let newErrors = {
@@ -83,6 +84,7 @@ const Register = () => {
         const errorCount = Object.values(newErrors).filter(error => error !== '').length;
         if (errorCount === 0) {
             addAlert('Dane zostały uzupełnione poprawnie!', 'success');
+            navigate('/login');
         } else {
             const err = Object.values(newErrors).find(err => err !== '');
             addAlert(err);
