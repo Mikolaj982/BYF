@@ -1,5 +1,8 @@
 # 🥊 BYF 🥊
 
+## Links
+Design - Miro: https://miro.com/app/board/uXjVKjOX_7o=/ 
+
 ## Building new docker image with application backend
 In order do build new docker image, follow these steps:
 1. Create new package, using `mvn clean install`
