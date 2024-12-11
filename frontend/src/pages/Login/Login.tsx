@@ -1,127 +1,71 @@
 import React, { FormEvent, useState } from 'react'
-import Snackbar from '@mui/material/Snackbar';
 import { VerifiedUserRounded } from '@mui/icons-material';
-import useAlerts from '../../assets/hooks/useAlerts';
-import Alert from '@mui/material/Alert';
-import axios from 'axios';
 import TextField from '@mui/material/TextField';
 import InputAdornment from '@mui/material/InputAdornment';
 import IconButton from '@mui/material/IconButton';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
-
-interface User {
-    usernameOrEmail: '',
-    password: ''
-}
+import { useNavigate } from 'react-router-dom';
+import { UserCredentials } from '../../services/userAuthService';
+import { loginSchema as resolver } from '../../utils/loginSchema';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { useForm } from 'react-hook-form';
+import { submitUserCredientials } from '../../services/userAuthService';
+import { toast } from 'react-toastify';
+import { MESSAGES } from '../../utils/messages';
 
 const Login = () => {
-    const [userData, setUserData] = useState<User>({
+    const userCredientials: UserCredentials = {
         usernameOrEmail: '',
         password: '',
+    }
+    const { register, handleSubmit, formState: { errors }, reset } = useForm<UserCredentials>({
+        defaultValues: userCredientials,
+        resolver: yupResolver(resolver),
     });
     const [visiblePassword, setIsVisiblePassword] = useState<boolean>(false);
-    const { alerts, removeAlert, addAlert } = useAlerts();
+    const navigate = useNavigate();
+
+    const onSubmit = async (userCredientials: UserCredentials) => {
+        try {
+            await submitUserCredientials(userCredientials);
+            reset();
+            toast.success(MESSAGES.SUCCES.USER_REGISTERED);
+            navigate('/main-page');
+        } catch (error: unknown) {
+            if (error instanceof Error) {
+                toast.error(error.message);
+            } else {
+                toast.error('Nieznany błąd.');
+            };
+        };
+    };
 
     const handleClickShowPassword = (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
         setIsVisiblePassword((prev) => !prev)
     };
 
-    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const { name, value } = e.target;
-        setUserData({
-            ...userData,
-            [name]: value
-        });
-    };
-
-    const validate = () => {
-        let newErrors = {
-            usernameOrEmail: '',
-            password: '',
-        };
-
-        const isValidUsername = /^[a-zA-Z0-9_.-]{3,}$/.test(userData.usernameOrEmail);
-        const isValidEmail = /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/.test(userData.usernameOrEmail);
-
-        if (!isValidUsername && !isValidEmail) {
-            newErrors.usernameOrEmail = 'Wpisz prawidłową nazwę użytkownika lub adres email';
-        }
-        if (userData.password.length < 8) {
-            newErrors.password = 'Hasło musi mieć co najmniej 8 znaków';
-        }
-
-        const errorCount = Object.values(newErrors).filter(error => error !== '').length;
-
-        if (errorCount === 0) {
-            addAlert('Dane zostały uzupełnione poprawnie!', 'success');
-        } else {
-            const err = Object.values(newErrors).find(err => err !== '');
-            addAlert(err);
-        }
-
-        newErrors = {
-            usernameOrEmail: '',
-            password: '',
-        }
-    };
-
-    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-        validate();
-    };
-
-    const handleUserData = async (e: FormEvent) => {
-        e.preventDefault();
-        try {
-            const response = await axios.post('', userData);
-            console.log('success', response.data);
-        } catch (error) {
-            if (error instanceof Error) {
-                console.error('failure', error.message)
-            } else {
-                console.error('Unexpected error:', error)
-            }
-        }
-    };
-
     return (
         <>
             <div className='h-screen relative flex justify-center items-center'>
-                <div className="fixed top-0 left-0 right-0 h-8 z-10"> {alerts.map((alert, index) => (
-                    <Snackbar
-                        className="animate-slide-down"
-                        key={index}
-                        open={true}
-                        autoHideDuration={6000}
-                        onClose={() => removeAlert(index)}
-                    >
-                        <Alert
-                            variant="filled"
-                            className="w-full h-auto"
-                            onClose={() => removeAlert(index)}
-                            severity={alert.type}
-                        >
-                            {alert.message}
-                        </Alert>
-                    </Snackbar>
-                ))}</div>
+                <div className="fixed top-0 left-0 right-0 h-8 z-10"></div>
                 <div className='h-full w-full bg-gradient-to-br from-[#87e5da] via-[#db2d43] to-[#db2d43] absolute top-0 left-0'></div>
-                <div className='flex flex-col justify-center w-22 relative p-7 rounded-lg  bg-white/30'>
+                <div className='flex flex-col justify-center w-[350px] relative p-7 rounded-lg  bg-white/30'>
                     <h1 className='font-bold text-2xl top-10'>Login</h1>
                     <form
-                        onSubmit={(e) => { handleUserData(e); handleSubmit(e) }}
-                        className='flex flex-col h-full mt-6'>
+                        onSubmit={handleSubmit(onSubmit)}
+                        className='flex flex-col h-full mt-6 w-full'>
                         <TextField
+                            {...register('usernameOrEmail')}
+                            error={!!errors.usernameOrEmail}
+                            helperText={errors.usernameOrEmail?.message}
                             name='usernameOrEmail'
-                            label='username or email'
+                            label='username/email'
                             variant='outlined'
                             size='small'
                             margin='dense'
-                            value={userData?.usernameOrEmail}
-                            onChange={handleInputChange}
-                            className='bg-white/50 rounded-md'
+                            className='rounded-md'
                             InputProps={{
                                 endAdornment: (
                                     <InputAdornment position='end'>
@@ -133,14 +77,33 @@ const Login = () => {
                                     </InputAdornment>
                                 )
                             }}
+                            sx={{
+                                "& .MuiOutlinedInput-root": {
+                                    backgroundColor: 'rgb(255 255 255 / 0.8);',
+                                },
+                                "& .MuiFormHelperText-root.Mui-error": {
+                                    color: 'black',
+                                    backgroundColor: 'rgba(255, 255, 255, 0.5)',
+                                    margin: '4px 0 0 0',
+                                    padding: '5px',
+                                    width: '100%',
+                                    textAlign: 'justify',
+                                    letterSpacing: '0',
+                                    lineHeight: '1.3',
+                                    borderRadius: '3px'
+                                },
+                            }}
                         />
                         <TextField
+                            {...register('password')}
+                            error={!!errors.password}
+                            helperText={errors.password?.message}
                             name='password'
                             label='password'
                             variant='outlined'
                             size='small'
                             margin='dense'
-                            className='bg-white/50 rounded-md'
+                            className='rounded-md'
                             InputProps={{
                                 endAdornment: (
                                     <InputAdornment position='end'>
@@ -159,8 +122,22 @@ const Login = () => {
                                     ? "text"
                                     : "password"
                             }
-                            value={userData?.password}
-                            onChange={handleInputChange}
+                            sx={{
+                                "& .MuiOutlinedInput-root": {
+                                    backgroundColor: 'rgb(255 255 255 / 0.8);',
+                                },
+                                "& .MuiFormHelperText-root.Mui-error": {
+                                    backgroundColor: 'rgba(255, 255, 255, 0.5)',
+                                    color: 'black',
+                                    margin: '4px 0 0 0',
+                                    padding: '5px',
+                                    width: '100%',
+                                    textAlign: 'justify',
+                                    letterSpacing: '0',
+                                    lineHeight: '1.3',
+                                    borderRadius: '3px'
+                                },
+                            }}
                         />
                         <button
                             type='submit'
