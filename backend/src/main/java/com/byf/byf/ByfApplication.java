@@ -4,13 +4,13 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-@SpringBootApplication
 @Slf4j
+@SpringBootApplication
 public class ByfApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(ByfApplication.class, args);
-		log.info("Działam z loga");
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(ByfApplication.class, args);
+        log.info("BYF backend has been started!");
+    }
 
 }
