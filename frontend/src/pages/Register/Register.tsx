@@ -1,164 +1,116 @@
-import React, { FormEvent, useState } from 'react';
-import Alert from '@mui/material/Alert';
-import Snackbar from '@mui/material/Snackbar';
-import axios from 'axios';
+import React, { useState } from 'react';
 import { InputAdornment, TextField, IconButton } from '@mui/material';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import { EmailRounded } from '@mui/icons-material';
 import { VerifiedUserRounded } from '@mui/icons-material';
-import useAlerts from '../../assets/hooks/useAlerts';
-import { useNavigate } from 'react-router-dom';
 import '../../../src/index.css';
-
-interface User {
-    username: string,
-    email: string,
-    password: string,
-    confirmPassword: string
-}
+import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { MESSAGES } from '../../utils/messages';
+import { toast, ToastContainer } from 'react-toastify';
+import { submitUserData } from '../../services/userAuthService';
+import { UserData } from '../../services/userAuthService';
+import { registerSchema as resolver } from '../../utils/registerSchema';
+import { useNavigate } from 'react-router-dom';
 
 const Register = () => {
-    const [userData, setUserData] = useState<User>({
+    const userData: UserData = {
         username: '',
         email: '',
         password: '',
-        confirmPassword: ''
+        confirmPassword: '',
+    };
+    const { register, handleSubmit, formState: { errors }, reset } = useForm<UserData>({
+        defaultValues: userData,
+        resolver: yupResolver(resolver),
     });
-    const [visiblePassword, setIsVisiblePassword] = useState<boolean>(false);
-    const [visibleConfirmPassword, setIsVisibleConfirmPassword] = useState<boolean>(false);
-    const { alerts, removeAlert, addAlert } = useAlerts();
+    const [PasswordVisibility, setPasswordVisibility] = useState<{ password: boolean, confirmPassword: boolean }>({
+        password: false,
+        confirmPassword: false,
+    });
     const navigate = useNavigate();
 
-    const handleUserData = async (e: FormEvent) => {
-        e.preventDefault();
+    const onSubmit = async (userData: UserData) => {
         try {
-            const response = await axios.post('', userData);
-            console.log('success', response.data);
-        } catch (error) {
-            if (error instanceof Error) {
-                console.error('failure', error.message)
-            } else {
-                console.error('Unexpected error:', error)
-            }
-        }
-    };
-
-    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const { name, value } = e.target;
-        setUserData({
-            ...userData,
-            [name]: value
-        });
-    };
-
-    const handleClickShowPassword = (e: React.MouseEvent<HTMLButtonElement>) => {
-        e.preventDefault();
-        setIsVisiblePassword((prev) => !prev)
-    };
-
-    const handleClickShowConfirmPassword = (e: React.MouseEvent<HTMLButtonElement>) => {
-        e.preventDefault();
-        setIsVisibleConfirmPassword((prev) => !prev)
-    };
-
-    const validate = () => {
-        let newErrors = {
-            username: '',
-            email: '',
-            password: '',
-            confirmPassword: ''
-        };
-        if (!userData.username.match(/^[a-zA-Z0-9_.-]{3,}$/)) {
-            newErrors.username = 'Nieprawidłowa nazwa użytkownika';
-        }
-        if (!userData.email.match(/^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/)) {
-            newErrors.email = 'Nieprawidłowy email';
-        }
-        if (userData.password.length < 8) {
-            newErrors.password = 'Hasło musi mieć co najmniej 8 znaków';
-        }
-        if (userData.password !== userData.confirmPassword) {
-            newErrors.confirmPassword = 'Hasła muszą być identyczne';
-        }
-        const errorCount = Object.values(newErrors).filter(error => error !== '').length;
-        if (errorCount === 0) {
-            addAlert('Dane zostały uzupełnione poprawnie!', 'success');
+            await submitUserData(userData);
+            reset();
+            toast.success(MESSAGES.SUCCES.USER_REGISTERED);
             navigate('/login');
-        } else {
-            const err = Object.values(newErrors).find(err => err !== '');
-            addAlert(err);
-        }
-        newErrors = {
-            username: '',
-            email: '',
-            password: '',
-            confirmPassword: ''
-        }
+        } catch (error: unknown) {
+            if (error instanceof Error) {
+                toast.error(error.message);
+            } else {
+                toast.error('Nieznany błąd.');
+            };
+        };
     };
 
-    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-        validate();
+    const handleClickShowPassword = (field: 'password' | 'confirmPassword') => {
+        setPasswordVisibility((prev) => ({
+            ...prev,
+            [field]: !prev[field]
+        }));
     };
 
     return (<>
         <div className='h-screen relative flex justify-center items-center'>
-            <div className="fixed top-0 left-0 right-0 h-8 z-10"> {alerts.map((alert, index) => (
-                <Snackbar
-                    className="animate-slide-down"
-                    key={index}
-                    open={true}
-                    autoHideDuration={6000}
-                    onClose={() => removeAlert(index)}
-                >
-                    <Alert
-                        variant="filled"
-                        className="w-full h-auto"
-                        onClose={() => removeAlert(index)}
-                        severity={alert.type}
-                    >
-                        {alert.message}
-                    </Alert>
-                </Snackbar>
-            ))}</div>
+            <ToastContainer />
             <div className='h-full w-full bg-gradient-to-br from-[#87e5da] via-[#db2d43] to-[#db2d43] absolute top-0 left-0'></div>
-            <div className='flex flex-col justify-center w-22 relative p-7 h-3/5 rounded-lg  bg-white/30'>
-                <h1 className='font-bold text-2xl top-10'>Register</h1>
+            <div className='flex flex-col justify-center w-[350px] relative p-7 rounded-lg  bg-white/30'>
+                <h1 className='font-bold text-2xl'>Register</h1>
                 <div className='h-28 bg-white mt-8'>pick avatar</div>
                 <form
-                    onSubmit={(e) => { handleUserData(e); handleSubmit(e) }}
-                    className='flex flex-col h-full justify-end'>
+                    onSubmit={handleSubmit(onSubmit)}
+                    className='flex flex-col h-full justify-end w-full'>
                     <TextField
+                        {...register('username')}
+                        error={!!errors.username}
+                        helperText={errors.username?.message}
                         name='username'
                         label='username'
                         variant='outlined'
                         size='small'
                         margin='dense'
-                        value={userData?.username}
-                        onChange={handleInputChange}
-                        className='bg-white/50 rounded-md'
+                        sx={{
+                            "& .MuiOutlinedInput-root": {
+                                backgroundColor: 'rgb(255 255 255 / 0.5);',
+                            },
+                            "& .MuiFormHelperText-root.Mui-error": {
+                                color: 'black',
+                                marginLeft: '5px',
+                            },
+                            marginTop: '0px',
+                        }}
                         InputProps={{
                             endAdornment: (
-                                <InputAdornment position='end'>
-                                    <IconButton
-                                        edge='end'
-                                    >
-                                        {<VerifiedUserRounded />}
+                                <InputAdornment position="end">
+                                    <IconButton edge="end">
+                                        <VerifiedUserRounded />
                                     </IconButton>
                                 </InputAdornment>
-                            )
+                            ),
                         }}
                     />
                     <TextField
+                        {...register('email')}
+                        error={!!errors.email}
+                        helperText={errors.email?.message}
                         name='email'
                         label='email'
                         variant='outlined'
                         size='small'
                         margin='dense'
-                        value={userData?.email}
-                        onChange={handleInputChange}
-                        className='bg-white/50 rounded-md'
+                        sx={{
+                            "& .MuiOutlinedInput-root": {
+                                backgroundColor: 'rgb(255 255 255 / 0.5);',
+                            },
+                            "& .MuiFormHelperText-root.Mui-error": {
+                                color: 'black',
+                                marginLeft: '5px',
+                            },
+                            marginTop: '0px',
+                        }}
                         InputProps={{
                             endAdornment: (
                                 <InputAdornment position='end'>
@@ -168,64 +120,88 @@ const Register = () => {
                                         {<EmailRounded />}
                                     </IconButton>
                                 </InputAdornment>
-                            )
+                            ),
                         }}
                     ></TextField>
                     <TextField
+                        {...register('password')}
+                        error={!!errors.password}
+                        helperText={errors.password?.message}
                         name='password'
                         label='password'
                         variant='outlined'
                         size='small'
                         margin='dense'
-                        className='bg-white/50 rounded-md'
+                        sx={{
+                            "& .MuiOutlinedInput-root": {
+                                backgroundColor: 'rgb(255 255 255 / 0.5);',
+                            },
+                            "& .MuiFormHelperText-root.Mui-error": {
+                                color: 'black',
+                                marginLeft: '5px',
+                            },
+                            marginTop: '0px',
+                        }}
                         InputProps={{
                             endAdornment: (
                                 <InputAdornment position='end'>
                                     <IconButton
-                                        onClick={handleClickShowPassword}
+                                        onClick={() => handleClickShowPassword('password')}
                                         edge='end'
                                         aria-label="toggle password visibility"
                                     >
-                                        {visiblePassword ? <VisibilityOffIcon /> : <VisibilityIcon />}
+                                        {PasswordVisibility.password ?
+                                            <VisibilityOffIcon /> :
+                                            <VisibilityIcon />}
                                     </IconButton>
                                 </InputAdornment>
                             )
                         }}
                         type={
-                            visiblePassword
+                            PasswordVisibility.password
                                 ? "text"
                                 : "password"
                         }
-                        value={userData?.password}
-                        onChange={handleInputChange}
                     ></TextField>
                     <TextField
+                        {...register('confirmPassword')}
+                        error={!!errors.confirmPassword}
+                        helperText={errors.confirmPassword?.message}
                         name='confirmPassword'
                         label='confirm password'
                         variant='outlined'
                         size='small'
                         margin='dense'
-                        className='bg-white/50 rounded-md'
+                        sx={{
+                            "& .MuiOutlinedInput-root": {
+                                backgroundColor: 'rgb(255 255 255 / 0.5);',
+                            },
+                            "& .MuiFormHelperText-root.Mui-error": {
+                                color: 'black',
+                                marginLeft: '5px',
+                            },
+                            marginTop: '0px',
+                        }}
                         InputProps={{
                             endAdornment: (
                                 <InputAdornment position='end'>
                                     <IconButton
-                                        onClick={handleClickShowConfirmPassword}
+                                        onClick={() => handleClickShowPassword('confirmPassword')}
                                         edge='end'
                                         aria-label="toggle password visibility"
                                     >
-                                        {visibleConfirmPassword ? <VisibilityOffIcon /> : <VisibilityIcon />}
+                                        {PasswordVisibility.confirmPassword ?
+                                            <VisibilityOffIcon /> :
+                                            <VisibilityIcon />}
                                     </IconButton>
                                 </InputAdornment>
                             )
                         }}
                         type={
-                            visibleConfirmPassword
+                            PasswordVisibility.confirmPassword
                                 ? "text"
                                 : "password"
                         }
-                        value={userData?.confirmPassword}
-                        onChange={handleInputChange}
                     ></TextField>
                     <button
                         type='submit'
