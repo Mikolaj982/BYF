@@ -1,6 +1,7 @@
-import axios from 'axios';
-import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { toast } from 'react-toastify';
+import { tokenService } from '../utils/tokenService';
+import { axiosInstance as axios } from '../utils/axiosConfig';
 
 export interface UserData {
     username: string;
@@ -14,44 +15,56 @@ export interface UserCredentials {
     password: string;
 }
 
-export const submitUserData = async (userData: UserData) => {
-    try {
-        const response = await axios.post('http://34.172.117.230:8080/api/v1/account', userData);
+export const userAuthService = {
+    register: async (userData: UserData) => {
+        try {
+            const response = await axios.post('/v1/account', userData);
+            const { accessToken } = response.data;
 
-        if (!response.data) {
-            throw new Error('Nieprawidłowe dane rejestracji.')
+            if (!accessToken) {
+                throw new Error('Nieprawidłowe dane rejestracji.')
+            }
+
+            tokenService.setToken(accessToken);
+            return accessToken;
+        } catch (error: unknown) {
+            if (error instanceof Error) {
+                throw error;
+            } else {
+                toast.error('Coś poszło nie tak', { autoClose: 5000 });
+            }
         }
+    },
+    login: async (userCredentials: UserCredentials) => {
+        try {
+            const response = await axios.post('/v1/account/authenticate', userCredentials);
+            const { accessToken } = response.data;
 
-        const data: string = await response.data;
-        console.log('dane użytkownika:', data)
+            if (!accessToken) {
+                throw new Error('Niepoprawne dane logowania.')
+            }
 
-    } catch (error: unknown) {
-        if (error instanceof Error) {
-            toast.error(error.message);
-        } else {
-            toast.error('Nieznany błąd', { autoClose: 5000 });
+            tokenService.setToken(accessToken);
+            return accessToken;
+        } catch (error: unknown) {
+            if (error instanceof Error) {
+                throw error;
+            } else {
+                toast.error('Coś poszło nie tak.', { autoClose: 5000 });
+            }
         }
-    }
-};
+    },
 
-export const submitUserCredientials = async (userCredentials: UserCredentials) => {
-    try {
-        const response = await axios.post('http://34.172.117.230:8080/api/v1/account/authenticate', {
-            usernameOrEmail: 'test@test.com',
-            password: 'password',
-        });
-
-        if (!response.data) {
-            throw new Error('Niepoprawne dane logowania.')
+    logout: async () => {
+        try {
+            await axios.post('/v1/account/logout');
+            tokenService.removeToken();
+        } catch (error: unknown) {
+            if (error instanceof Error) {
+                throw error;
+            }
         }
+    },
 
-        const data: string = await response.data.json();
-        console.log('dane logowania:', data)
-    } catch (error: unknown) {
-        if (error instanceof Error) {
-            toast.error(error.message);
-        } else {
-            toast.error('Nieznany błąd', { autoClose: 5000 });
-        }
-    }
-}
+    isAuthenticated: (): boolean => !!tokenService.getToken(),
+} 

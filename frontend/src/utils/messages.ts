@@ -8,5 +8,7 @@ export const MESSAGES = {
         INVALID_EMAIL: 'Nieprawidłowy email.',
         INVALID_PASSWORD: 'Hasło musi mieć co najmniej 8 znaków, w tym: dużą literę, małą literę, cyfrę i znak specjalny.',
         NOT_MATCHES_PASSWORD: 'Hasła muszą być identyczne',
+        LOGIN_FAILED: 'Ups! Coś się nie zgadza. Sprawdź login i hasło.',
+        REGISTER_FAILED: 'Ups! Mamy problem. Spróbuj ponownie.'
     }
 };
