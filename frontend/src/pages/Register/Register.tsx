@@ -9,7 +9,7 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { MESSAGES } from '../../utils/messages';
 import { toast, ToastContainer } from 'react-toastify';
-import { submitUserData } from '../../services/userAuthService';
+import { userAuthService } from '../../services/userAuthService';
 import { UserData } from '../../services/userAuthService';
 import { registerSchema as resolver } from '../../utils/registerSchema';
 import { useNavigate } from 'react-router-dom';
@@ -33,16 +33,18 @@ const Register = () => {
 
     const onSubmit = async (userData: UserData) => {
         try {
-            await submitUserData(userData);
+            await userAuthService.register(userData);
             reset();
             toast.success(MESSAGES.SUCCES.USER_REGISTERED);
-            navigate('/login');
+            setTimeout(() => navigate('/main-page'), 2000);
         } catch (error: unknown) {
-            if (error instanceof Error) {
-                toast.error(error.message);
+            if (typeof error === 'object' && error !== null && 'message' in error) {
+                toast.error((error as { message: string }).message);
+            } else if (error instanceof Error) {
+                toast.error(MESSAGES.ERROR.REGISTER_FAILED);
             } else {
-                toast.error('Nieznany błąd.');
-            };
+                toast.error('Coś poszło nie tak.');
+            }
         };
     };
 
@@ -215,4 +217,4 @@ const Register = () => {
     )
 }
 
-export default Register
+export default Register;
