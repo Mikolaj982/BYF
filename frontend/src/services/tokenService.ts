@@ -1,7 +1,7 @@
 export const tokenService = {
 
     setToken: (token: string) => {
-        document.cookie = `accessToken=${token}; path=/; secure; HttpOnly; SameSite=Strict`;
+        document.cookie = `accessToken=${token};`;
     },
 
     getToken: (): string | null => {

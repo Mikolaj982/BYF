@@ -1,7 +1,7 @@
 import 'react-toastify/dist/ReactToastify.css';
-import { toast } from 'react-toastify';
-import { tokenService } from '../utils/tokenService';
-import { axiosInstance as axios } from '../utils/axiosConfig';
+import { tokenService } from './tokenService';
+import { axiosInstance as axios } from '../configs/axiosConfig';
+import { MESSAGES } from '../utils/messages';
 
 export interface UserData {
     username: string;
@@ -19,39 +19,36 @@ export const userAuthService = {
     register: async (userData: UserData) => {
         try {
             const response = await axios.post('/v1/account', userData);
-            const { accessToken } = response.data;
 
-            if (!accessToken) {
-                throw new Error('Nieprawidłowe dane rejestracji.')
+            if (response.status !== 201) {
+                throw new Error(MESSAGES.ERROR.REGISTER_FAILED)
             }
 
-            tokenService.setToken(accessToken);
-            return accessToken;
         } catch (error: unknown) {
-            if (error instanceof Error) {
-                throw error;
-            } else {
-                toast.error('Coś poszło nie tak', { autoClose: 5000 });
-            }
+            const message =
+                error instanceof Error
+                    ? error.message
+                    : MESSAGES.ERROR.REGISTER_FAILED;
+            throw new Error(message);
         }
     },
     login: async (userCredentials: UserCredentials) => {
         try {
             const response = await axios.post('/v1/account/authenticate', userCredentials);
-            const { accessToken } = response.data;
+            const accessToken = response.data;
 
             if (!accessToken) {
-                throw new Error('Niepoprawne dane logowania.')
+                throw new Error(MESSAGES.ERROR.LOGIN_FAILED)
             }
 
             tokenService.setToken(accessToken);
             return accessToken;
         } catch (error: unknown) {
-            if (error instanceof Error) {
-                throw error;
-            } else {
-                toast.error('Coś poszło nie tak.', { autoClose: 5000 });
-            }
+            const message =
+                error instanceof Error
+                    ? error.message
+                    : MESSAGES.ERROR.LOGIN_FAILED;
+            throw new Error(message);
         }
     },
 

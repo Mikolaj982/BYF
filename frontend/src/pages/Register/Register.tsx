@@ -38,12 +38,10 @@ const Register = () => {
             toast.success(MESSAGES.SUCCES.USER_REGISTERED);
             setTimeout(() => navigate('/main-page'), 2000);
         } catch (error: unknown) {
-            if (typeof error === 'object' && error !== null && 'message' in error) {
-                toast.error((error as { message: string }).message);
-            } else if (error instanceof Error) {
-                toast.error(MESSAGES.ERROR.REGISTER_FAILED);
+            if (error instanceof Error) {
+                toast.error(error.message);
             } else {
-                toast.error('Coś poszło nie tak.');
+                toast.error(MESSAGES.ERROR.UNKNOWN);
             }
         };
     };
