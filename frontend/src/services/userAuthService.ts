@@ -1,6 +1,7 @@
-import axios from 'axios';
-import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { tokenService } from './tokenService';
+import { axiosInstance as axios } from '../configs/axiosConfig';
+import { MESSAGES } from '../utils/messages';
 
 export interface UserData {
     username: string;
@@ -14,44 +15,53 @@ export interface UserCredentials {
     password: string;
 }
 
-export const submitUserData = async (userData: UserData) => {
-    try {
-        const response = await axios.post('http://34.172.117.230:8080/api/v1/account', userData);
+export const userAuthService = {
+    register: async (userData: UserData) => {
+        try {
+            const response = await axios.post('/v1/account', userData);
 
-        if (!response.data) {
-            throw new Error('Nieprawidłowe dane rejestracji.')
+            if (response.status !== 201) {
+                throw new Error(MESSAGES.ERROR.REGISTER_FAILED)
+            }
+
+        } catch (error: unknown) {
+            const message =
+                error instanceof Error
+                    ? error.message
+                    : MESSAGES.ERROR.REGISTER_FAILED;
+            throw new Error(message);
         }
+    },
+    login: async (userCredentials: UserCredentials) => {
+        try {
+            const response = await axios.post('/v1/account/authenticate', userCredentials);
+            const accessToken = response.data;
 
-        const data: string = await response.data;
-        console.log('dane użytkownika:', data)
+            if (!accessToken) {
+                throw new Error(MESSAGES.ERROR.LOGIN_FAILED)
+            }
 
-    } catch (error: unknown) {
-        if (error instanceof Error) {
-            toast.error(error.message);
-        } else {
-            toast.error('Nieznany błąd', { autoClose: 5000 });
+            tokenService.setToken(accessToken);
+            return accessToken;
+        } catch (error: unknown) {
+            const message =
+                error instanceof Error
+                    ? error.message
+                    : MESSAGES.ERROR.LOGIN_FAILED;
+            throw new Error(message);
         }
-    }
-};
+    },
 
-export const submitUserCredientials = async (userCredentials: UserCredentials) => {
-    try {
-        const response = await axios.post('http://34.172.117.230:8080/api/v1/account/authenticate', {
-            usernameOrEmail: 'test@test.com',
-            password: 'password',
-        });
-
-        if (!response.data) {
-            throw new Error('Niepoprawne dane logowania.')
+    logout: async () => {
+        try {
+            await axios.post('/v1/account/logout');
+            tokenService.removeToken();
+        } catch (error: unknown) {
+            if (error instanceof Error) {
+                throw error;
+            }
         }
+    },
 
-        const data: string = await response.data.json();
-        console.log('dane logowania:', data)
-    } catch (error: unknown) {
-        if (error instanceof Error) {
-            toast.error(error.message);
-        } else {
-            toast.error('Nieznany błąd', { autoClose: 5000 });
-        }
-    }
-}
+    isAuthenticated: (): boolean => !!tokenService.getToken(),
+} 

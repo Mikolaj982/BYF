@@ -1,4 +1,4 @@
-import React, { FormEvent, useState } from 'react'
+import React, { useState } from 'react'
 import { VerifiedUserRounded } from '@mui/icons-material';
 import TextField from '@mui/material/TextField';
 import InputAdornment from '@mui/material/InputAdornment';
@@ -10,7 +10,7 @@ import { UserCredentials } from '../../services/userAuthService';
 import { loginSchema as resolver } from '../../utils/loginSchema';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
-import { submitUserCredientials } from '../../services/userAuthService';
+import { userAuthService } from '../../services/userAuthService';
 import { toast } from 'react-toastify';
 import { MESSAGES } from '../../utils/messages';
 
@@ -25,20 +25,21 @@ const Login = () => {
     });
     const [visiblePassword, setIsVisiblePassword] = useState<boolean>(false);
     const navigate = useNavigate();
+    const { login } = userAuthService;
 
     const onSubmit = async (userCredientials: UserCredentials) => {
         try {
-            await submitUserCredientials(userCredientials);
+            await login(userCredientials);
             reset();
             toast.success(MESSAGES.SUCCES.USER_REGISTERED);
-            navigate('/main-page');
+            setTimeout(() => navigate('/main-page'), 2000);
         } catch (error: unknown) {
             if (error instanceof Error) {
                 toast.error(error.message);
             } else {
-                toast.error('Nieznany błąd.');
-            };
-        };
+                toast.error(MESSAGES.ERROR.UNKNOWN);
+            }
+        }
     };
 
     const handleClickShowPassword = (e: React.MouseEvent<HTMLButtonElement>) => {
