@@ -5,6 +5,8 @@ import com.auth0.jwt.interfaces.DecodedJWT;
 import com.byf.byf.TestApplication;
 import com.byf.byf.account.AccountEntity;
 import com.byf.byf.account.AccountRepository;
+import com.byf.byf.account.authenticate.exception.AccountNotFoundException;
+import com.byf.byf.account.authenticate.exception.InvalidPasswordException;
 import com.byf.byf.jwt.JwtConfiguration;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

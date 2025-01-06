@@ -1,4 +1,4 @@
-package com.byf.byf.account.create;
+package com.byf.byf.account.create.exception;
 
 public class AccountCreateValidationException extends RuntimeException {
     public AccountCreateValidationException(String errorMessage) {

@@ -8,6 +8,8 @@ import org.springframework.stereotype.Component;
 
 import java.time.Instant;
 
+import static com.byf.byf.jwt.JwtClaimsConstants.*;
+
 @Component
 public class JwtTokenUtil {
 
@@ -18,9 +20,9 @@ public class JwtTokenUtil {
         String jwtSecret = jwtConfiguration.getJwtSecret();
 
         return JWT.create()
-                .withClaim("id", accountEntity.getId())
-                .withClaim("username", accountEntity.getUsername())
-                .withClaim("email", accountEntity.getEmail())
+                .withClaim(ACCOUNT_ID, accountEntity.getAccountId())
+                .withClaim(USERNAME, accountEntity.getUsername())
+                .withClaim(EMAIL, accountEntity.getEmail())
                 .withIssuedAt(Instant.now())
                 .sign(Algorithm.HMAC512(jwtSecret));
     }
