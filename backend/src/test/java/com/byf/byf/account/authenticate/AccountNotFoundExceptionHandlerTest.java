@@ -1,6 +1,8 @@
 package com.byf.byf.account.authenticate;
 
 import com.byf.byf.TestApplication;
+import com.byf.byf.account.authenticate.exception.AccountNotFoundException;
+import com.byf.byf.account.authenticate.exception.AccountNotFoundExceptionHandler;
 import com.byf.byf.common.ErrorRS;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

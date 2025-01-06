@@ -2,6 +2,7 @@ package com.byf.byf.account.create;
 
 import com.byf.byf.TestApplication;
 import com.byf.byf.account.AccountRepository;
+import com.byf.byf.account.create.exception.AccountCreateValidationException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;

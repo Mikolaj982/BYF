@@ -1,4 +1,4 @@
-package com.byf.byf.account.create;
+package com.byf.byf.account.create.exception;
 
 import com.byf.byf.common.ErrorRS;
 import lombok.extern.slf4j.Slf4j;
