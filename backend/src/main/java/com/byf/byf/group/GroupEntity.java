@@ -25,6 +25,6 @@ public class GroupEntity {
 
     private String description;
 
-    @OneToMany(mappedBy = "group")
+    @OneToMany(mappedBy = "group", cascade = CascadeType.REMOVE)
     private List<GroupUserMapping> groupUserMappings;
 }

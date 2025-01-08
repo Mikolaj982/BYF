@@ -1,12 +1,10 @@
 package com.byf.byf.account.create;
 
-import com.byf.byf.TestApplication;
+import com.byf.byf.TestBase;
 import com.byf.byf.account.AccountEntity;
-import com.byf.byf.account.AccountRepository;
 import com.byf.byf.account.create.exception.AccountCreateValidationException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
@@ -14,11 +12,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.*;
 
-@SpringBootTest(classes = TestApplication.class)
-public class AccountCreateServiceTest {
-
-    @MockBean
-    AccountRepository accountRepository;
+public class AccountCreateServiceTest extends TestBase {
 
     @MockBean
     AccountCreateValidator accountCreateValidator;

@@ -12,7 +12,7 @@ import static com.byf.byf.constants.ErrorCodes.USER_NOT_IN_GROUP;
 @Slf4j
 @ControllerAdvice
 public class UserNotInGroupExceptionHandler {
-    @ExceptionHandler(UserAlreadyInGroupException.class)
+    @ExceptionHandler(UserNotInGroupException.class)
     public ResponseEntity<ErrorRS> handleUserNotInGroupException(UserNotInGroupException ex) {
         String errorMessage = "User is not present in the given group: " + ex.getMessage();
         log.info(errorMessage);

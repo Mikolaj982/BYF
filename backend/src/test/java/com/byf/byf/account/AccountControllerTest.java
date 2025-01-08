@@ -1,6 +1,6 @@
 package com.byf.byf.account;
 
-import com.byf.byf.TestApplication;
+import com.byf.byf.TestBase;
 import com.byf.byf.account.authenticate.AccountAuthenticateRQ;
 import com.byf.byf.account.authenticate.AccountAuthenticateService;
 import com.byf.byf.account.create.AccountCreateRQ;
@@ -8,7 +8,6 @@ import com.byf.byf.account.create.AccountCreateService;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,8 +15,7 @@ import org.springframework.http.ResponseEntity;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
-@SpringBootTest(classes = TestApplication.class)
-public class AccountControllerTest {
+public class AccountControllerTest extends TestBase {
 
     @MockBean
     AccountCreateService accountCreateService;

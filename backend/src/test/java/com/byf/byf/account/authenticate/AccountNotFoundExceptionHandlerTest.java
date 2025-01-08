@@ -1,20 +1,18 @@
 package com.byf.byf.account.authenticate;
 
-import com.byf.byf.TestApplication;
+import com.byf.byf.TestBase;
 import com.byf.byf.account.authenticate.exception.AccountNotFoundException;
 import com.byf.byf.account.authenticate.exception.AccountNotFoundExceptionHandler;
 import com.byf.byf.common.ErrorRS;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import static com.byf.byf.constants.ErrorCodes.ACCOUNT_NOT_FOUND;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@SpringBootTest(classes = TestApplication.class)
-public class AccountNotFoundExceptionHandlerTest {
+public class AccountNotFoundExceptionHandlerTest extends TestBase {
 
     @Autowired
     AccountNotFoundExceptionHandler accountNotFoundExceptionHandler;

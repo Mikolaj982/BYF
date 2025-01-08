@@ -1,15 +1,12 @@
 package com.byf.byf.account.create;
 
-import com.byf.byf.TestApplication;
-import com.byf.byf.account.AccountRepository;
+import com.byf.byf.TestBase;
 import com.byf.byf.account.create.exception.AccountCreateValidationException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 
 import java.util.stream.Stream;
 
@@ -18,11 +15,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
-@SpringBootTest(classes = TestApplication.class)
-public class AccountCreateValidatorTest {
-
-    @MockBean
-    AccountRepository accountRepository;
+public class AccountCreateValidatorTest extends TestBase {
 
     @Autowired
     AccountCreateValidator accountCreateValidator;
