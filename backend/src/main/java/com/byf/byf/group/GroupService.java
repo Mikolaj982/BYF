@@ -32,6 +32,17 @@ public class GroupService {
     GroupUserMappingRepository groupUserMappingRepository;
 
     @Transactional
+    public List<GroupRS> listUserGroups() {
+        AccountEntity authenticatedUser = authenticationService.readAuthenticatedUserDetails();
+        AccountEntity databaseUser = accountRepository.findById(authenticatedUser.getAccountId())
+                .orElseThrow(() -> new AccountNotFoundException("Account with given ID not found"));
+
+        return databaseUser.getGroupUserMappings()
+                .stream().map(mapping -> new GroupRS(mapping.getGroup().getGroupId(), mapping.getGroup().getName(), mapping.getRole()))
+                .toList();
+    }
+
+    @Transactional
     public void createNewGroup(String name, String description) {
         GroupEntity group = GroupEntity.builder()
                 .name(name)
@@ -44,7 +55,7 @@ public class GroupService {
     }
 
     @Transactional
-    public void addUserToGroup(int accountId, int groupId) {
+    public void addUserToGroup(int groupId, int accountId) {
         GroupEntity group = groupRepository.findById(groupId)
                 .orElseThrow(() -> new GroupNotFoundException("Group with given id was not found in database"));
 
@@ -65,7 +76,7 @@ public class GroupService {
     }
 
     @Transactional
-    public void removeUserFromGroup(int accountId, int groupId) {
+    public void removeUserFromGroup(int groupId, int accountId) {
         GroupEntity group = groupRepository.findById(groupId)
                 .orElseThrow(() -> new GroupNotFoundException("Group with given id was not found in database"));
 
@@ -88,6 +99,25 @@ public class GroupService {
         mappingsToRemove.forEach(
                 mapping -> groupUserMappingRepository.delete(mapping)
         );
+
+        if (mappingsToRemove.size() == 1) {
+            groupRepository.delete(group);
+        }
+    }
+
+    @Transactional
+    public void deleteGroup(int groupId) {
+        GroupEntity groupToDelete = groupRepository.findById(groupId).orElseThrow(
+                () -> new GroupNotFoundException("Group with given ID wasn't found")
+        );
+
+        AccountEntity authenticatedAccount = authenticationService.readAuthenticatedUserDetails();
+
+        if (isUserNotGroupAdmin(authenticatedAccount, groupToDelete)) {
+            throw new OperationNotPermittedException("Only group admin can delete the group");
+        }
+
+        groupRepository.delete(groupToDelete);
     }
 
     private void createGroupAccountMapping(AccountEntity account, GroupEntity group, Role role) {

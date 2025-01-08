@@ -2,15 +2,13 @@ package com.byf.byf.account.authenticate;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.interfaces.DecodedJWT;
-import com.byf.byf.TestApplication;
+import com.byf.byf.TestBase;
 import com.byf.byf.account.AccountEntity;
-import com.byf.byf.account.AccountRepository;
 import com.byf.byf.account.authenticate.exception.AccountNotFoundException;
 import com.byf.byf.account.authenticate.exception.InvalidPasswordException;
 import com.byf.byf.jwt.JwtConfiguration;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
@@ -21,11 +19,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
 
-@SpringBootTest(classes = TestApplication.class)
-public class AccountAuthenticateServiceTest {
-
-    @MockBean
-    AccountRepository accountRepository;
+public class AccountAuthenticateServiceTest extends TestBase {
 
     @MockBean
     JwtConfiguration jwtConfiguration;

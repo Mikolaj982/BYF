@@ -10,3 +10,7 @@ In order do build new docker image, follow these steps:
 3. Login to docker with `docker login`
 4. Run `docker push <username>/byf-backend:<version>` to push the image
 5. You can now run the whole backend using `docker-compose.yml` and running `docker compose up`
+
+## Documentation
+All documentation files will be placed under documentation directory of this project.
+- Api documentation can be found [here](./documentation/api_documentation.md)

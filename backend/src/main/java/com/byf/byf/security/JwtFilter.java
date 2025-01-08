@@ -62,7 +62,7 @@ public class JwtFilter extends OncePerRequestFilter {
 
     @Override
     protected boolean shouldNotFilter(@NonNull HttpServletRequest request) {
-        return request.getRequestURI().contains("account");
+        return request.getRequestURI().contains("/api/v1/account");
     }
 
     private String readJwtFromRequest(HttpServletRequest request) {
