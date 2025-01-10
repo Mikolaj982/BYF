@@ -141,7 +141,7 @@ public class GroupService {
         return group.getGroupUserMappings()
                 .stream()
                 .noneMatch(
-                        mapping -> mapping.getAccount().getAccountId() == account.getAccountId() &&
+                        mapping -> mapping.getAccount().getAccountId() == account.getAccountId() ||
                                 mapping.getRole() == Role.ADMIN
                 );
     }

@@ -4,12 +4,16 @@ import com.byf.byf.account.AccountEntity;
 import com.byf.byf.group.GroupEntity;
 import com.byf.byf.group.Role;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
 @Setter
 @Getter
+@AllArgsConstructor
+@NoArgsConstructor
 public class GroupUserMapping {
 
     @Id

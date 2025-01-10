@@ -18,9 +18,6 @@ public class GroupControllerTest extends TestBase {
     @MockBean
     GroupService groupService;
 
-//    @MockBean
-//    AuthenticationService authenticationService;
-
     @Autowired
     GroupController groupController;
 
