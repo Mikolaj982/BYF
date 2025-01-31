@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "types": ["@react-three/fiber"],
     "target": "es5",
     "lib": [
       "dom",
