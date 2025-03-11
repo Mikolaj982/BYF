@@ -34,12 +34,14 @@ const CustomInputField: React.FC<CustomInputProps> = forwardRef<HTMLInputElement
                 return newState;
             });
         };
-        const isPasswordField: boolean = label?.toLowerCase() === 'password';
-        const isConfirmPasswordField: boolean = label?.toLowerCase() === 'confirmpassword';
-        const isUsernameOrEmailField: boolean = label?.toLowerCase() === 'usernameoremail';
-        const isUsernameField: boolean = label?.toLowerCase() === 'username';
-        const isEmailField: boolean = label?.toLowerCase() === 'email';
+        const lowerCaseLabel: string = label?.toLowerCase();
+        const isPasswordField: boolean = lowerCaseLabel === 'password';
+        const isConfirmPasswordField: boolean = lowerCaseLabel === 'confirmpassword';
+        const isUsernameOrEmailField: boolean = lowerCaseLabel === 'usernameoremail';
+        const isUsernameField: boolean = lowerCaseLabel === 'username';
+        const isEmailField: boolean = lowerCaseLabel === 'email';
 
+        const customId = `input-${label.toLowerCase()}`;
 
         return (
             <FormControl
@@ -48,12 +50,12 @@ const CustomInputField: React.FC<CustomInputProps> = forwardRef<HTMLInputElement
                 margin="dense"
                 error={error}
             >
-                <InputLabel htmlFor={label}>
+                <InputLabel htmlFor={customId}>
                     {isUsernameOrEmailField ? 'username/email' : isConfirmPasswordField ? 'confirm password' : label}
                 </InputLabel>
                 <FilledInput
-                    data-testid="custom-input"
-                    id={label}
+                    inputProps={{ "data-testid": `${customId}` }}
+                    id={customId}
                     ref={ref}
                     {...inputProps}
                     type={

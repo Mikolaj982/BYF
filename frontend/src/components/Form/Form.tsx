@@ -8,7 +8,7 @@ import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import { MESSAGES } from '../../utils/messages';
 import muiTheme from './Form.styles';
-import CustomField from '../CustomTextField/CustomField';
+import CustomInputField from '../CustomInputField/CustomInputField';
 import { FormFields } from '../../pages/LoginRegister/LoginRegisterPage';
 
 interface FormProps {
@@ -74,7 +74,7 @@ const Form: React.FC<FormProps> = ({ labels, isLogin }) => {
                 className='flex flex-col h-full justify-end w-full'>
                 <ThemeProvider theme={muiTheme}>
                     {labels.map((label) => (
-                        <CustomField
+                        <CustomInputField
                             key={label}
                             {...register(label)}
                             label={label}
