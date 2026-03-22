@@ -1,19 +1,26 @@
 import React from 'react'
-import Navigation from '../../components/Navigation/Navigation'
-import ListOfFriends from '../../components/ListOfFriends/ListOfFriends'
-import BrowserOfFriends from '../../components/BrowserOfFriends/BrowserOfFriends'
-export const friends = ['Marcin', 'Wacek'];
+import { useUserGroups } from '../../hooks/useUserGroups';
+import { Group } from './types/group.types';
+
 const Dashboard: React.FC = () => {
+    const { groups, loading, error } = useUserGroups();
     return (
         <div className='bg-indigo-400 h-[100vh] w-[100vw]'>
-            <Navigation />
-            <div className='mt-[30px] ml-[90px] fixed flex h-[100vh]'>
-                <ListOfFriends friends={friends} />
-                <BrowserOfFriends />
-            </div>
-
+            <h2>Hello</h2>
+            <h3>Your groups:</h3>
+            {loading ? <p> Loading...</p> : (
+                <ul>
+                    {
+                        groups.map((group: Group) => (
+                            <li key={group.id}>{group.name}</li>
+                        ))
+                    }
+                </ul>
+            )}
+            {error ?? <p>{error}</p>}
+            <button>Create group</button>
         </div>
-    )
-}
+    );
+};
 
 export default Dashboard
