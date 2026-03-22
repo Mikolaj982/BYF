@@ -1,10 +1,9 @@
 import React from 'react'
 import { useUserGroups } from '../../hooks/useUserGroups';
 import { Group } from './types/group.types';
-import CreateGroupForm from '../../components/CreateGroup/CreateGroupForm';
 
 const Dashboard: React.FC = () => {
-    const { groups, loading, error, refetchGroups } = useUserGroups();
+    const { groups, loading, error } = useUserGroups();
     return (
         <div className='bg-indigo-400 h-[100vh] w-[100vw]'>
             <h2>Hello</h2>
@@ -19,7 +18,7 @@ const Dashboard: React.FC = () => {
                 </ul>
             )}
             {error ?? <p>{error}</p>}
-            <CreateGroupForm onSuccess={refetchGroups} />
+            <button>Create group</button>
         </div>
     );
 };
