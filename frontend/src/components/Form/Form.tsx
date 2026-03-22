@@ -2,7 +2,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { registerSchema, loginSchema } from '../../utils/loginRegisterSchema';
 import { ThemeProvider } from '@mui/material';
 import React, { useEffect } from 'react'
-import { userAuthService, UserCredentials, UserData, UserFormData } from '../../services/userAuthService';
+import { userAuthService, LoginData, RegisterData, UserFormData } from '../../services/userAuthService';
 import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
@@ -47,15 +47,15 @@ const Form: React.FC<FormProps> = ({ labels, isLogin }) => {
     const onSubmit = async (userData: UserFormData) => {
         try {
             if (isLogin) {
-                await userAuthService.login(userData as UserCredentials);
+                await userAuthService.login(userData as LoginData);
                 reset();
                 toast.success(MESSAGES.SUCCES.USER_LOGGED);
-                setTimeout(() => navigate('/main-page'), 2000);
+                setTimeout(() => navigate('/dashboard'), 2000);
             } else {
-                await userAuthService.register(userData as UserData);
+                await userAuthService.register(userData as RegisterData);
                 reset();
                 toast.success(MESSAGES.SUCCES.USER_REGISTERED);
-                setTimeout(() => navigate('/main-page'), 2000);
+                setTimeout(() => navigate('/dashboard'), 2000);
             }
         } catch (error: unknown) {
             if (error instanceof Error) {
