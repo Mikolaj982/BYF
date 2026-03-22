@@ -1,22 +1,5 @@
 import { supabase } from "../shared/api/supabaseClient";
-
-type Group = {
-    id: string;
-    name: string;
-    description: string | null;
-};
-
-type GroupMembersRow = {
-    groups: Group;
-    role: string;
-};
-
-type UserGroup = {
-    id: string;
-    name: string;
-    description: string | null;
-    role: string;
-};
+import { UserGroup, GroupMembersRow } from "../pages/Dashboard/types/group.types";
 
 export async function getUserGroups(userId: string): Promise<UserGroup[]> {
     const { data, error } = await supabase
