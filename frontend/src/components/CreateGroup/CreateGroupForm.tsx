@@ -1,45 +1,45 @@
-import React, { useEffect, useState } from 'react'
-import { OutlinedInput } from '@mui/material'
+import React, { useState } from 'react'
 import { toast } from 'react-toastify';
 import { MESSAGES } from '../../utils/messages';
 import AddButton from '../AddButton/AddButton';
 import { createGroup } from '../../services/createGroup';
 import { useAuth } from '../../features/useAuth';
+import { ToastContainer } from 'react-toastify';
+import { createGroupSchema } from '../../utils/createGroupSchema';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { useForm } from 'react-hook-form';
+import { FormControl, FormHelperText, FilledInput, InputLabel } from '@mui/material';
 
-export type CreateGroupFormData = {
+export type CreateGroupSubmitData = {
     owner: string,
     name: string,
-    description: string,
+    description?: string,
 }
 
-const CreateGroupForm: React.FC = () => {
+type CreateGroupFormData = {
+    name: string,
+    description?: string,
+}
+
+const CreateGroupForm: React.FC<{ onSuccess: () => Promise<void> }> = ({ onSuccess }) => {
     const { user } = useAuth();
-    const [group, setGroup] = useState<CreateGroupFormData>({
+    const group: CreateGroupFormData = {
         name: '',
         description: '',
-        owner: '',
+    }
+    const { register, handleSubmit, formState: { errors }, reset } = useForm<CreateGroupFormData>({
+        defaultValues: group,
+        resolver: yupResolver<CreateGroupFormData>(createGroupSchema),
     });
     const [isClicked, setIsClicked] = useState<boolean>(false);
     const showForm = () => setIsClicked(true);
     const closeForm = () => {
         setIsClicked(false);
-        setGroup({
-            name: '',
-            description: '',
-            owner: '',
-        })
+        reset();
     };
+    const submitGroupData = async (group: CreateGroupFormData) => {
 
-    const handleChangeGroupData = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setGroup({ ...group, [e.target.name]: e.target.value });
-    }
-
-    const submitGroupData = async (e: any) => {
-        e.preventDefault();
-
-        if (!user?.id) {
-            console.error("użytkownik nie jest zalogowany.")
-        }
+        if (!user?.id) return;
 
         const createGroupDataPlusOwnerId = {
             ...group,
@@ -48,6 +48,9 @@ const CreateGroupForm: React.FC = () => {
 
         try {
             await createGroup(createGroupDataPlusOwnerId);
+            onSuccess();
+            closeForm();
+            toast.success(MESSAGES.SUCCES.CREATED_GROUP)
         } catch (error: unknown) {
             if (error instanceof Error) {
                 toast.error(error.message);
@@ -60,15 +63,34 @@ const CreateGroupForm: React.FC = () => {
     return <>
         {
             isClicked ?
-                <form className='top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 p-6 bg-slate-500 flex flex-col fixed shadow-xl rounded-2xl' onSubmit={(e) => submitGroupData(e)} >
-                    <OutlinedInput name='name' placeholder='nazwa' value={group.name} onChange={handleChangeGroupData} />
-                    <OutlinedInput name='description' placeholder='opis' value={group.description} onChange={handleChangeGroupData} />
-                    <button onClick={closeForm}>X</button>
+                <form className='top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 p-6 bg-slate-500 flex flex-col fixed shadow-xl rounded-2xl'
+                    onSubmit={handleSubmit(submitGroupData)} >
+                    <FormControl>
+                        <InputLabel htmlFor={'name'}>
+                            Nazwa
+                        </InputLabel>
+                        <FilledInput
+                            placeholder='nazwa'
+                            {...register('name')}
+                        />
+                        {errors.name && <FormHelperText>{errors.name?.message}</FormHelperText>}
+                    </FormControl>
+                    <FormControl>
+                        <InputLabel htmlFor={'description'}>
+                            Opis
+                        </InputLabel>
+                        <FilledInput
+                            placeholder='opis'
+                            {...register('description')}
+                        />
+                    </FormControl>
+                    <button type='button' onClick={closeForm}>X</button>
                     <button type='submit'>dodaj</button>
                 </form>
                 :
                 null
         }
+        <ToastContainer />
         <div style={{ background: 'none', border: 'none' }} onClick={showForm}>
             <AddButton />
         </div>
