@@ -1,6 +1,7 @@
 import React from 'react'
 import { useUserGroups } from '../../hooks/useUserGroups';
 import { Group } from './types/group.types';
+import CreateGroupForm from '../../components/CreateGroup/CreateGroupForm';
 
 const Dashboard: React.FC = () => {
     const { groups, loading, error } = useUserGroups();
@@ -18,7 +19,7 @@ const Dashboard: React.FC = () => {
                 </ul>
             )}
             {error ?? <p>{error}</p>}
-            <button>Create group</button>
+            <CreateGroupForm />
         </div>
     );
 };
