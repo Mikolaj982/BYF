@@ -1,7 +1,7 @@
 import { supabase } from "../shared/api/supabaseClient";
-import { CreateGroupFormData } from "../components/CreateGroup/CreateGroupForm";
+import { CreateGroupSubmitData } from "../components/CreateGroup/CreateGroupForm";
 
-export async function createGroup(createGroupData: CreateGroupFormData) {
+export async function createGroup(createGroupData: CreateGroupSubmitData) {
     try {
         const { name, description, owner } = createGroupData;
         const { data: group, error: groupError } = await supabase

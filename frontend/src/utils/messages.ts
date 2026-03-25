@@ -2,6 +2,7 @@ export const MESSAGES = {
     SUCCES: {
         USER_REGISTERED: 'Rejestracja przebiegła pomyślnie!',
         USER_LOGGED: 'Logowanie przebiegło pomyślnie!',
+        CREATED_GROUP: 'Utworzyłeś grupę!',
     },
     ERROR: {
         REQUIRED: 'To pole jest wymagane.',
