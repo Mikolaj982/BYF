@@ -5,16 +5,16 @@ import CreateGroupForm from '../../components/CreateGroup/CreateGroupForm';
 import { deleteGroup } from '../../services/deleteGroup';
 import { toast } from 'react-toastify';
 import { MESSAGES } from '../../utils/messages';
+import UpdateGroupForm from '../../components/UpdateGroup/UpdateGroupForm';
 
 const Dashboard: React.FC = () => {
     const { groups, loading, error, refetchGroups } = useUserGroups();
     const handleDeleteGroup = async (groupId: string) => {
-        if (!groupId) return;
         if (!window.confirm('Jesteś pewien?')) return;
         try {
             await deleteGroup(groupId);
             await refetchGroups();
-            toast.success(MESSAGES.SUCCES.DELETED_GROUP)
+            toast.success(MESSAGES.SUCCESS.DELETED_GROUP)
         } catch (error) {
             if (error instanceof Error) {
                 toast.error(error.message);
@@ -34,7 +34,12 @@ const Dashboard: React.FC = () => {
                         groups.map((group: UserGroup) => (
                             <li key={group.id}>
                                 <h3>{group.name}</h3>
-                                {group.role === 'owner' && <button onClick={() => handleDeleteGroup(group.id)}>delete</button>}
+                                {group.role === 'owner' && (
+                                    <div>
+                                        <button onClick={() => handleDeleteGroup(group.id)}>delete</button>
+                                        <UpdateGroupForm onSuccess={refetchGroups} groupData={group} />
+                                    </div>
+                                )}
                             </li>
                         ))
                     }

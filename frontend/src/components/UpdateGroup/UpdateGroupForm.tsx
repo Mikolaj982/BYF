@@ -1,56 +1,48 @@
 import React, { useState } from 'react'
 import { toast } from 'react-toastify';
 import { MESSAGES } from '../../utils/messages';
-import AddButton from '../AddButton/AddButton';
-import { createGroup } from '../../services/createGroup';
 import { useAuth } from '../../features/useAuth';
 import { ToastContainer } from 'react-toastify';
-import { createGroupSchema } from '../../utils/createGroupSchema';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
 import { FormControl, FormHelperText, FilledInput, InputLabel } from '@mui/material';
+import { updateGroupSchema } from '../../utils/updateGroupSchema';
+import { updateGroup } from '../../services/updateGroup';
+import { UserGroup } from '../../pages/Dashboard/types/group.types';
 
-export type CreateGroupSubmitData = {
-    owner: string,
+type UpdateGroupFormData = {
     name: string,
-    description?: string,
+    description?: string | null,
 }
 
-type CreateGroupFormData = {
-    name: string,
-    description?: string,
-}
-
-const CreateGroupForm: React.FC<{ onSuccess: () => Promise<void> }> = ({ onSuccess }) => {
+const UpdateGroupForm: React.FC<{ onSuccess: () => Promise<void>, groupData: UserGroup }> = ({ onSuccess, groupData }) => {
     const { user } = useAuth();
-    const group: CreateGroupFormData = {
-        name: '',
-        description: '',
+    const updateFormValues: UpdateGroupFormData = {
+        name: groupData.name,
+        description: groupData.description
     }
-    const { register, handleSubmit, formState: { errors }, reset } = useForm<CreateGroupFormData>({
-        defaultValues: group,
-        resolver: yupResolver<CreateGroupFormData>(createGroupSchema),
+    const { register, handleSubmit, formState: { errors }, reset } = useForm<UpdateGroupFormData>({
+        defaultValues: {},
+        resolver: yupResolver<UpdateGroupFormData>(updateGroupSchema),
     });
     const [isClicked, setIsClicked] = useState<boolean>(false);
-    const showForm = () => setIsClicked(true);
+    const showForm = () => {
+        setIsClicked(true);
+        reset(updateFormValues);
+    }
     const closeForm = () => {
         setIsClicked(false);
         reset();
     };
-    const submitGroupData = async (group: CreateGroupFormData) => {
+    const submitGroupData = async (data: UpdateGroupFormData) => {
 
         if (!user?.id) return;
 
-        const createGroupDataPlusOwnerId = {
-            ...group,
-            owner: user.id,
-        };
-
         try {
-            await createGroup(createGroupDataPlusOwnerId);
-            onSuccess();
+            await updateGroup(groupData.id, data);
+            await onSuccess();
             closeForm();
-            toast.success(MESSAGES.SUCCESS.CREATED_GROUP)
+            toast.success(MESSAGES.SUCCESS.UPDATED_GROUP)
         } catch (error: unknown) {
             if (error instanceof Error) {
                 toast.error(error.message);
@@ -85,16 +77,16 @@ const CreateGroupForm: React.FC<{ onSuccess: () => Promise<void> }> = ({ onSucce
                         />
                     </FormControl>
                     <button type='button' onClick={closeForm}>X</button>
-                    <button type='submit'>dodaj</button>
+                    <button type='submit'>potwierdź zmiany</button>
                 </form>
                 :
                 null
         }
         <ToastContainer />
         <div style={{ background: 'none', border: 'none' }} onClick={showForm}>
-            <AddButton />
+            <button>edytuj</button>
         </div>
     </>
 };
 
-export default CreateGroupForm;
+export default UpdateGroupForm;
