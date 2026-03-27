@@ -5,6 +5,7 @@ import CreateGroupForm from '../../components/CreateGroup/CreateGroupForm';
 import { deleteGroup } from '../../services/deleteGroup';
 import { toast } from 'react-toastify';
 import { MESSAGES } from '../../utils/messages';
+import UpdateGroupForm from '../../components/UpdateGroup/UpdateGroupForm';
 
 const Dashboard: React.FC = () => {
     const { groups, loading, error, refetchGroups } = useUserGroups();
@@ -34,7 +35,12 @@ const Dashboard: React.FC = () => {
                         groups.map((group: UserGroup) => (
                             <li key={group.id}>
                                 <h3>{group.name}</h3>
-                                {group.role === 'owner' && <button onClick={() => handleDeleteGroup(group.id)}>delete</button>}
+                                {group.role === 'owner' && (
+                                    <div>
+                                        <button onClick={() => handleDeleteGroup(group.id)}>delete</button>
+                                        <UpdateGroupForm onSuccess={refetchGroups} groupData={group} />
+                                    </div>
+                                )}
                             </li>
                         ))
                     }
