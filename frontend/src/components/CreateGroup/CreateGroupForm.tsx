@@ -50,7 +50,7 @@ const CreateGroupForm: React.FC<{ onSuccess: () => Promise<void> }> = ({ onSucce
             await createGroup(createGroupDataPlusOwnerId);
             onSuccess();
             closeForm();
-            toast.success(MESSAGES.SUCCES.CREATED_GROUP)
+            toast.success(MESSAGES.SUCCESS.CREATED_GROUP)
         } catch (error: unknown) {
             if (error instanceof Error) {
                 toast.error(error.message);

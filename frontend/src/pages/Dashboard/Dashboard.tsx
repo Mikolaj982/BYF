@@ -10,12 +10,11 @@ import UpdateGroupForm from '../../components/UpdateGroup/UpdateGroupForm';
 const Dashboard: React.FC = () => {
     const { groups, loading, error, refetchGroups } = useUserGroups();
     const handleDeleteGroup = async (groupId: string) => {
-        if (!groupId) return;
         if (!window.confirm('Jesteś pewien?')) return;
         try {
             await deleteGroup(groupId);
             await refetchGroups();
-            toast.success(MESSAGES.SUCCES.DELETED_GROUP)
+            toast.success(MESSAGES.SUCCESS.DELETED_GROUP)
         } catch (error) {
             if (error instanceof Error) {
                 toast.error(error.message);
