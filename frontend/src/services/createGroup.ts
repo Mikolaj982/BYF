@@ -18,7 +18,6 @@ export async function createGroup(createGroupData: CreateGroupSubmitData) {
             user_id: owner,
             role: 'owner',
         }])
-        .select();
 
     if (membersError) throw membersError;
     return group;
