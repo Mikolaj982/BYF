@@ -42,7 +42,7 @@ const UpdateGroupForm: React.FC<{ onSuccess: () => Promise<void>, groupData: Use
             await updateGroup(groupData.id, data);
             await onSuccess();
             closeForm();
-            toast.success(MESSAGES.SUCCES.UPDATED_GROUP)
+            toast.success(MESSAGES.SUCCESS.UPDATED_GROUP)
         } catch (error: unknown) {
             if (error instanceof Error) {
                 toast.error(error.message);
