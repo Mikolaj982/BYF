@@ -14,9 +14,7 @@ export async function getUserGroups(userId: string): Promise<UserGroup[]> {
         )
         .eq("user_id", userId)
 
-    if (error) {
-        throw new Error(error.message);
-    }
+    if (error) throw error;
 
     const typedData = data as unknown as GroupMembersRow[] | null;
 
