@@ -4,7 +4,6 @@ import { MESSAGES } from '../../utils/messages';
 import AddButton from '../AddButton/AddButton';
 import { createGroup } from '../../services/createGroup';
 import { useAuth } from '../../features/useAuth';
-import { ToastContainer } from 'react-toastify';
 import { createGroupSchema } from '../../utils/createGroupSchema';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
@@ -90,7 +89,6 @@ const CreateGroupForm: React.FC<{ onSuccess: () => Promise<void> }> = ({ onSucce
                 :
                 null
         }
-        <ToastContainer />
         <div style={{ background: 'none', border: 'none' }} onClick={showForm}>
             <AddButton />
         </div>
