@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
-import { lobby } from "../pages/Dashboard/types/lobby.types";
+import { Lobby } from "../pages/Dashboard/types/lobby.types";
 import { getGroupLobbies } from "../services/lobbies/lobbyService";
 
 export function useGroupLobbies(groupId: string) {
-    const [lobbies, setLobbies] = useState<lobby[]>([]);
+    const [lobbies, setLobbies] = useState<Lobby[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
     const loadLobbies = async function () {

@@ -1,5 +1,10 @@
-export type lobby = {
+export type Lobby = {
     id: string;
     group_id: string;
     game_type: string;
+};
+
+export type LobbyMember = {
+    lobby_id: string;
+    user_id: string;
 };
