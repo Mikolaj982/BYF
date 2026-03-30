@@ -13,7 +13,7 @@ type CreateLobbyFormData = {
     gameType: string,
 }
 
-const CreateLobbyForm: React.FC<{ onSuccess: any, groupData: UserGroup }> = ({ onSuccess, groupData }) => {
+const CreateLobbyForm: React.FC<{ onSuccess: () => Promise<void>, groupData: UserGroup }> = ({ onSuccess, groupData }) => {
     const { id: groupId } = groupData;
     const lobby: CreateLobbyFormData = {
         gameType: '',
@@ -50,12 +50,11 @@ const CreateLobbyForm: React.FC<{ onSuccess: any, groupData: UserGroup }> = ({ o
             }
         };
     };
-
+    // style={{ display: isClicked ? 'flex' : 'none' }}
     return <>
-        {
+        {isClicked && (
             <form className='top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 p-6 bg-slate-500 flex flex-col fixed shadow-xl rounded-2xl'
-                onSubmit={handleSubmit(submitLobbyData)}
-                style={{ display: isClicked ? 'flex' : 'none' }} >
+                onSubmit={handleSubmit(submitLobbyData)} >
                 <FormControl>
                     <InputLabel htmlFor={'name'}>
                         game type
@@ -69,6 +68,7 @@ const CreateLobbyForm: React.FC<{ onSuccess: any, groupData: UserGroup }> = ({ o
                 <button type='button' onClick={closeForm}>X</button>
                 <button type='submit'>dodaj</button>
             </form>
+        )
         }
         <div style={{ background: 'none', border: 'none' }} onClick={showForm}>
             <AddButton />
