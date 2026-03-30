@@ -31,10 +31,20 @@ export const userAuthService = {
                 }
             });
 
-            if (error) {
-                throw new Error(error.message);
+            if (error) throw error;
+
+            if (!data.user) {
+                throw new Error("User not created");
             }
 
+            const { error: insertError } = await supabase
+                .from('profiles')
+                .insert({
+                    id: data.user?.id,
+                    username: username,
+                })
+
+            if (insertError) throw insertError;
             return data;
 
         } catch (error: unknown) {
@@ -53,9 +63,7 @@ export const userAuthService = {
                 email,
                 password
             });
-            if (error) {
-                throw new Error(error.message);
-            }
+            if (error) throw error;
 
             return data;
         } catch (error: unknown) {
@@ -70,9 +78,7 @@ export const userAuthService = {
     logout: async () => {
         const { error } = await supabase.auth.signOut();
 
-        if (error) {
-            throw new Error(error.message);
-        }
+        if (error) throw error;
     },
 
     isAuthenticated: async (): Promise<boolean> => {
