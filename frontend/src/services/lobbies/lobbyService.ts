@@ -1,7 +1,7 @@
 import { supabase } from "../../shared/api/supabaseClient";
-import { lobby } from "../../pages/Dashboard/types/lobby.types";
+import { Lobby } from "../../pages/Dashboard/types/lobby.types";
 
-export async function getGroupLobbies(groupId: string): Promise<lobby[]> {
+export async function getGroupLobbies(groupId: string): Promise<Lobby[]> {
     const { data, error } = await supabase
         .from('lobbies')
         .select(`
@@ -12,6 +12,5 @@ export async function getGroupLobbies(groupId: string): Promise<lobby[]> {
         .eq('group_id', groupId)
 
     if (error) throw error;
-    console.log('lobbies:', data)
     return data;
 };
