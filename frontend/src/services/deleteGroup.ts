@@ -8,7 +8,7 @@ export async function deleteGroup(groupId: string) {
 
     const lobbyId = lobbies?.map(lobby => lobby.id) ?? [];
     const { error: deleteLobbiesMembersError } = await supabase
-        .from('lobbies_members')
+        .from('lobby_members')
         .delete()
         .eq('lobby_id', lobbyId);
 
