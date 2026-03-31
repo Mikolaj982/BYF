@@ -9,5 +9,10 @@ export async function joinLobby(lobbyData: LobbyMember) {
             user_id: userId,
             lobby_id: lobbyId
         }])
-    if (error) throw error;
+    if (error) {
+        if (error.code === "23505") {
+            throw new Error("Już jesteś w lobby");
+        }
+        throw error;
+    }
 };
