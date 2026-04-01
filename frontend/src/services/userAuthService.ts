@@ -1,67 +1,84 @@
 import 'react-toastify/dist/ReactToastify.css';
-import { tokenService } from './tokenService';
-import { axiosInstance as axios } from '../configs/axiosConfig';
 import { MESSAGES } from '../utils/messages';
+import { supabase } from '../shared/api/supabaseClient';
 
-export interface UserData {
+export type RegisterData = {
     username: string;
     email: string;
     password: string;
     confirmPassword: string;
 }
 
-export interface UserCredentials {
+export type LoginData = {
     usernameOrEmail: string;
     password: string;
 }
 
-export const userAuthService = {
-    register: async (userData: UserData) => {
-        try {
-            const response = await axios.post('/v1/account', userData);
+export type UserFormData = RegisterData | LoginData;
 
-            if (response.status !== 201) {
-                throw new Error(MESSAGES.ERROR.REGISTER_FAILED)
+export const userAuthService = {
+    register: async (userData: RegisterData) => {
+        try {
+            const { email, password, username } = userData;
+
+            const { data, error } = await supabase.auth.signUp({
+                email,
+                password,
+                options: {
+                    data: {
+                        username
+                    }
+                }
+            });
+
+            if (error) {
+                throw new Error(error.message);
             }
 
+            return data;
+
         } catch (error: unknown) {
-            const message =
-                error instanceof Error
-                    ? error.message
-                    : MESSAGES.ERROR.REGISTER_FAILED;
+            let message = MESSAGES.ERROR.REGISTER_FAILED;
+            if (error instanceof Error) {
+                message = error.message;
+            }
             throw new Error(message);
         }
     },
-    login: async (userCredentials: UserCredentials) => {
+    login: async (userData: LoginData) => {
         try {
-            const response = await axios.post('/v1/account/authenticate', userCredentials);
-            const accessToken = response.data;
+            const { usernameOrEmail: email, password } = userData;
 
-            if (!accessToken) {
-                throw new Error(MESSAGES.ERROR.LOGIN_FAILED)
+            const { data, error } = await supabase.auth.signInWithPassword({
+                email,
+                password
+            });
+            if (error) {
+                throw new Error(error.message);
             }
 
-            tokenService.setToken(accessToken);
-            return accessToken;
+            return data;
         } catch (error: unknown) {
-            const message =
-                error instanceof Error
-                    ? error.message
-                    : MESSAGES.ERROR.LOGIN_FAILED;
+            let message = MESSAGES.ERROR.REGISTER_FAILED;
+            if (error instanceof Error) {
+                message = error.message;
+            }
             throw new Error(message);
         }
     },
 
     logout: async () => {
-        try {
-            await axios.post('/v1/account/logout');
-            tokenService.removeToken();
-        } catch (error: unknown) {
-            if (error instanceof Error) {
-                throw error;
-            }
+        const { error } = await supabase.auth.signOut();
+
+        if (error) {
+            throw new Error(error.message);
         }
     },
 
-    isAuthenticated: (): boolean => !!tokenService.getToken(),
+    isAuthenticated: async (): Promise<boolean> => {
+        const { data } = await supabase.auth.getSession();
+        return !!data.session;
+    }
+
+
 } 
