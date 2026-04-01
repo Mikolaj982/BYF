@@ -5,7 +5,8 @@ export const MESSAGES = {
         CREATED_GROUP: 'Utworzyłeś grupę!',
         DELETED_GROUP: 'Grupa została usunięta.',
         UPDATED_GROUP: 'Grupa została edytowana.',
-        CREATED_LOBBY: 'Lobby zostało utworzone!'
+        CREATED_LOBBY: 'Lobby zostało utworzone!',
+        JOINED_LOBBY: 'Dołączyłeś do lobby!',
     },
     ERROR: {
         REQUIRED: 'To pole jest wymagane.',
