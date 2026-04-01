@@ -2,9 +2,8 @@ import React, { useState } from 'react'
 import { toast } from 'react-toastify';
 import { MESSAGES } from '../../utils/messages';
 import { useAuth } from '../../features/useAuth';
-import { ToastContainer } from 'react-toastify';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { useForm } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
 import { FormControl, FormHelperText, FilledInput, InputLabel } from '@mui/material';
 import { updateGroupSchema } from '../../utils/updateGroupSchema';
 import { updateGroup } from '../../services/updateGroup';
@@ -21,18 +20,16 @@ const UpdateGroupForm: React.FC<{ onSuccess: () => Promise<void>, groupData: Use
         name: groupData.name,
         description: groupData.description
     }
-    const { register, handleSubmit, formState: { errors }, reset } = useForm<UpdateGroupFormData>({
-        defaultValues: {},
+    const { control, handleSubmit, reset, formState: { errors } } = useForm<UpdateGroupFormData>({
+        defaultValues: updateFormValues,
         resolver: yupResolver<UpdateGroupFormData>(updateGroupSchema),
     });
     const [isClicked, setIsClicked] = useState<boolean>(false);
     const showForm = () => {
         setIsClicked(true);
-        reset(updateFormValues);
     }
     const closeForm = () => {
         setIsClicked(false);
-        reset();
     };
     const submitGroupData = async (data: UpdateGroupFormData) => {
 
@@ -61,20 +58,27 @@ const UpdateGroupForm: React.FC<{ onSuccess: () => Promise<void>, groupData: Use
                         <InputLabel htmlFor={'name'}>
                             Nazwa
                         </InputLabel>
-                        <FilledInput
-                            placeholder='nazwa'
-                            {...register('name')}
-                        />
+                        <Controller
+                            name="name"
+                            control={control}
+                            render={({ field }) => (
+                                <FilledInput {...field} placeholder='nazwa' />
+                            )} />
                         {errors.name && <FormHelperText>{errors.name?.message}</FormHelperText>}
                     </FormControl>
                     <FormControl>
                         <InputLabel htmlFor={'description'}>
                             Opis
                         </InputLabel>
-                        <FilledInput
-                            placeholder='opis'
-                            {...register('description')}
-                        />
+                        <Controller
+                            name='description'
+                            control={control}
+                            render={({ field }) => (
+                                <FilledInput
+                                    {...field}
+                                    placeholder='opis'
+                                />
+                            )} />
                     </FormControl>
                     <button type='button' onClick={closeForm}>X</button>
                     <button type='submit'>potwierdź zmiany</button>
@@ -82,7 +86,6 @@ const UpdateGroupForm: React.FC<{ onSuccess: () => Promise<void>, groupData: Use
                 :
                 null
         }
-        <ToastContainer />
         <div style={{ background: 'none', border: 'none' }} onClick={showForm}>
             <button>edytuj</button>
         </div>
