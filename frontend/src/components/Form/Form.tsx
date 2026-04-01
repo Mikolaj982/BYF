@@ -49,12 +49,12 @@ const Form: React.FC<FormProps> = ({ labels, isLogin }) => {
             if (isLogin) {
                 await userAuthService.login(userData as LoginData);
                 reset();
-                toast.success(MESSAGES.SUCCES.USER_LOGGED);
+                toast.success(MESSAGES.SUCCESS.USER_LOGGED);
                 setTimeout(() => navigate('/dashboard'), 2000);
             } else {
                 await userAuthService.register(userData as RegisterData);
                 reset();
-                toast.success(MESSAGES.SUCCES.USER_REGISTERED);
+                toast.success(MESSAGES.SUCCESS.USER_REGISTERED);
                 setTimeout(() => navigate('/dashboard'), 2000);
             }
         } catch (error: unknown) {
