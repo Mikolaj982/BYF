@@ -4,6 +4,7 @@
 Design - Miro: https://miro.com/app/board/uXjVKjOX_7o=/ 
 
 ## Building new docker image with application backend
+asdasdasd
 In order do build new docker image, follow these steps:
 1. Create new package, using `mvn clean install`
 2. Go to the directory where the package has been build and build new docker image with `docker build -t <username>/byf-backend:<version> .`. Username used so far is `adrgor`. If you build image with another username you'll have to modify `docker-compose.yml`. You don't need to specify the version yet, then it will be set to `latest` and overwrite the last image with this version. This is acceptable for now since we don't have a released version yet.
