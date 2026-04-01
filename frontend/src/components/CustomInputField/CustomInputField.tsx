@@ -7,21 +7,18 @@ import IconButton from '@mui/material/IconButton';
 import FormHelperText from '@mui/material/FormHelperText';
 import { Visibility, VisibilityOff, EmailRounded, VerifiedUserRounded } from '@mui/icons-material';
 
-interface CustomFieldProps {
+interface CustomInputProps {
     label: string;
     helperText?: string;
-    isPasswordField?: boolean;
-    Icon?: React.ElementType;
     error?: boolean;
     inputProps?: React.ComponentProps<'input'>;
 };
 
-const CustomField: React.FC<CustomFieldProps> = forwardRef<HTMLInputElement, CustomFieldProps>(
+const CustomInputField: React.FC<CustomInputProps> = forwardRef<HTMLInputElement, CustomInputProps>(
     (
         {
             label,
             helperText,
-            Icon,
             error,
             ...inputProps
         },
@@ -32,15 +29,19 @@ const CustomField: React.FC<CustomFieldProps> = forwardRef<HTMLInputElement, Cus
             confirmPassword: false,
         });
         const handleClickShowPassword = (field: 'password' | 'confirmPassword') => {
-            setPasswordVisibility((prev) => ({
-                ...prev,
-                [field]: !prev[field]
-            }));
+            setPasswordVisibility((prev) => {
+                const newState = { ...prev, [field]: !prev[field] };
+                return newState;
+            });
         };
-        const isPasswordField: boolean = label?.toLowerCase().includes('password');
-        const isUsernameOrEmailField: boolean = label?.toLowerCase() === 'usernameoremail';
-        const isUsernameField: boolean = label?.toLowerCase() === 'username';
-        const isEmailField: boolean = label?.toLowerCase() === 'email';
+        const lowerCaseLabel: string = label?.toLowerCase();
+        const isPasswordField: boolean = lowerCaseLabel === 'password';
+        const isConfirmPasswordField: boolean = lowerCaseLabel === 'confirmpassword';
+        const isUsernameOrEmailField: boolean = lowerCaseLabel === 'usernameoremail';
+        const isUsernameField: boolean = lowerCaseLabel === 'username';
+        const isEmailField: boolean = lowerCaseLabel === 'email';
+
+        const customId = `input-${label.toLowerCase()}`;
 
         return (
             <FormControl
@@ -49,18 +50,24 @@ const CustomField: React.FC<CustomFieldProps> = forwardRef<HTMLInputElement, Cus
                 margin="dense"
                 error={error}
             >
-                <InputLabel>
-                    {isUsernameOrEmailField ? 'username/email' : label}
+                <InputLabel htmlFor={customId}>
+                    {isUsernameOrEmailField ? 'username/email' : isConfirmPasswordField ? 'confirm password' : label}
                 </InputLabel>
                 <FilledInput
+                    inputProps={{ "data-testid": `${customId}` }}
+                    id={customId}
                     ref={ref}
                     {...inputProps}
                     type={
-                        isPasswordField ?
-                            passwordVisibility?.password
+                        isPasswordField
+                            ? passwordVisibility.password
                                 ? 'text'
                                 : 'password'
-                            : 'text'
+                            : isConfirmPasswordField
+                                ? passwordVisibility.confirmPassword
+                                    ? 'text'
+                                    : 'password'
+                                : 'text'
                     }
                     disableUnderline
                     endAdornment={
@@ -84,12 +91,24 @@ const CustomField: React.FC<CustomFieldProps> = forwardRef<HTMLInputElement, Cus
                                     <IconButton
                                         onClick={() => handleClickShowPassword('password')}
                                         aria-label="toggle password visibility"
+                                        data-testid="toggle-password-visibility"
                                     >
                                         {
                                             passwordVisibility?.password ?
                                                 <VisibilityOff /> :
                                                 <Visibility />
                                         }
+                                    </IconButton>
+                                </InputAdornment>
+                            )}
+                            {isConfirmPasswordField && (
+                                <InputAdornment position="end">
+                                    <IconButton
+                                        onClick={() => handleClickShowPassword('confirmPassword')}
+                                        aria-label="toggle confirm password visibility"
+                                        data-testid="toggle-confirm-password-visibility"
+                                    >
+                                        {passwordVisibility?.confirmPassword ? <VisibilityOff /> : <Visibility />}
                                     </IconButton>
                                 </InputAdornment>
                             )}
@@ -101,4 +120,4 @@ const CustomField: React.FC<CustomFieldProps> = forwardRef<HTMLInputElement, Cus
         );
     });
 
-export default CustomField;
+export default CustomInputField;

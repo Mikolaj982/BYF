@@ -8,7 +8,7 @@ import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import { MESSAGES } from '../../utils/messages';
 import muiTheme from './Form.styles';
-import CustomField from '../CustomTextField/CustomField';
+import CustomInputField from '../CustomInputField/CustomInputField';
 import { FormFields } from '../../pages/LoginRegister/LoginRegisterPage';
 
 interface FormProps {
@@ -50,12 +50,12 @@ const Form: React.FC<FormProps> = ({ labels, isLogin }) => {
                 await userAuthService.login(userData as LoginData);
                 reset();
                 toast.success(MESSAGES.SUCCES.USER_LOGGED);
-                setTimeout(() => navigate('/main-page'), 2000);
+                setTimeout(() => navigate('/dashboard'), 2000);
             } else {
                 await userAuthService.register(userData as RegisterData);
                 reset();
                 toast.success(MESSAGES.SUCCES.USER_REGISTERED);
-                setTimeout(() => navigate('/main-page'), 2000);
+                setTimeout(() => navigate('/dashboard'), 2000);
             }
         } catch (error: unknown) {
             if (error instanceof Error) {
@@ -74,7 +74,7 @@ const Form: React.FC<FormProps> = ({ labels, isLogin }) => {
                 className='flex flex-col h-full justify-end w-full'>
                 <ThemeProvider theme={muiTheme}>
                     {labels.map((label) => (
-                        <CustomField
+                        <CustomInputField
                             key={label}
                             {...register(label)}
                             label={label}
