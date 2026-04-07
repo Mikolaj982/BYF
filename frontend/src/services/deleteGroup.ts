@@ -7,12 +7,15 @@ export async function deleteGroup(groupId: string) {
         .eq("group_id", groupId);
 
     const lobbyId = lobbies?.map(lobby => lobby.id) ?? [];
-    const { error: deleteLobbiesMembersError } = await supabase
-        .from('lobby_members')
-        .delete()
-        .eq('lobby_id', lobbyId);
 
-    if (deleteLobbiesMembersError) throw deleteLobbiesMembersError;
+    if (lobbyId.length > 0) {
+        const { error: deleteLobbiesMembersError } = await supabase
+            .from('lobby_members')
+            .delete()
+            .in('lobby_id', lobbyId);
+
+        if (deleteLobbiesMembersError) throw deleteLobbiesMembersError;
+    };
 
     const { error: deleteLobbiesError } = await supabase
         .from('lobbies')
