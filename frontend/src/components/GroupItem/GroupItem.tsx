@@ -7,10 +7,11 @@ import { deleteGroup } from '../../services/deleteGroup';
 import { toast } from 'react-toastify';
 import { MESSAGES } from '../../utils/messages';
 import { useGroupLobbies } from '../../hooks/useGroupLobbies';
+import { Button, TextField } from '@mui/material';
 
 const GroupItem: React.FC<{ groupData: UserGroup, refetchGroups: () => Promise<void> }> = ({ groupData, refetchGroups }) => {
 
-  const { id, name, description, role } = groupData;
+  const { id, name, description, role, invite_code } = groupData;
   const { lobbies, refetchLobbies } = useGroupLobbies(id);
 
   const handleDeleteGroup = async (groupId: string) => {
@@ -32,6 +33,13 @@ const GroupItem: React.FC<{ groupData: UserGroup, refetchGroups: () => Promise<v
     <li>
       <h3>{name}</h3>
       <p>{description}</p>
+      <TextField
+        value={invite_code}
+        InputProps={{ readOnly: true }}
+      />
+      <Button onClick={() => navigator.clipboard.writeText(invite_code)}>
+        Copy code
+      </Button>
       {role === 'owner' && (
         <div>
           <button onClick={() => handleDeleteGroup(id)}>delete</button>

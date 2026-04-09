@@ -9,7 +9,8 @@ export async function getUserGroups(userId: string): Promise<UserGroup[]> {
                 groups!inner (
                         id,
                         name,
-                        description
+                        description,
+                        invite_code
                 )`
         )
         .eq("user_id", userId)
@@ -28,6 +29,7 @@ export async function getUserGroups(userId: string): Promise<UserGroup[]> {
             id: group.id,
             description: group.description,
             role: item.role,
+            invite_code: group.invite_code
         };
     }) || [];
 

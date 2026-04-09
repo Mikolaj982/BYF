@@ -4,6 +4,7 @@ import { UserGroup } from './types/group.types';
 import CreateGroupForm from '../../components/CreateGroup/CreateGroupForm';
 import GroupItem from '../../components/GroupItem/GroupItem';
 import { ToastContainer } from 'react-toastify';
+import JoinGroupForm from '../../components/JoinGroup/JoinGroup';
 
 const Dashboard: React.FC = () => {
     const { groups, loading, error, refetchGroups } = useUserGroups();
@@ -21,6 +22,7 @@ const Dashboard: React.FC = () => {
             )}
             {error && <p>{error}</p>}
             <CreateGroupForm onSuccess={refetchGroups} />
+            <JoinGroupForm onSuccess={refetchGroups} />
             <ToastContainer />
         </div>
 
