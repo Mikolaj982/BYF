@@ -1,4 +1,3 @@
-import 'react-toastify/dist/ReactToastify.css';
 import { MESSAGES } from '../utils/messages';
 import { supabase } from '../shared/api/supabaseClient';
 
