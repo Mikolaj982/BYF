@@ -17,3 +17,14 @@ export type UserGroup = {
     role: string;
     invite_code: string;
 };
+
+export type GroupMember = {
+    role: string;
+    username: string;
+    id: string;
+}
+
+export type GroupMemberBarProps = {
+    role: string;
+    username: string;
+}

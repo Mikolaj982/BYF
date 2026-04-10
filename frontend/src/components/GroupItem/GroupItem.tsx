@@ -8,6 +8,7 @@ import { toast } from 'react-toastify';
 import { MESSAGES } from '../../utils/messages';
 import { useGroupLobbies } from '../../hooks/useGroupLobbies';
 import { Button, TextField } from '@mui/material';
+import GroupMembers from '../GroupMembers/GroupMembers';
 
 const GroupItem: React.FC<{ groupData: UserGroup, refetchGroups: () => Promise<void> }> = ({ groupData, refetchGroups }) => {
 
@@ -47,6 +48,7 @@ const GroupItem: React.FC<{ groupData: UserGroup, refetchGroups: () => Promise<v
           <CreateLobbyForm onSuccess={refetchLobbies} groupData={groupData} />
         </div>
       )}
+      <GroupMembers groupId={id} />
       <Lobbies lobbies={lobbies} />
     </li>
   )
