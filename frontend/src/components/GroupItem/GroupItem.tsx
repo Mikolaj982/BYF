@@ -9,6 +9,7 @@ import { MESSAGES } from '../../utils/messages';
 import { useGroupLobbies } from '../../hooks/useGroupLobbies';
 import { Button, TextField } from '@mui/material';
 import GroupMembers from '../GroupMembers/GroupMembers';
+import { leaveGroup } from '../../services/leaveGroup';
 
 const GroupItem: React.FC<{ groupData: UserGroup, refetchGroups: () => Promise<void> }> = ({ groupData, refetchGroups }) => {
 
@@ -26,6 +27,21 @@ const GroupItem: React.FC<{ groupData: UserGroup, refetchGroups: () => Promise<v
         toast.error(error.message);
       } else {
         toast.error(MESSAGES.ERROR.UNKNOWN);
+      }
+    }
+  };
+
+  const handleLeaveGroup = async (groupId: string) => {
+    if (!window.confirm('Jesteś pewien?')) return;
+    try {
+      await leaveGroup(groupId);
+      await refetchGroups();
+      toast.success(MESSAGES.SUCCESS.LEFT_GROUP);
+    } catch (error) {
+      if (error instanceof Error) {
+        toast.error(error.message);
+      } else {
+        toast.error(MESSAGES.ERROR.UNKNOWN)
       }
     }
   };
@@ -49,8 +65,11 @@ const GroupItem: React.FC<{ groupData: UserGroup, refetchGroups: () => Promise<v
         </div>
       )}
       <GroupMembers groupId={id} />
+      {role !== 'owner' && (
+        <button onClick={() => handleLeaveGroup(id)}>leave</button>
+      )}
       <Lobbies lobbies={lobbies} />
-    </li>
+    </li >
   )
 }
 
