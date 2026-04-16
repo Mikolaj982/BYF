@@ -4,6 +4,7 @@ import { joinLobby } from '../../services/lobbies/joinLobby';
 import { toast } from 'react-toastify';
 import { MESSAGES } from '../../utils/messages';
 import { useAuth } from '../../features/useAuth';
+import LobbyItem from '../LobbyItem/LobbyItem';
 
 const Lobbies: React.FC<{ lobbies: Lobby[] }> = ({ lobbies }) => {
     const { user } = useAuth();
@@ -29,16 +30,14 @@ const Lobbies: React.FC<{ lobbies: Lobby[] }> = ({ lobbies }) => {
         <div>
             <h3>Lobbies:</h3>
             <ul>
-                {
-                    lobbies.map((lobby: Lobby) => {
-                        return (
-                            <li key={lobby.id}><button onClick={() => handleJoinLobby(lobby)}>join lobby</button>{lobby.game_type}</li>
-                        )
-                    })
-                }
+                {lobbies.map((lobby: Lobby) => {
+                    return (
+                        <LobbyItem key={lobby.id} handleJoinLobby={handleJoinLobby} lobbyData={lobby} />
+                    )
+                })}
             </ul>
         </div>
-    );
-};
+    )
+}
 
 export default Lobbies;

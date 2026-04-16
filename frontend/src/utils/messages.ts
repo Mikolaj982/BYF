@@ -9,6 +9,7 @@ export const MESSAGES = {
         JOINED_LOBBY: 'Dołączyłeś do lobby!',
         JOINED_GROUP: 'Dołączyłeś do grupy!',
         LEFT_GROUP: 'Opuściłeś grupę.',
+        CREATED_MATCH: 'Utworzyłeś mecz!',
     },
     ERROR: {
         REQUIRED: 'To pole jest wymagane.',
