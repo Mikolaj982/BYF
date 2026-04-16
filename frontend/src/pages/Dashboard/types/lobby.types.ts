@@ -8,3 +8,20 @@ export type LobbyMember = {
     lobby_id: string;
     user_id: string;
 };
+
+export type LobbyMatchData = {
+    lobby_id: string,
+    participants: {
+        user_id: string,
+        score: number,
+    }[],
+};
+
+export type Match = {
+    matchId: string,
+    players: {
+        userId: string,
+        username: string,
+        score: number,
+    }[],
+}
