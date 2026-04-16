@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { UserGroup } from '../../pages/Dashboard/types/group.types';
 import UpdateGroupForm from '../UpdateGroup/UpdateGroupForm';
 import CreateLobbyForm from '../CreateLobby/CreateLobbyForm';
@@ -12,7 +12,6 @@ import GroupMembers from '../GroupMembers/GroupMembers';
 import { leaveGroup } from '../../services/leaveGroup';
 
 const GroupItem: React.FC<{ groupData: UserGroup, refetchGroups: () => Promise<void> }> = ({ groupData, refetchGroups }) => {
-
   const { id, name, description, role, invite_code } = groupData;
   const { lobbies, refetchLobbies } = useGroupLobbies(id);
 
@@ -69,7 +68,7 @@ const GroupItem: React.FC<{ groupData: UserGroup, refetchGroups: () => Promise<v
         <button onClick={() => handleLeaveGroup(id)}>leave</button>
       )}
       <Lobbies lobbies={lobbies} />
-    </li >
+    </li>
   )
 }
 
