@@ -1,5 +1,4 @@
 import React from 'react'
-import FriendBar from '../FriendBar/FriendBar'
 import { Input, OutlinedInput, TextField } from '@mui/material'
 import AddButton from '../AddButton/AddButton'
 

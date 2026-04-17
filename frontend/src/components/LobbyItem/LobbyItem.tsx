@@ -2,6 +2,7 @@ import React from 'react';
 import { Lobby } from '../../pages/Dashboard/types/lobby.types';
 import { useLobbyMatches } from '../../hooks/useLobbiesMatches';
 import CreateMatchForm from '../CreateMatchForm/CreateMatchForm';
+import LobbyMembers from '../LobbyMembers/LobbyMembers';
 
 type LobbyItemProps = {
     handleJoinLobby: (lobby: Lobby) => Promise<void>;
@@ -17,6 +18,7 @@ const LobbyItem: React.FC<LobbyItemProps> = ({ handleJoinLobby, lobbyData }) => 
             <CreateMatchForm onSuccess={refetch} lobbyData={lobbyData} />
             <button onClick={() => handleJoinLobby(lobbyData)}>join lobby</button>
             <h4>{lobbyData.game_type}</h4>
+            <LobbyMembers lobbyId={lobbyId} />
             <h4>Matches:</h4>
             {error
                 ? <p>{error}</p>

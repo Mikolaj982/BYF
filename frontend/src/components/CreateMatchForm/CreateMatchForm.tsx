@@ -8,7 +8,7 @@ import { FormControl, FormHelperText, InputLabel, Select, MenuItem, FilledInput 
 import { createMatchSchema } from '../../utils/createMatchSchema';
 import { Lobby, LobbyMatchData } from '../../pages/Dashboard/types/lobby.types';
 import { createMatch } from '../../services/lobbies/createMatch';
-import { useGroupMembers } from '../../hooks/useGroupMembers';
+import { useLobbyMembers } from '../../hooks/useLobbyMembers';
 
 type CreateMatchFormData = {
     firstUserId: string,
@@ -18,7 +18,7 @@ type CreateMatchFormData = {
 }
 
 const CreateMatchForm: React.FC<{ onSuccess: () => Promise<void>, lobbyData: Lobby }> = ({ onSuccess, lobbyData }) => {
-    const { groupMembers } = useGroupMembers(lobbyData.group_id);
+    const { lobbyMembers } = useLobbyMembers(lobbyData.id);
     const { id } = lobbyData;
     const match: CreateMatchFormData = {
         firstUserId: '',
@@ -73,9 +73,9 @@ const CreateMatchForm: React.FC<{ onSuccess: () => Promise<void>, lobbyData: Lob
                         name='firstUserId'
                         control={control}
                         render={({ field }) => (
-                            <Select {...field} placeholder='Username'>{groupMembers.map((member) => {
+                            <Select {...field} placeholder='Username'>{lobbyMembers.map((member) => {
                                 return (
-                                    <MenuItem key={member.id} value={member.id}>{member.username}</MenuItem>
+                                    <MenuItem key={member.userId} value={member.userId}>{member.username}</MenuItem>
                                 )
                             })}</Select>
                         )} />
@@ -109,9 +109,9 @@ const CreateMatchForm: React.FC<{ onSuccess: () => Promise<void>, lobbyData: Lob
                         name='secondUserId'
                         control={control}
                         render={({ field }) => (
-                            <Select {...field} placeholder='Username'>{groupMembers.map((member) => {
+                            <Select {...field} placeholder='Username'>{lobbyMembers.map((member) => {
                                 return (
-                                    <MenuItem key={member.id} value={member.id}>{member.username}</MenuItem>
+                                    <MenuItem key={member.userId} value={member.userId}>{member.username}</MenuItem>
                                 )
                             })}
                             </Select>
