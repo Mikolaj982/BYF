@@ -9,6 +9,11 @@ export type LobbyMember = {
     user_id: string;
 };
 
+export type LobbyMemberWithUsername = {
+    userId: string,
+    username: string,
+};
+
 export type LobbyMatchData = {
     lobby_id: string,
     participants: {
