@@ -33,7 +33,7 @@ const Lobbies: React.FC<{ lobbies: Lobby[], onSuccess: () => Promise<void> }> = 
             <ul>
                 {lobbies.map((lobby: Lobby) => {
                     return (
-                        <LobbyItem key={lobby.id} handleJoinLobby={handleJoinLobby} lobbyData={lobby} />
+                        <LobbyItem key={lobby.id} handleJoinLobby={handleJoinLobby} lobbyData={lobby} refetchLobbies={onSuccess} />
                     )
                 })}
             </ul>

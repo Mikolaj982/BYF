@@ -8,12 +8,14 @@ import { FormControl, FormHelperText, FilledInput, InputLabel } from '@mui/mater
 import { createLobby, CreateLobbyData } from '../../services/lobbies/createLobby';
 import { createLobbySchema } from '../../utils/createLobbySchema';
 import { UserGroup } from '../../pages/Dashboard/types/group.types';
+import { useAuth } from '../../features/useAuth';
 
 type CreateLobbyFormData = {
     gameType: string,
 }
 
 const CreateLobbyForm: React.FC<{ onSuccess: () => Promise<void>, groupData: UserGroup }> = ({ onSuccess, groupData }) => {
+    const { user } = useAuth();
     const { id: groupId } = groupData;
     const lobby: CreateLobbyFormData = {
         gameType: '',
@@ -31,9 +33,10 @@ const CreateLobbyForm: React.FC<{ onSuccess: () => Promise<void>, groupData: Use
         setIsClicked(false);
     };
     const submitLobbyData = async (lobby: CreateLobbyFormData) => {
-
+        if (!user?.id) return;
         const createLobbyFormDataPlusGroupId: CreateLobbyData = {
             ...lobby,
+            owner: user.id,
             groupId: groupId,
         };
 
@@ -50,7 +53,7 @@ const CreateLobbyForm: React.FC<{ onSuccess: () => Promise<void>, groupData: Use
             }
         };
     };
-    // style={{ display: isClicked ? 'flex' : 'none' }}
+
     return <>
         {isClicked && (
             <form className='top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 p-6 bg-slate-500 flex flex-col fixed shadow-xl rounded-2xl'
