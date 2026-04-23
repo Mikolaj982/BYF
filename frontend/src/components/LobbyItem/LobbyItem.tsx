@@ -4,6 +4,10 @@ import { useLobbyMatches } from '../../hooks/useLobbiesMatches';
 import CreateMatchForm from '../CreateMatchForm/CreateMatchForm';
 import LobbyMembers from '../LobbyMembers/LobbyMembers';
 import LobbyLeaderboard from '../LobbyLeaderboard/LobbyLeaderboard';
+import { leaveLobby } from '../../services/lobbies/leaveLobby';
+import { MESSAGES } from '../../utils/messages';
+import { toast } from 'react-toastify';
+import { useLobbyMembers } from '../../hooks/useLobbyMembers';
 
 type LobbyItemProps = {
     handleJoinLobby: (lobby: Lobby) => Promise<void>;
@@ -12,19 +16,36 @@ type LobbyItemProps = {
 
 const LobbyItem: React.FC<LobbyItemProps> = ({ handleJoinLobby, lobbyData }) => {
     const lobbyId = lobbyData.id;
-    const { matches, loading, error, refetch } = useLobbyMatches(lobbyId);
+    const { matches, loading: loadingMatches, error: errorMatches, refetch } = useLobbyMatches(lobbyId);
+    const { lobbyMembers, loading: loadingLobbyMembers, error: errorLobbyMembers, refetchLobbyMembers } = useLobbyMembers(lobbyId);
+
+    const handleLeaveLobby = async (lobbyId: string) => {
+        if (!window.confirm('Jesteś pewien?')) return;
+        try {
+            await leaveLobby(lobbyId);
+            await refetchLobbyMembers();
+            toast.success(MESSAGES.SUCCESS.LEFT_LOBBY);
+        } catch (error) {
+            if (error instanceof Error) {
+                toast.error(error.message);
+            } else {
+                toast.error(MESSAGES.ERROR.UNKNOWN)
+            }
+        }
+    };
 
     return (
         <li>
             <CreateMatchForm onSuccess={refetch} lobbyData={lobbyData} />
             <button onClick={() => handleJoinLobby(lobbyData)}>join lobby</button>
+            <button onClick={() => handleLeaveLobby(lobbyId)}>leave lobby</button>
             <h4>{lobbyData.game_type}</h4>
-            <LobbyMembers lobbyId={lobbyId} />
+            <LobbyMembers members={lobbyMembers} loading={loadingLobbyMembers} error={errorLobbyMembers} />
             <LobbyLeaderboard lobbyId={lobbyId} />
             <h4>Matches:</h4>
-            {error
-                ? <p>{error}</p>
-                : loading
+            {errorMatches
+                ? <p>{errorMatches}</p>
+                : loadingMatches
                     ? <p>Loading...</p>
                     : matches.length === 0
                         ? <p>Brak meczów</p>

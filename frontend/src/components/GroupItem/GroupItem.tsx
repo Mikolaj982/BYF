@@ -67,7 +67,7 @@ const GroupItem: React.FC<{ groupData: UserGroup, refetchGroups: () => Promise<v
       {role !== 'owner' && (
         <button onClick={() => handleLeaveGroup(id)}>leave</button>
       )}
-      <Lobbies lobbies={lobbies} />
+      <Lobbies lobbies={lobbies} onSuccess={refetchLobbies} />
     </li>
   )
 }
