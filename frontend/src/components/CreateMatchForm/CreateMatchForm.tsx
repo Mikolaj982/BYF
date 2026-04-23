@@ -17,7 +17,7 @@ type CreateMatchFormData = {
     secondUserScore: number,
 }
 
-const CreateMatchForm: React.FC<{ onSuccess: () => Promise<void>, lobbyData: Lobby }> = ({ onSuccess, lobbyData }) => {
+const CreateMatchForm: React.FC<{ onMatchCreated: () => Promise<void>, lobbyData: Lobby, onLeaderboardUpdated: () => Promise<void> }> = ({ onMatchCreated, lobbyData, onLeaderboardUpdated }) => {
     const { lobbyMembers } = useLobbyMembers(lobbyData.id);
     const { id } = lobbyData;
     const match: CreateMatchFormData = {
@@ -51,7 +51,8 @@ const CreateMatchForm: React.FC<{ onSuccess: () => Promise<void>, lobbyData: Lob
         try {
             await createMatch(createMatchFormDataPlusLobbyId);
             closeForm();
-            await onSuccess();
+            await onMatchCreated();
+            await onLeaderboardUpdated();
             toast.success(MESSAGES.SUCCESS.CREATED_MATCH)
         } catch (error: unknown) {
             if (error instanceof Error) {

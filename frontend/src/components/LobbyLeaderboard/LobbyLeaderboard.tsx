@@ -1,9 +1,15 @@
 import React from 'react';
 import { useLobbyLeaderboard } from '../../hooks/useLobbyLeaderboard';
 import LobbyLeaderboardRow from '../LobbyLeaderboardRow/LobbyLeaderboardRow';
+import { Leaderboard } from '../../services/lobbyLeaderboard';
 
-const LobbyLeaderboard: React.FC<{ lobbyId: string }> = ({ lobbyId }) => {
-    const { leaderboard, error, loading } = useLobbyLeaderboard(lobbyId);
+type LobbyLeaderboardProps = {
+    leaderboard: Leaderboard[],
+    error: string | null,
+    loading: boolean,
+}
+
+const LobbyLeaderboard: React.FC<LobbyLeaderboardProps> = ({ leaderboard, error, loading }) => {
 
     return (
         <div>

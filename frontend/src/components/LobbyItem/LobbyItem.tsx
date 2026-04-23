@@ -10,17 +10,40 @@ import { toast } from 'react-toastify';
 import { useLobbyMembers } from '../../hooks/useLobbyMembers';
 import { deleteLobby } from '../../services/lobbies/deleteLobby';
 import { deleteMatch } from '../../services/lobbies/deleteMatch';
+import { useAuth } from '../../features/useAuth';
+import { joinLobby } from '../../services/lobbies/joinLobby';
+import { useLobbyLeaderboard } from '../../hooks/useLobbyLeaderboard';
 
 type LobbyItemProps = {
-    handleJoinLobby: (lobby: Lobby) => Promise<void>;
     lobbyData: Lobby;
     refetchLobbies: () => Promise<void>
 }
 
-const LobbyItem: React.FC<LobbyItemProps> = ({ handleJoinLobby, lobbyData, refetchLobbies }) => {
+const LobbyItem: React.FC<LobbyItemProps> = ({ lobbyData, refetchLobbies }) => {
+    const { user } = useAuth();
     const lobbyId = lobbyData.id;
-    const { matches, loading: loadingMatches, error: errorMatches, refetch } = useLobbyMatches(lobbyId);
+    const { matches, loading: loadingMatches, error: errorMatches, refetchMatches } = useLobbyMatches(lobbyId);
     const { lobbyMembers, loading: loadingLobbyMembers, error: errorLobbyMembers, refetchLobbyMembers } = useLobbyMembers(lobbyId);
+    const { leaderboard, error, loading, refetchLobbyLeaderboard } = useLobbyLeaderboard(lobbyId);
+
+
+    const handleJoinLobby = async (lobby: Lobby) => {
+        const joinLobbySubmitData = {
+            user_id: user.id,
+            lobby_id: lobby.id,
+        }
+        try {
+            await joinLobby(joinLobbySubmitData);
+            await refetchLobbyMembers();
+            toast.success(MESSAGES.SUCCESS.JOINED_LOBBY)
+        } catch (error) {
+            if (error instanceof Error) {
+                toast.error(error.message);
+            } else {
+                toast.error(MESSAGES.ERROR.UNKNOWN);
+            }
+        }
+    }
 
     const handleLeaveLobby = async (lobbyId: string) => {
         if (!window.confirm('Jesteś pewien?')) return;
@@ -56,7 +79,8 @@ const LobbyItem: React.FC<LobbyItemProps> = ({ handleJoinLobby, lobbyData, refet
         if (!window.confirm('Jesteś pewien?')) return;
         try {
             await deleteMatch(matchId);
-            await refetch();
+            await refetchMatches();
+            await refetchLobbyLeaderboard();
             toast.success(MESSAGES.SUCCESS.DELETED_MATCH);
         } catch (error) {
             if (error instanceof Error) {
@@ -69,13 +93,13 @@ const LobbyItem: React.FC<LobbyItemProps> = ({ handleJoinLobby, lobbyData, refet
 
     return (
         <li>
-            <CreateMatchForm onSuccess={refetch} lobbyData={lobbyData} />
+            <CreateMatchForm onMatchCreated={refetchMatches} onLeaderboardUpdated={refetchLobbyLeaderboard} lobbyData={lobbyData} />
             <button onClick={() => handleJoinLobby(lobbyData)}>join lobby</button>
             <button onClick={() => handleLeaveLobby(lobbyId)}>leave lobby</button>
             <button onClick={() => handleDeleteLobby(lobbyId)}>delete lobby</button>
             <h4>{lobbyData.game_type}</h4>
             <LobbyMembers members={lobbyMembers} loading={loadingLobbyMembers} error={errorLobbyMembers} />
-            <LobbyLeaderboard lobbyId={lobbyId} />
+            <LobbyLeaderboard leaderboard={leaderboard} loading={loading} error={error} />
             <h4>Matches:</h4>
             {errorMatches
                 ? <p>{errorMatches}</p>

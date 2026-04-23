@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
-import { getLobbyLeaderboard, LobbyLeaderboard } from "../services/lobbyLeaderboard";
+import { getLobbyLeaderboard, Leaderboard } from "../services/lobbyLeaderboard";
 
 export function useLobbyLeaderboard(lobbyId: string) {
-    const [leaderboard, setLeaderboard] = useState<LobbyLeaderboard[]>([])
+    const [leaderboard, setLeaderboard] = useState<Leaderboard[]>([])
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
 
