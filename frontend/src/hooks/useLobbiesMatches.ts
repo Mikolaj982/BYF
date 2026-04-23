@@ -36,6 +36,6 @@ export function useLobbyMatches(lobbyId: string) {
         matches,
         error,
         loading,
-        refetch: loadMatches,
+        refetchMatches: loadMatches,
     };
 };
