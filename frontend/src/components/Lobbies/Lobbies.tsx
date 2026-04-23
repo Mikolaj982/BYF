@@ -6,7 +6,7 @@ import { MESSAGES } from '../../utils/messages';
 import { useAuth } from '../../features/useAuth';
 import LobbyItem from '../LobbyItem/LobbyItem';
 
-const Lobbies: React.FC<{ lobbies: Lobby[] }> = ({ lobbies }) => {
+const Lobbies: React.FC<{ lobbies: Lobby[], onSuccess: () => Promise<void> }> = ({ lobbies, onSuccess }) => {
     const { user } = useAuth();
 
     const handleJoinLobby = async (lobby: Lobby) => {
@@ -26,6 +26,7 @@ const Lobbies: React.FC<{ lobbies: Lobby[] }> = ({ lobbies }) => {
             }
         }
     }
+
     return (
         <div>
             <h3>Lobbies:</h3>
