@@ -8,13 +8,15 @@ import { leaveLobby } from '../../services/lobbies/leaveLobby';
 import { MESSAGES } from '../../utils/messages';
 import { toast } from 'react-toastify';
 import { useLobbyMembers } from '../../hooks/useLobbyMembers';
+import { deleteLobby } from '../../services/lobbies/deleteLobby';
 
 type LobbyItemProps = {
     handleJoinLobby: (lobby: Lobby) => Promise<void>;
     lobbyData: Lobby;
+    refetchLobbies: () => Promise<void>
 }
 
-const LobbyItem: React.FC<LobbyItemProps> = ({ handleJoinLobby, lobbyData }) => {
+const LobbyItem: React.FC<LobbyItemProps> = ({ handleJoinLobby, lobbyData, refetchLobbies }) => {
     const lobbyId = lobbyData.id;
     const { matches, loading: loadingMatches, error: errorMatches, refetch } = useLobbyMatches(lobbyId);
     const { lobbyMembers, loading: loadingLobbyMembers, error: errorLobbyMembers, refetchLobbyMembers } = useLobbyMembers(lobbyId);
@@ -34,11 +36,27 @@ const LobbyItem: React.FC<LobbyItemProps> = ({ handleJoinLobby, lobbyData }) => 
         }
     };
 
+    const handleDeleteLobby = async (lobbyId: string) => {
+        if (!window.confirm('Jesteś pewien?')) return;
+        try {
+            await deleteLobby(lobbyId);
+            await refetchLobbies();
+            toast.success(MESSAGES.SUCCESS.DELETED_LOBBY);
+        } catch (error) {
+            if (error instanceof Error) {
+                toast.error(error.message);
+            } else {
+                toast.error(MESSAGES.ERROR.UNKNOWN)
+            }
+        }
+    };
+
     return (
         <li>
             <CreateMatchForm onSuccess={refetch} lobbyData={lobbyData} />
             <button onClick={() => handleJoinLobby(lobbyData)}>join lobby</button>
             <button onClick={() => handleLeaveLobby(lobbyId)}>leave lobby</button>
+            <button onClick={() => handleDeleteLobby(lobbyId)}>delete lobby</button>
             <h4>{lobbyData.game_type}</h4>
             <LobbyMembers members={lobbyMembers} loading={loadingLobbyMembers} error={errorLobbyMembers} />
             <LobbyLeaderboard lobbyId={lobbyId} />
