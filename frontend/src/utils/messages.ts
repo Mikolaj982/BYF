@@ -11,7 +11,8 @@ export const MESSAGES = {
         LEFT_GROUP: 'Opuściłeś grupę.',
         CREATED_MATCH: 'Utworzyłeś mecz!',
         LEFT_LOBBY: 'Opuściłeś lobby.',
-        DELETED_LOBBY: 'Lobby usunięte.'
+        DELETED_LOBBY: 'Lobby usunięte.',
+        DELETED_MATCH: 'Mecz usunięty.'
     },
     ERROR: {
         REQUIRED: 'To pole jest wymagane.',

@@ -9,6 +9,7 @@ import { MESSAGES } from '../../utils/messages';
 import { toast } from 'react-toastify';
 import { useLobbyMembers } from '../../hooks/useLobbyMembers';
 import { deleteLobby } from '../../services/lobbies/deleteLobby';
+import { deleteMatch } from '../../services/lobbies/deleteMatch';
 
 type LobbyItemProps = {
     handleJoinLobby: (lobby: Lobby) => Promise<void>;
@@ -51,6 +52,21 @@ const LobbyItem: React.FC<LobbyItemProps> = ({ handleJoinLobby, lobbyData, refet
         }
     };
 
+    const handleDeleteMatch = async (matchId: string) => {
+        if (!window.confirm('Jesteś pewien?')) return;
+        try {
+            await deleteMatch(matchId);
+            await refetch();
+            toast.success(MESSAGES.SUCCESS.DELETED_MATCH);
+        } catch (error) {
+            if (error instanceof Error) {
+                toast.error(error.message);
+            } else {
+                toast.error(MESSAGES.ERROR.UNKNOWN)
+            }
+        }
+    };
+
     return (
         <li>
             <CreateMatchForm onSuccess={refetch} lobbyData={lobbyData} />
@@ -77,6 +93,7 @@ const LobbyItem: React.FC<LobbyItemProps> = ({ handleJoinLobby, lobbyData, refet
                                             </div>
                                         )
                                     })}
+                                    <button onClick={() => handleDeleteMatch(match.matchId)}>delete match</button>
                                 </div>
                             )
                         }))
