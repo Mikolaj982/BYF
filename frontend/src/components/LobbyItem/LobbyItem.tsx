@@ -25,7 +25,7 @@ const LobbyItem: React.FC<LobbyItemProps> = ({ lobbyData, refetchLobbies }) => {
     const { matches, loading: loadingMatches, error: errorMatches, refetchMatches } = useLobbyMatches(lobbyId);
     const { lobbyMembers, loading: loadingLobbyMembers, error: errorLobbyMembers, refetchLobbyMembers } = useLobbyMembers(lobbyId);
     const { leaderboard, error, loading, refetchLobbyLeaderboard } = useLobbyLeaderboard(lobbyId);
-
+    const isLobbyMember = lobbyMembers.some((member) => member.userId === user.id);
 
     const handleJoinLobby = async (lobby: Lobby) => {
         const joinLobbySubmitData = {
@@ -93,35 +93,38 @@ const LobbyItem: React.FC<LobbyItemProps> = ({ lobbyData, refetchLobbies }) => {
 
     return (
         <li>
-            <CreateMatchForm onMatchCreated={refetchMatches} onLeaderboardUpdated={refetchLobbyLeaderboard} lobbyData={lobbyData} />
             <button onClick={() => handleJoinLobby(lobbyData)}>join lobby</button>
             <button onClick={() => handleLeaveLobby(lobbyId)}>leave lobby</button>
             <button onClick={() => handleDeleteLobby(lobbyId)}>delete lobby</button>
             <h4>{lobbyData.game_type}</h4>
             <LobbyMembers members={lobbyMembers} loading={loadingLobbyMembers} error={errorLobbyMembers} />
-            <LobbyLeaderboard leaderboard={leaderboard} loading={loading} error={error} />
-            <h4>Matches:</h4>
-            {errorMatches
-                ? <p>{errorMatches}</p>
-                : loadingMatches
-                    ? <p>Loading...</p>
-                    : matches.length === 0
-                        ? <p>Brak meczów</p>
-                        : (matches.map((match) => {
-                            return (
-                                <div key={match.matchId}>
-                                    {match.players.map((p) => {
-                                        return (
-                                            <div key={p.userId}>
-                                                <p>{p.username}: {p.score}</p>
-                                            </div>
-                                        )
-                                    })}
-                                    <button onClick={() => handleDeleteMatch(match.matchId)}>delete match</button>
-                                </div>
-                            )
-                        }))
-            }
+            {isLobbyMember
+                ? (<>
+                    <CreateMatchForm onMatchCreated={refetchMatches} onLeaderboardUpdated={refetchLobbyLeaderboard} lobbyData={lobbyData} />
+                    <LobbyLeaderboard leaderboard={leaderboard} loading={loading} error={error} />
+                    <h4>Matches:</h4>
+                    {errorMatches
+                        ? <p>{errorMatches}</p>
+                        : loadingMatches
+                            ? <p>Loading...</p>
+                            : matches.length === 0
+                                ? <p>Brak meczów</p>
+                                : (matches.map((match) => {
+                                    return (
+                                        <div key={match.matchId}>
+                                            {match.players.map((p) => {
+                                                return (
+                                                    <div key={p.userId}>
+                                                        <p>{p.username}: {p.score}</p>
+                                                    </div>
+                                                )
+                                            })}
+                                            <button onClick={() => handleDeleteMatch(match.matchId)}>delete match</button>
+                                        </div>
+                                    )
+                                }))
+                    }</>)
+                : ''}
         </li>
     )
 };
