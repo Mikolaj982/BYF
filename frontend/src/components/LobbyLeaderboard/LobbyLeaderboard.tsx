@@ -1,5 +1,4 @@
 import React from 'react';
-import { useLobbyLeaderboard } from '../../hooks/useLobbyLeaderboard';
 import LobbyLeaderboardRow from '../LobbyLeaderboardRow/LobbyLeaderboardRow';
 import { Leaderboard } from '../../services/lobbyLeaderboard';
 
@@ -10,7 +9,6 @@ type LobbyLeaderboardProps = {
 }
 
 const LobbyLeaderboard: React.FC<LobbyLeaderboardProps> = ({ leaderboard, error, loading }) => {
-
     return (
         <div>
             <h4>Leaderboard</h4>
