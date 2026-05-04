@@ -21,6 +21,7 @@ type LobbyItemProps = {
 
 const LobbyItem: React.FC<LobbyItemProps> = ({ lobbyData, refetchLobbies }) => {
     const { user } = useAuth();
+    if (!user) return null;
     const lobbyId = lobbyData.id;
     const { matches, loading: loadingMatches, error: errorMatches, refetchMatches } = useLobbyMatches(lobbyId);
     const { lobbyMembers, loading: loadingLobbyMembers, error: errorLobbyMembers, refetchLobbyMembers } = useLobbyMembers(lobbyId);

@@ -7,5 +7,5 @@ export const updateGroupSchema = Yup.object({
         .required(MESSAGES.ERROR.REQUIRED),
     description: Yup
         .string()
-        .optional(),
+        .default(''),
 });

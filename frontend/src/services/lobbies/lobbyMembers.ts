@@ -14,16 +14,16 @@ export async function getLobbyMembers(lobbyId: string): Promise<LobbyMemberWithU
 
     if (error) throw error;
 
-    const mapped: LobbyMemberWithUsername[] = data?.map((member) => {
+    return (data ?? []).flatMap((member) => {
+        if (!member.user_id) return [];
+
         const profile = Array.isArray(member.profiles)
             ? member.profiles[0]
             : member.profiles;
 
-        return {
+        return [{
             userId: member.user_id,
             username: profile?.username ?? 'unknown',
-        };
+        }];
     });
-
-    return mapped;
 };

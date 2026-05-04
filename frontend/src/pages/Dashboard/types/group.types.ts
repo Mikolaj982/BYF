@@ -1,7 +1,7 @@
 export type Group = {
     id: string;
     name: string;
-    description: string | null;
+    description: string;
     invite_code: string;
 };
 
@@ -13,7 +13,7 @@ export type GroupMembersRow = {
 export type UserGroup = {
     id: string;
     name: string;
-    description: string | null;
+    description: string;
     role: string;
     invite_code: string;
 };

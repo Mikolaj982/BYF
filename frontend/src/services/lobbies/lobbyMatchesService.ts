@@ -1,7 +1,7 @@
 import { supabase } from "../../shared/api/supabaseClient";
 import { Match } from "../../pages/Dashboard/types/lobby.types";
 
-export async function getLobbyMatches(lobbyId: string) {
+export async function getLobbyMatches(lobbyId: string): Promise<Match[]> {
     const { data, error } = await supabase
         .from('matches')
         .select(`
@@ -19,7 +19,7 @@ export async function getLobbyMatches(lobbyId: string) {
 
     if (error) throw error;
 
-    const mapped: Match[] = data?.map((match) => {
+    return (data ?? []).map((match) => {
         const scores = match.match_scores;
         const participants = match.match_participants;
 
@@ -43,7 +43,5 @@ export async function getLobbyMatches(lobbyId: string) {
             matchId: match.id,
             players,
         };
-    }) || [];
-
-    return mapped;
+    });
 };

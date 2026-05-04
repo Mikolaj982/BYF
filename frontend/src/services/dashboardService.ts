@@ -17,26 +17,40 @@ export async function getUserGroups(userId: string): Promise<UserGroup[]> {
 
     if (error) throw error;
 
-    const typedData = data as unknown as GroupMembersRow[] | null;
+    // const typedData = data as unknown as GroupMembersRow[] | null;
 
-    const mapped = typedData?.map((item) => {
-        const group = item.groups;
+    // const mapped = typedData?.map((item) => {
+    //     const group = item.groups;
 
-        if (!group) return null;
+    //     if (!group) return null;
 
-        return {
+    //     return {
+    //         name: group.name,
+    //         id: group.id,
+    //         description: group.description,
+    //         role: item.role,
+    //         invite_code: group.invite_code
+    //     };
+    // }) || [];
+
+    // const result = mapped.filter(
+    //     (item): item is UserGroup => item !== null
+    // );
+
+    // return result;
+
+    return (data ?? []).flatMap((item) => {
+        const group = Array.isArray(item.groups) ? item.groups[0] : item.groups;
+
+        if (!group) return [];
+
+        return [{
             name: group.name,
             id: group.id,
             description: group.description,
             role: item.role,
             invite_code: group.invite_code
-        };
-    }) || [];
-
-    const result = mapped.filter(
-        (item): item is UserGroup => item !== null
-    );
-
-    return result;
+        }];
+    });
 };
 
