@@ -6,19 +6,16 @@ export type CreateLobbyData = {
     owner: string,
 }
 
-export async function createLobby(createLobbyData: CreateLobbyData) {
+export async function createLobby(createLobbyData: CreateLobbyData): Promise<void> {
     const { groupId, gameType, owner } = createLobbyData;
-    const { data, error } = await supabase
+    const { error } = await supabase
         .from('lobbies')
         .insert([{
             group_id: groupId,
             game_type: gameType,
             created_by: owner,
         }])
-        .select()
-        .single()
 
     if (error) throw error;
-    return data;
 };
 

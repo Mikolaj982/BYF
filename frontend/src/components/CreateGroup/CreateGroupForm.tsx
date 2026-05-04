@@ -12,12 +12,12 @@ import { FormControl, FormHelperText, FilledInput, InputLabel } from '@mui/mater
 export type CreateGroupSubmitData = {
     owner: string,
     name: string,
-    description?: string,
+    description: string,
 }
 
 type CreateGroupFormData = {
     name: string,
-    description?: string,
+    description: string,
 }
 
 const CreateGroupForm: React.FC<{ onSuccess: () => Promise<void> }> = ({ onSuccess }) => {

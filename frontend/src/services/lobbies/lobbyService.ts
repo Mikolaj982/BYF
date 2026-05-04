@@ -12,5 +12,14 @@ export async function getGroupLobbies(groupId: string): Promise<Lobby[]> {
         .eq('group_id', groupId)
 
     if (error) throw error;
-    return data;
+
+    return (data ?? []).flatMap((item) => {
+        if (!item.group_id) return [];
+
+        return [{
+            id: item.id,
+            group_id: item.group_id,
+            game_type: item.game_type,
+        }]
+    });
 };

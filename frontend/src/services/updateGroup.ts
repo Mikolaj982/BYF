@@ -1,21 +1,16 @@
-import { Group } from "../pages/Dashboard/types/group.types";
 import { supabase } from "../shared/api/supabaseClient";
 
-export type updateGroupFormData = {
+type UpdateGroupFormData = {
     name: string,
-    description?: string | null,
+    description: string,
 }
 
-export async function updateGroup(groupId: string, updateGroupData: updateGroupFormData): Promise<Group> {
+export async function updateGroup(groupId: string, updateGroupData: UpdateGroupFormData): Promise<void> {
     const { name, description } = updateGroupData;
-    const { data, error } = await supabase
+    const { error } = await supabase
         .from('groups')
-        .update([{ name, description }])
+        .update({ name, description })
         .eq('id', groupId)
-        .select()
-        .single()
 
     if (error) throw error;
-
-    return data;
 };

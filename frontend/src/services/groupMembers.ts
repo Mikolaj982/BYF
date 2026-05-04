@@ -1,7 +1,7 @@
 import { GroupMember } from "../pages/Dashboard/types/group.types";
 import { supabase } from "../shared/api/supabaseClient";
 
-export async function getGroupMembers(groupId: string): Promise<GroupMember[] | null> {
+export async function getGroupMembers(groupId: string): Promise<GroupMember[]> {
     const { data, error } = await supabase
         .from('group_members')
         .select(`
@@ -15,17 +15,15 @@ export async function getGroupMembers(groupId: string): Promise<GroupMember[] | 
 
     if (error) throw error;
 
-    const mapped: GroupMember[] = data?.map((item) => {
+    return (data ?? []).map((item) => {
         const profile = Array.isArray(item.profiles)
             ? item.profiles[0]
             : item.profiles;
 
         return {
             username: profile?.username ?? 'unknown',
-            role: item.role,
+            role: item.role ?? 'member',
             id: item.user_id,
         }
-    }) || [];
-
-    return mapped;;
+    });
 };

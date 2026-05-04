@@ -11,7 +11,7 @@ import { UserGroup } from '../../pages/Dashboard/types/group.types';
 
 type UpdateGroupFormData = {
     name: string,
-    description?: string | null,
+    description: string,
 }
 
 const UpdateGroupForm: React.FC<{ onSuccess: () => Promise<void>, groupData: UserGroup }> = ({ onSuccess, groupData }) => {
@@ -36,7 +36,10 @@ const UpdateGroupForm: React.FC<{ onSuccess: () => Promise<void>, groupData: Use
         if (!user?.id) return;
 
         try {
-            await updateGroup(groupData.id, data);
+            await updateGroup(groupData.id, {
+                ...data,
+                description: data.description,
+            });
             await onSuccess();
             closeForm();
             toast.success(MESSAGES.SUCCESS.UPDATED_GROUP)
