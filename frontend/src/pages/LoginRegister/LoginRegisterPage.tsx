@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { ToastContainer } from 'react-toastify';
-import Form from '../../components/Form/Form';
+import Form from '../../features/auth/components/Form/Form';
 import Typewriter from 'typewriter-effect';
 
 export type FormFields = "username" | "email" | "confirmPassword" | "password" | "usernameOrEmail";

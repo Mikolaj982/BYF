@@ -1,10 +1,10 @@
 import React from 'react'
-import { useUserGroups } from '../../hooks/useUserGroups';
-import { UserGroup } from './types/group.types';
-import CreateGroupForm from '../../components/CreateGroup/CreateGroupForm';
-import GroupItem from '../../components/GroupItem/GroupItem';
+import { useUserGroups } from '../../features/groups/hooks/useUserGroups';
+import { UserGroup } from '../../features/groups/types/group.types';
+import CreateGroupForm from '../../features/groups/components/CreateGroup/CreateGroupForm';
+import GroupItem from '../../features/groups/components/GroupItem/GroupItem';
 import { ToastContainer } from 'react-toastify';
-import JoinGroupForm from '../../components/JoinGroup/JoinGroup';
+import JoinGroupForm from '../../features/groups/components/JoinGroup/JoinGroup';
 
 const Dashboard: React.FC = () => {
     const { groups, loading, error, refetchGroups } = useUserGroups();
