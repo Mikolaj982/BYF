@@ -4,10 +4,12 @@ import Dashboard from './pages/Dashboard/Dashboard';
 import LoginRegisterPage from './pages/LoginRegister/LoginRegisterPage';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import 'react-toastify/dist/ReactToastify.css';
+import { ThemeProvider } from '@mui/material';
+import muiTheme from './features/auth/components/Form/Form.styles';
 
 function App() {
   return (
-    <>
+    <ThemeProvider theme={muiTheme}>
       <Router>
         <Routes>
           <Route path='/' element={<LoginRegisterPage />} />
@@ -17,7 +19,7 @@ function App() {
           </Route>
         </Routes>
       </Router >
-    </>
+    </ThemeProvider>
   );
 }
 
