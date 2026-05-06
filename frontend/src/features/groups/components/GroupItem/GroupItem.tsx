@@ -1,8 +1,7 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { UserGroup } from '../../types/group.types';
 import UpdateGroupForm from '../UpdateGroup/UpdateGroupForm';
 import CreateLobbyForm from '../../../lobbies/components/CreateLobby/CreateLobbyForm';
-import Lobbies from '../../../lobbies/components/Lobbies/Lobbies';
 import { deleteGroup } from '../../services/deleteGroup';
 import { toast } from 'react-toastify';
 import { MESSAGES } from '../../../../utils/messages';
@@ -10,10 +9,17 @@ import { useGroupLobbies } from '../../../lobbies/hooks/useGroupLobbies';
 import { Button, TextField } from '@mui/material';
 import GroupMembers from '../GroupMembers/GroupMembers';
 import { leaveGroup } from '../../services/leaveGroup';
+import { useNavigate } from 'react-router-dom';
+import { Lobby } from '../../../lobbies/types/lobby.types';
 
 const GroupItem: React.FC<{ groupData: UserGroup, refetchGroups: () => Promise<void> }> = ({ groupData, refetchGroups }) => {
   const { id, name, description, role, invite_code } = groupData;
   const { lobbies, refetchLobbies } = useGroupLobbies(id);
+  const navigate = useNavigate();
+
+  const handleSelectLobby = (id: string) => {
+    navigate(`/dashboard/group/${groupData.id}/lobby/${id}`)
+  };
 
   const handleDeleteGroup = async (groupId: string) => {
     if (!window.confirm('Jesteś pewien?')) return;
@@ -67,7 +73,16 @@ const GroupItem: React.FC<{ groupData: UserGroup, refetchGroups: () => Promise<v
       {role !== 'owner' && (
         <button onClick={() => handleLeaveGroup(id)}>leave</button>
       )}
-      <Lobbies lobbies={lobbies} onSuccess={refetchLobbies} />
+      <div>
+        <h3>Lobbies:</h3>
+        <ul>
+          {lobbies.map((lobby: Lobby) => {
+            return (
+              <li key={lobby.id} onClick={() => handleSelectLobby(lobby.id)}>{lobby.game_type}</li>
+            )
+          })}
+        </ul>
+      </div>
     </li>
   )
 }

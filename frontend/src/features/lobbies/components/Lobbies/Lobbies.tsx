@@ -1,8 +1,13 @@
 import React from 'react'
 import { Lobby } from '../../types/lobby.types';
-import LobbyItem from '../LobbyItem/LobbyItem';
+import { useNavigate } from 'react-router-dom';
 
-const Lobbies: React.FC<{ lobbies: Lobby[], onSuccess: () => Promise<void> }> = ({ lobbies, onSuccess }) => {
+const Lobbies: React.FC<{ lobbies: Lobby[] }> = ({ lobbies }) => {
+    const navigate = useNavigate();
+
+    const handleSelectLobby = (id: string) => {
+        navigate(`/dashboard/group/:groupId/lobby/${id}`)
+    };
 
     return (
         <div>
@@ -10,7 +15,7 @@ const Lobbies: React.FC<{ lobbies: Lobby[], onSuccess: () => Promise<void> }> = 
             <ul>
                 {lobbies.map((lobby: Lobby) => {
                     return (
-                        <LobbyItem key={lobby.id} lobbyData={lobby} refetchLobbies={onSuccess} />
+                        <div key={lobby.id} onClick={() => handleSelectLobby(lobby.id)}>{lobby.game_type}</div>
                     )
                 })}
             </ul>
