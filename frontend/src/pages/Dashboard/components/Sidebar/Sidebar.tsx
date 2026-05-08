@@ -1,21 +1,22 @@
-import React from 'react'
+import React from 'react';
+import Box from '@mui/material/Box';
+import SidebarSection from '../SidebarSection/SidebarSection';
+import SidebarBottom from '../SidebarBottom/SidebarBottom';
+import SidebarHeader from '../SidebarHeader/SidebarHeader';
+import { useUserGroups } from '../../../../features/groups/hooks/useUserGroups';
 
-const Sidebar = () => {
+const Sidebar: React.FC = () => {
+    const { groups, loading, error, refetchGroups } = useUserGroups();
+
     return (
-        <div>
-            {/* <h3>Your groups:</h3>
-                {loading ? <p> Loading...</p> : (
-                    <ul>
-                        {groups.map((group: UserGroup) => {
-                            return <div key={group.id} onClick={() => handleSelectGroup(group.id)}>{group.name}</div>
-                        })}
-                    </ul>
-                )}
-                {error && <p>{error}</p>}
-                <CreateGroupForm onSuccess={refetchGroups} />
-                <JoinGroupForm onSuccess={refetchGroups} /> */}
-        </div>
+        <Box component='div' sx={{ display: 'flex', width: '250px', flexDirection: 'column', bgcolor: 'background.paper' }}>
+            <SidebarHeader />
+            <Box component='div' sx={{ flexGrow: 1, overflow: 'auto' }}>
+                <SidebarSection />
+            </Box>
+            <SidebarBottom />
+        </Box>
     )
-}
+};
 
-export default Sidebar
+export default Sidebar;

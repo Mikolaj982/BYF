@@ -1,14 +1,16 @@
 import { Controller, useForm } from 'react-hook-form'
-import { FormControl, TextField } from '@mui/material'
+import { Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, FormControl, TextField, Typography } from '@mui/material'
 import { joinGroupByCode } from '../../services/joinGroupByCode'
 import { MESSAGES } from '../../../../utils/messages'
 import { toast } from 'react-toastify'
+import { useState } from 'react'
 
 type FormValues = {
     code: string,
 }
 
 const JoinGroupForm: React.FC<{ onSuccess: () => Promise<void> }> = ({ onSuccess }) => {
+    const [open, setOpen] = useState<boolean>(false);
     const { control, handleSubmit, reset } = useForm<FormValues>({
         defaultValues: {
             code: ''
@@ -30,27 +32,32 @@ const JoinGroupForm: React.FC<{ onSuccess: () => Promise<void> }> = ({ onSuccess
         }
     }
 
-    return (
-        <div className='border-spacing-1'>
-            <p>Dołącz do grupy</p>
-            <form onSubmit={handleSubmit(handleInviteCode)}>
-                <FormControl>
-                    <Controller
-                        name='code'
-                        control={control}
-                        render={({ field }) => (
-                            <TextField
-                                {...field}
-                                label='podaj kod'
-                            />
-                        )}
-                    />
-                </FormControl>
-                <button type='submit'>zatwierdź</button>
-            </form>
-        </div>
-    )
+    return <>
+        <Button onClick={() => setOpen(true)} sx={{ flex: 1 }} variant='outlined'>Join</Button>
+        <Dialog open={open}>
+            <DialogTitle>Join Group</DialogTitle>
+            <DialogContent>
+                <Controller
+                    name='code'
+                    control={control}
+                    render={({ field }) => (
+                        <TextField
+                            {...field}
+                            label='podaj kod'
+                        />
+                    )}
+                />
+            </DialogContent>
+            <DialogActions>
+                <Button onClick={() => setOpen(false)}>Cancel</Button>
+                <Button onClick={handleSubmit(handleInviteCode)} variant='contained'>Submit</Button>
+            </DialogActions>
+        </Dialog>
+    </>
 }
 
 
 export default JoinGroupForm
+
+
+
