@@ -4,12 +4,14 @@ import Dashboard from './pages/Dashboard/Dashboard';
 import LoginRegisterPage from './pages/LoginRegister/LoginRegisterPage';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import 'react-toastify/dist/ReactToastify.css';
-import { ThemeProvider } from '@mui/material';
-import muiTheme from './features/auth/components/Form/Form.styles';
+import { muiTheme } from './shared/theme/muiTheme';
+import { ThemeProvider } from '@mui/material/styles';
+import CssBaseline from '@mui/material/CssBaseline';
 
 function App() {
   return (
     <ThemeProvider theme={muiTheme}>
+      <CssBaseline />
       <Router>
         <Routes>
           <Route path='/' element={<LoginRegisterPage />} />
