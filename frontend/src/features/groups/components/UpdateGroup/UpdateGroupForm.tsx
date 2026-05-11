@@ -4,7 +4,7 @@ import { MESSAGES } from '../../../../utils/messages';
 import { useAuth } from '../../../auth/useAuth';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Controller, useForm } from 'react-hook-form';
-import { FormControl, FormHelperText, FilledInput, InputLabel } from '@mui/material';
+import { Button, Dialog, DialogActions, DialogContent, TextField, DialogTitle } from '@mui/material';
 import { updateGroupSchema } from '../../../../utils/updateGroupSchema';
 import { updateGroup } from '../../services/updateGroup';
 import { UserGroup } from '../../types/group.types';
@@ -24,13 +24,8 @@ const UpdateGroupForm: React.FC<{ onSuccess: () => Promise<void>, groupData: Use
         defaultValues: updateFormValues,
         resolver: yupResolver<UpdateGroupFormData>(updateGroupSchema),
     });
-    const [isClicked, setIsClicked] = useState<boolean>(false);
-    const showForm = () => {
-        setIsClicked(true);
-    }
-    const closeForm = () => {
-        setIsClicked(false);
-    };
+    const [open, setOpen] = useState<boolean>(false);
+
     const submitGroupData = async (data: UpdateGroupFormData) => {
 
         if (!user?.id) return;
@@ -41,8 +36,9 @@ const UpdateGroupForm: React.FC<{ onSuccess: () => Promise<void>, groupData: Use
                 description: data.description,
             });
             await onSuccess();
-            closeForm();
+            reset();
             toast.success(MESSAGES.SUCCESS.UPDATED_GROUP)
+            setOpen(false);
         } catch (error: unknown) {
             if (error instanceof Error) {
                 toast.error(error.message);
@@ -53,45 +49,40 @@ const UpdateGroupForm: React.FC<{ onSuccess: () => Promise<void>, groupData: Use
     }
 
     return <>
-        {
-            isClicked ?
-                <form className='top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 p-6 bg-slate-500 flex flex-col fixed shadow-xl rounded-2xl'
-                    onSubmit={handleSubmit(submitGroupData)} >
-                    <FormControl>
-                        <InputLabel htmlFor={'name'}>
-                            Nazwa
-                        </InputLabel>
-                        <Controller
-                            name="name"
-                            control={control}
-                            render={({ field }) => (
-                                <FilledInput {...field} placeholder='nazwa' />
-                            )} />
-                        {errors.name && <FormHelperText>{errors.name?.message}</FormHelperText>}
-                    </FormControl>
-                    <FormControl>
-                        <InputLabel htmlFor={'description'}>
-                            Opis
-                        </InputLabel>
-                        <Controller
-                            name='description'
-                            control={control}
-                            render={({ field }) => (
-                                <FilledInput
-                                    {...field}
-                                    placeholder='opis'
-                                />
-                            )} />
-                    </FormControl>
-                    <button type='button' onClick={closeForm}>X</button>
-                    <button type='submit'>potwierdź zmiany</button>
-                </form>
-                :
-                null
-        }
-        <div style={{ background: 'none', border: 'none' }} onClick={showForm}>
-            <button>edytuj</button>
-        </div>
+        <Button onClick={() => setOpen(true)} sx={{ flex: 1 }} variant='outlined'>Update</Button>
+        <Dialog open={open}>
+            <DialogTitle>Update group</DialogTitle>
+            <DialogContent sx={{ display: 'flex', flexDirection: 'column', gap: 2, pt: 2 }}>
+                <Controller
+                    name='name'
+                    control={control}
+                    render={({ field }) => (
+                        <TextField
+                            {...field}
+                            label='name'
+                            error={!!errors.name}
+                            helperText={errors.name?.message}
+                        />
+                    )}
+                />
+                <Controller
+                    name='description'
+                    control={control}
+                    render={({ field }) => (
+                        <TextField
+                            {...field}
+                            label='description'
+                            error={!!errors.description}
+                            helperText={errors.description?.message}
+                        />
+                    )}
+                />
+            </DialogContent>
+            <DialogActions>
+                <Button onClick={() => setOpen(false)}>Cancel</Button>
+                <Button onClick={handleSubmit(submitGroupData)} variant='contained'>Submit</Button>
+            </DialogActions>
+        </Dialog>
     </>
 };
 
