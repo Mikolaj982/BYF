@@ -1,10 +1,15 @@
 import React from 'react';
 import { Typography, Box, CircularProgress, List, ListItemButton, ListItemText, Chip } from '@mui/material';
-import { useUserGroups } from '../../../../features/groups/hooks/useUserGroups';
 import { UserGroup } from '../../../../features/groups/types/group.types';
 import { useNavigate } from 'react-router-dom';
 
-const SidebarSection: React.FC = () => {
+type SidebarSectionProps = {
+    loading: boolean,
+    groups: UserGroup[],
+    error: string | null,
+}
+
+const SidebarSection: React.FC<SidebarSectionProps> = ({ loading, error, groups }) => {
 
     const navigate = useNavigate();
 

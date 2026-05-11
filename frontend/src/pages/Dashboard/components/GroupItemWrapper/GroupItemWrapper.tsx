@@ -1,10 +1,10 @@
 import React from 'react';
 import GroupItem from '../../../../features/groups/components/GroupItem/GroupItem';
-import { useUserGroups } from '../../../../features/groups/hooks/useUserGroups';
 import { useParams } from 'react-router-dom';
+import { useOutletContext } from 'react-router-dom';
 
 const GroupItemWrapper: React.FC = () => {
-    const { groups, refetchGroups, loading } = useUserGroups();
+    const { groups, loading, refetchGroups } = useOutletContext();
     const { groupId } = useParams();
 
     if (loading) return <p>Loading...</p>
