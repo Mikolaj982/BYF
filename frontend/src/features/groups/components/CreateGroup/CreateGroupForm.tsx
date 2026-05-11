@@ -6,7 +6,7 @@ import { useAuth } from '../../../auth/useAuth';
 import { createGroupSchema } from '../../../../utils/createGroupSchema';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Controller, useForm } from 'react-hook-form';
-import { FormControl, FormHelperText, FilledInput, InputLabel, Button, DialogContent, Dialog, DialogTitle, DialogActions, TextField } from '@mui/material';
+import { Button, DialogContent, Dialog, DialogTitle, DialogActions, TextField } from '@mui/material';
 
 export type CreateGroupSubmitData = {
     owner: string,
@@ -94,35 +94,3 @@ const CreateGroupForm: React.FC<{ onSuccess: () => Promise<void> }> = ({ onSucce
 };
 
 export default CreateGroupForm;
-
-
-//          isClicked ?
-//             <form className='top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 p-6 bg-slate-500 flex flex-col fixed shadow-xl rounded-2xl'
-//                 onSubmit={handleSubmit(submitGroupData)} >
-//                 <FormControl>
-//                     <InputLabel htmlFor={'name'}>
-//                         Nazwa
-//                     </InputLabel>
-//                     <FilledInput
-//                         placeholder='nazwa'
-//                         {...register('name')}
-//                     />
-//                     {errors.name && <FormHelperText>{errors.name?.message}</FormHelperText>}
-//                 </FormControl>
-//                 <FormControl>
-//                     <InputLabel htmlFor={'description'}>
-//                         Opis
-//                     </InputLabel>
-//                     <FilledInput
-//                         placeholder='opis'
-//                         {...register('description')}
-//                     />
-//                 </FormControl>
-//                 <button type='button' onClick={closeForm}>X</button>
-//                 <button type='submit'>dodaj</button>
-//             </form>
-//             :
-//             null
-//     }
-//     <Button onClick={showForm} variant='outlined' sx={{ padding: 1 }}>+Create</Button>
-// </> 

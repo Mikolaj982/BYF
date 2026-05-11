@@ -1,19 +1,18 @@
 import React from 'react';
 import { UserGroup } from '../../types/group.types';
-import UpdateGroupForm from '../UpdateGroup/UpdateGroupForm';
-import CreateLobbyForm from '../../../lobbies/components/CreateLobby/CreateLobbyForm';
 import { deleteGroup } from '../../services/deleteGroup';
 import { toast } from 'react-toastify';
 import { MESSAGES } from '../../../../utils/messages';
 import { useGroupLobbies } from '../../../lobbies/hooks/useGroupLobbies';
-import { Button, TextField } from '@mui/material';
+import { Button, List, ListItem, Stack, TextField, Typography } from '@mui/material';
 import GroupMembers from '../GroupMembers/GroupMembers';
 import { leaveGroup } from '../../services/leaveGroup';
 import { useNavigate } from 'react-router-dom';
 import { Lobby } from '../../../lobbies/types/lobby.types';
+import GroupHeader from '../GroupHeader/GroupHeader';
 
 const GroupItem: React.FC<{ groupData: UserGroup, refetchGroups: () => Promise<void> }> = ({ groupData, refetchGroups }) => {
-  const { id, name, description, role, invite_code } = groupData;
+  const { id, invite_code } = groupData;
   const { lobbies, refetchLobbies } = useGroupLobbies(id);
   const navigate = useNavigate();
 
@@ -22,7 +21,6 @@ const GroupItem: React.FC<{ groupData: UserGroup, refetchGroups: () => Promise<v
   };
 
   const handleDeleteGroup = async (groupId: string) => {
-    if (!window.confirm('Jesteś pewien?')) return;
     try {
       await deleteGroup(groupId);
       await refetchGroups();
@@ -52,9 +50,8 @@ const GroupItem: React.FC<{ groupData: UserGroup, refetchGroups: () => Promise<v
   };
 
   return (
-    <li>
-      <h3>{name}</h3>
-      <p>{description}</p>
+    <Stack>
+      <GroupHeader handleDeleteGroup={handleDeleteGroup} groupData={groupData} handleLeaveGroup={handleLeaveGroup} refetchLobbies={refetchLobbies} refetchGroups={refetchGroups} />
       <TextField
         value={invite_code}
         InputProps={{ readOnly: true }}
@@ -62,28 +59,18 @@ const GroupItem: React.FC<{ groupData: UserGroup, refetchGroups: () => Promise<v
       <Button onClick={() => navigator.clipboard.writeText(invite_code)}>
         Copy code
       </Button>
-      {role === 'owner' && (
-        <div>
-          <button onClick={() => handleDeleteGroup(id)}>delete</button>
-          <UpdateGroupForm onSuccess={refetchGroups} groupData={groupData} />
-          <CreateLobbyForm onSuccess={refetchLobbies} groupData={groupData} />
-        </div>
-      )}
       <GroupMembers groupId={id} />
-      {role !== 'owner' && (
-        <button onClick={() => handleLeaveGroup(id)}>leave</button>
-      )}
-      <div>
-        <h3>Lobbies:</h3>
-        <ul>
+      <Stack>
+        <Typography variant='h5'>Lobbies:</Typography>
+        <List>
           {lobbies.map((lobby: Lobby) => {
             return (
-              <li key={lobby.id} onClick={() => handleSelectLobby(lobby.id)}>{lobby.game_type}</li>
+              <ListItem key={lobby.id} onClick={() => handleSelectLobby(lobby.id)}>{lobby.game_type}</ListItem>
             )
           })}
-        </ul>
-      </div>
-    </li>
+        </List>
+      </Stack>
+    </Stack>
   )
 }
 
