@@ -1,12 +1,15 @@
 import React from 'react';
 import { GroupMemberBarProps } from '../../types/group.types';
+import { Avatar, Chip } from '@mui/material';
 
-const GroupMemberBar: React.FC<GroupMemberBarProps> = ({ username, role }) => {
+const GroupMemberBar: React.FC<GroupMemberBarProps> = ({ username }) => {
+    const usernameFirstLetter: string = username.split('')[0] ?? 'p';
     return (
-        <li className='rounded-lg text-richBlack bg-coolGray py-2 px-3 mt-2 text-center w-full font-medium hover:bg-slate-500 hover:cursor-pointer'>
-            <p>nickname: {username}</p>
-            <p>rola: {role}</p>
-        </li>
+        <Chip
+            avatar={<Avatar color='black' sx={{ bgcolor: 'primary.main', fontSize: 10 }}>{usernameFirstLetter.toUpperCase()}</Avatar>}
+            label={username}
+            variant='outlined'
+        />
     );
 };
 
