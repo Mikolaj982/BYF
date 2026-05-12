@@ -14,23 +14,45 @@ type GroupHeaderProps = {
 }
 
 const GroupHeader: React.FC<GroupHeaderProps> = ({ handleLeaveGroup, refetchLobbies, groupData, refetchGroups, handleDeleteGroup }) => {
-    const { id, role, description, name } = groupData;
+    const { id, role, name } = groupData;
     return (
-        <Stack component='div' direction='row' justifyContent='space-between' sx={{ px: 3, py: 3 }}>
-            <Typography variant='h5'>{name}</Typography>
+        <Stack
+            component='div'
+            direction='row'
+            justifyContent='space-between'
+            sx={{ px: 3, py: 3, borderBottom: 1, borderColor: 'divider' }}
+        >
+            <Typography variant='h6'>
+                {name}
+            </Typography>
             <Stack direction='row'>
                 {role !== 'owner' ? (
-                    <Button onClick={() => handleLeaveGroup(id)} sx={{ flex: 1 }} variant='outlined'>Leave</Button>
+                    <Button
+                        onClick={() => handleLeaveGroup(id)}
+                        sx={{ flex: 1 }}
+                        variant='outlined'
+                    >
+                        Leave
+                    </Button>
                 ) :
                     (
-                        <Stack direction='row' spacing={2}>
+                        <Stack
+                            direction='row'
+                            spacing={2}
+                        >
                             <ConfirmDialog
                                 title='Delete group?'
                                 description='This action cannot be undone.'
                                 onConfirm={() => handleDeleteGroup(id)}
                             />
-                            <UpdateGroupForm onSuccess={refetchGroups} groupData={groupData} />
-                            <CreateLobbyForm onSuccess={refetchLobbies} groupData={groupData} />
+                            <UpdateGroupForm
+                                onSuccess={refetchGroups}
+                                groupData={groupData}
+                            />
+                            <CreateLobbyForm
+                                onSuccess={refetchLobbies}
+                                groupData={groupData}
+                            />
                         </Stack>
                     )}
             </Stack>

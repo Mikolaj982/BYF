@@ -18,25 +18,35 @@ const SidebarSection: React.FC<SidebarSectionProps> = ({ loading, error, groups 
     };
 
     return (
-        <Box component='div' sx={{ padding: 2 }}>
-            <Typography sx={{ fontSize: 14, color: 'text.secondary' }}>Your groups:</Typography>
-            {loading ? <CircularProgress size={20} sx={{ m: '1' }} /> : (
-                <List>
-                    {groups.map((group: UserGroup) => {
-                        return (
-                            <ListItemButton
-                                component='div'
-                                key={group.id}
-                                onClick={() => handleSelectGroup(group.id)}
-                                sx={{ fontSize: 14 }}
-                            >
-                                <ListItemText primary={group.name} />
-                                <Chip label={group.role} />
-                            </ListItemButton>
-                        );
-                    })}
-                </List>
-            )}
+        <Box
+            component='div'
+            sx={{ padding: 2 }}
+        >
+            <Typography sx={{ fontSize: 14, color: 'text.secondary' }}>
+                Your groups:
+            </Typography>
+            {
+                loading
+                    ?
+                    <CircularProgress size={20} sx={{ m: '1' }} />
+                    :
+                    (
+                        <List>
+                            {groups.map((group: UserGroup) => {
+                                return (
+                                    <ListItemButton
+                                        component='div'
+                                        key={group.id}
+                                        onClick={() => handleSelectGroup(group.id)}
+                                        sx={{ fontSize: 14 }}
+                                    >
+                                        <ListItemText primary={group.name} />
+                                        <Chip label={group.role} />
+                                    </ListItemButton>
+                                );
+                            })}
+                        </List>
+                    )}
             {error && <Typography>{error}</Typography>}
         </Box>
     )

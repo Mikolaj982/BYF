@@ -4,12 +4,13 @@ import { deleteGroup } from '../../services/deleteGroup';
 import { toast } from 'react-toastify';
 import { MESSAGES } from '../../../../utils/messages';
 import { useGroupLobbies } from '../../../lobbies/hooks/useGroupLobbies';
-import { Button, List, ListItem, Stack, TextField, Typography } from '@mui/material';
+import { List, ListItem, Stack, Typography } from '@mui/material';
 import GroupMembers from '../GroupMembers/GroupMembers';
 import { leaveGroup } from '../../services/leaveGroup';
 import { useNavigate } from 'react-router-dom';
 import { Lobby } from '../../../lobbies/types/lobby.types';
 import GroupHeader from '../GroupHeader/GroupHeader';
+import InviteBox from '../InviteBox/InviteBox';
 
 const GroupItem: React.FC<{ groupData: UserGroup, refetchGroups: () => Promise<void> }> = ({ groupData, refetchGroups }) => {
   const { id, invite_code } = groupData;
@@ -51,14 +52,14 @@ const GroupItem: React.FC<{ groupData: UserGroup, refetchGroups: () => Promise<v
 
   return (
     <Stack>
-      <GroupHeader handleDeleteGroup={handleDeleteGroup} groupData={groupData} handleLeaveGroup={handleLeaveGroup} refetchLobbies={refetchLobbies} refetchGroups={refetchGroups} />
-      <TextField
-        value={invite_code}
-        InputProps={{ readOnly: true }}
+      <GroupHeader
+        handleDeleteGroup={handleDeleteGroup}
+        groupData={groupData}
+        handleLeaveGroup={handleLeaveGroup}
+        refetchLobbies={refetchLobbies}
+        refetchGroups={refetchGroups}
       />
-      <Button onClick={() => navigator.clipboard.writeText(invite_code)}>
-        Copy code
-      </Button>
+      <InviteBox inviteCode={invite_code} />
       <GroupMembers groupId={id} />
       <Stack>
         <Typography variant='h5'>Lobbies:</Typography>
