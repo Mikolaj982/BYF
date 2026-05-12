@@ -1,11 +1,11 @@
 import React from 'react';
 import LobbyItem from '../../../../features/lobbies/components/LobbyItem/LobbyItem';
 import { useParams } from 'react-router-dom';
-import { useGroupLobbies } from '../../../../features/lobbies/hooks/useGroupLobbies';
+import { useOutletContext } from 'react-router-dom';
 
 const LobbyItemWrapper: React.FC = () => {
     const { lobbyId, groupId } = useParams();
-    const { lobbies, refetchLobbies, loading } = useGroupLobbies(groupId ?? '');
+    const { lobbies, refetchLobbies, loading } = useOutletContext();
 
     if (!groupId) return <p>Brak groupId</p>;
     if (loading) return <p>Loading...</p>

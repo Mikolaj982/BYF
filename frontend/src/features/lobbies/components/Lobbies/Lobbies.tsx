@@ -1,25 +1,37 @@
 import React from 'react'
 import { Lobby } from '../../types/lobby.types';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
+import { Paper, Stack, Typography } from '@mui/material';
 
-const Lobbies: React.FC<{ lobbies: Lobby[] }> = ({ lobbies }) => {
+type LobbiesProps = {
+    lobbies: Lobby[]
+}
+
+const Lobbies: React.FC<LobbiesProps> = ({ lobbies }) => {
+    const { groupId } = useParams();
     const navigate = useNavigate();
 
     const handleSelectLobby = (id: string) => {
-        navigate(`/dashboard/group/:groupId/lobby/${id}`)
+        navigate(`/dashboard/group/${groupId}/lobby/${id}`)
     };
 
     return (
-        <div>
-            <h3>Lobbies:</h3>
-            <ul>
+        <Stack padding={3}>
+            <Typography sx={{
+                fontSize: 14,
+                color: 'text.secondary'
+            }}
+            >
+                LOBBIES
+            </Typography>
+            <Stack>
                 {lobbies.map((lobby: Lobby) => {
                     return (
-                        <div key={lobby.id} onClick={() => handleSelectLobby(lobby.id)}>{lobby.game_type}</div>
+                        <Paper key={lobby.id} onClick={() => handleSelectLobby(lobby.id)}>{lobby.game_type}</Paper>
                     )
                 })}
-            </ul>
-        </div>
+            </Stack>
+        </Stack>
     )
 }
 
