@@ -1,29 +1,44 @@
 import React from 'react';
 import GroupMemberBar from '../GroupMemberBar/GroupMemberBar';
 import { useGroupMembers } from '../../hooks/useGroupMembers';
+import { CircularProgress, List, Stack, Typography } from '@mui/material';
 
-const GroupMembers: React.FC<{ groupId: string }> = ({ groupId }) => {
+type GroupMembersProps = {
+    groupId: string
+}
+
+const GroupMembers: React.FC<GroupMembersProps> = ({ groupId }) => {
     const { groupMembers, loading, error } = useGroupMembers(groupId);
     return (
-        <div className='bg-slate-600 p-[10px]'>
-            <h3>Uczestnicy grupy:</h3>
+        <Stack padding={3} spacing={1}>
+            <Typography sx={{
+                fontSize: 14,
+                color: 'text.secondary'
+            }}
+            >
+                MEMBERS
+            </Typography>
             {
-                loading ?
-                    <p>Loading...</p>
+                loading
+                    ?
+                    <CircularProgress size={20} sx={{ m: 1 }} />
                     :
-                    (groupMembers.length === 0) ?
-                        <p>lista jest pusta</p>
-                        :
-                        (
-                            <ul>
-                                {groupMembers.map((member) => (
-                                    <GroupMemberBar username={member.username} role={member.role} key={member.id} />
-                                ))}
-                            </ul>
-                        )
+                    (
+                        (groupMembers.length === 0)
+                            ?
+                            <Typography>List is empty</Typography>
+                            :
+                            (
+                                <Stack direction='row' spacing={1}>
+                                    {groupMembers.map((member) => (
+                                        <GroupMemberBar username={member.username} role={member.role} key={member.id} />
+                                    ))}
+                                </Stack>
+                            )
+                    )
             }
             {error && <p>{error}</p>}
-        </div>
+        </Stack>
     )
 }
 

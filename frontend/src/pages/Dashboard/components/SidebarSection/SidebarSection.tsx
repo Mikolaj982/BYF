@@ -23,7 +23,7 @@ const SidebarSection: React.FC<SidebarSectionProps> = ({ loading, error, groups 
             sx={{ padding: 2 }}
         >
             <Typography sx={{ fontSize: 14, color: 'text.secondary' }}>
-                Your groups:
+                Your groups
             </Typography>
             {
                 loading
