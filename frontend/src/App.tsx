@@ -7,6 +7,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { muiTheme } from './shared/theme/muiTheme';
 import { ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
+import DashboardLayout from './pages/Dashboard/components/DashboardLayout/DashboardLayout';
 
 function App() {
   return (
@@ -16,8 +17,10 @@ function App() {
         <Routes>
           <Route path='/' element={<LoginRegisterPage />} />
           <Route path='/dashboard' element={<Dashboard />}>
-            <Route path='group/:groupId' element={<GroupItemWrapper />} />
-            <Route path='group/:groupId/lobby/:lobbyId' element={<LobbyItemWrapper />} />
+            <Route path='group/:groupId' element={<DashboardLayout />}>
+              <Route index element={<GroupItemWrapper />} />
+              <Route path='lobby/:lobbyId' element={<LobbyItemWrapper />} />
+            </Route>
           </Route>
         </Routes>
       </Router >
