@@ -5,10 +5,11 @@ import { useLobbyLeaderboard } from '../../../../features/lobbies/hooks/useLobby
 import { useLobbyMatches } from '../../../../features/lobbies/hooks/useLobbiesMatches';
 import LobbyItem from '../../../../features/lobbies/components/LobbyItem/LobbyItem';
 import { useLobbyMembers } from '../../../../features/lobbies/hooks/useLobbyMembers';
+import { DashboardLayoutOutletContext } from '../../types/outletContext.types';
 
 const LobbyWrapper: React.FC = () => {
     const { lobbyId } = useParams();
-    const { lobbies, refetchLobbies, loading: loadingLobbies } = useOutletContext();
+    const { lobbies, refetchLobbies, loading: loadingLobbies } = useOutletContext<DashboardLayoutOutletContext>();
     const { matches, loading: loadingMatches, error: errorMatches, refetchMatches } = useLobbyMatches(lobbyId ?? '');
     const { leaderboard, error: errorLobbyLeaderboard, loading: loadingLobbyLeaderboard, refetchLobbyLeaderboard } = useLobbyLeaderboard(lobbyId ?? '');
     const { lobbyMembers, loading: loadingLobbyMembers, error: errorLobbyMembers, refetchLobbyMembers } = useLobbyMembers(lobbyId ?? '');

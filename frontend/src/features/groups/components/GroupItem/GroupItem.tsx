@@ -10,10 +10,11 @@ import GroupHeader from '../GroupHeader/GroupHeader';
 import InviteBox from '../InviteBox/InviteBox';
 import Lobbies from '../../../lobbies/components/Lobbies/Lobbies';
 import { useOutletContext } from 'react-router-dom';
+import { DashboardLayoutOutletContext } from '../../../../pages/Dashboard/types/outletContext.types';
 
 const GroupItem: React.FC<{ groupData: UserGroup, refetchGroups: () => Promise<void> }> = ({ groupData, refetchGroups }) => {
   const { id, invite_code } = groupData;
-  const { lobbies, refetchLobbies } = useOutletContext();
+  const { lobbies, refetchLobbies } = useOutletContext<DashboardLayoutOutletContext>();
   const lobbiesIds: string[] = useMemo(() => {
     return lobbies.map(lobby => lobby.id)
   }, [lobbies]);
