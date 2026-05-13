@@ -17,16 +17,15 @@ type LobbyCardProps = {
     refetchLobbyMembersCounts: () => Promise<void>
 }
 
-const LobbyCard: React.FC<LobbyCardProps> = ({ lobbyId, groupId, gameType, loadingLobbyMembersCounts, refetchLobbyMembersCounts, membersCount }) => {
-    const { refetchLobbyMembers } = useLobbyMembers(lobbyId);
+const LobbyCard: React.FC<LobbyCardProps> = ({ lobbyId, groupId, gameType, refetchLobbyMembersCounts, membersCount }) => {
+    const { refetchLobbyMembers, lobbyMembers } = useLobbyMembers(lobbyId);
     const { loadingLobbies } = useOutletContext<DashboardLayoutOutletContext>();
-
     const navigate = useNavigate();
     const { user } = useAuth();
     if (!user) return null;
-
     if (!groupId) return <p>Brak groupId</p>;
-    if (loadingLobbies) return <p>Loading...</p>
+    if (loadingLobbies) return <p>Loading...</p>;
+    const isMember = lobbyMembers.some((member) => user.id === member.userId);
 
     const handleJoinLobby = async (lobbyId: string) => {
         const joinLobbySubmitData = {
@@ -52,12 +51,52 @@ const LobbyCard: React.FC<LobbyCardProps> = ({ lobbyId, groupId, gameType, loadi
     };
 
     return (
-        <Paper>
+        <Paper
+            variant='outlined'
+            sx={{ p: 2 }}
+        >
             <Stack>
-                <Typography>{gameType}</Typography>
-                <Typography>{membersCount} members</Typography>
-                <Button onClick={() => handleJoinLobby(lobbyId)}>JOIN</Button>
-                <Button onClick={() => handleSelectLobby(lobbyId)}>ENTER LOBBY</Button>
+                <Typography>
+                    {gameType}
+                </Typography>
+                <Typography sx={{ color: 'text.secondary' }}>
+                    {membersCount} members
+                </Typography>
+                <Stack
+                    direction='row'
+                    spacing={2}
+                    paddingTop={2}
+                    sx={{
+                        '& .MuiButton-root': {
+                            width: 80,
+                            minWidth: 80,
+                            fontSize: 10,
+                            padding: '2px 6px',
+                        },
+                    }}
+                >
+                    <Button
+                        onClick={() => handleJoinLobby(lobbyId)}
+                        color={isMember ? 'success' : 'primary'}
+                        variant={isMember ? 'contained' : 'outlined'}
+                        disabled={isMember}
+                    >
+                        {isMember ? 'JOINED' : 'JOIN'}
+                    </Button>
+                    <Button
+                        onClick={() => handleSelectLobby(lobbyId)}
+                        color='primary'
+                        variant='outlined'
+                    >
+                        ENTER LOBBY
+                    </Button>
+                    <Button
+                        color='primary'
+                        variant='outlined'
+                    >
+                        RESULTS
+                    </Button>
+                </Stack>
             </Stack>
         </Paper>
     )
