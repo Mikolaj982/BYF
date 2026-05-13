@@ -1,7 +1,7 @@
 import React from 'react';
 import GroupMemberBar from '../GroupMemberBar/GroupMemberBar';
 import { useGroupMembers } from '../../hooks/useGroupMembers';
-import { CircularProgress, List, Stack, Typography } from '@mui/material';
+import { CircularProgress, Stack, Typography } from '@mui/material';
 
 type GroupMembersProps = {
     groupId: string

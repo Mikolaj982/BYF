@@ -1,52 +1,56 @@
 import React from 'react';
-import { Lobby } from '../../types/lobby.types';
-import { useLobbyMatches } from '../../hooks/useLobbiesMatches';
+import { Lobby, LobbyMemberWithUsername, Match } from '../../types/lobby.types';
 import CreateMatchForm from '../CreateMatchForm/CreateMatchForm';
 import LobbyMembers from '../LobbyMembers/LobbyMembers';
 import LobbyLeaderboard from '../LobbyLeaderboard/LobbyLeaderboard';
 import { leaveLobby } from '../../services/leaveLobby';
 import { MESSAGES } from '../../../../utils/messages';
 import { toast } from 'react-toastify';
-import { useLobbyMembers } from '../../hooks/useLobbyMembers';
 import { deleteLobby } from '../../services/deleteLobby';
 import { deleteMatch } from '../../services/deleteMatch';
 import { useAuth } from '../../../auth/useAuth';
-import { joinLobby } from '../../services/joinLobby';
-import { useLobbyLeaderboard } from '../../hooks/useLobbyLeaderboard';
+import { Leaderboard } from '../../services/lobbyLeaderboard';
 
 type LobbyItemProps = {
     lobbyData: Lobby;
-    refetchLobbies: () => Promise<void>
+    refetchLobbies: () => Promise<void>;
+    matches: Match[];
+    loadingMatches: boolean;
+    errorMatches: string | null;
+    refetchMatches: () => Promise<void>;
+    leaderboard: Leaderboard[];
+    loadingLobbyLeaderboard: boolean;
+    errorLobbyLeaderboard: string | null;
+    refetchLobbyLeaderboard: () => Promise<void>;
+    lobbyMembers: LobbyMemberWithUsername[];
+    refetchLobbyMembers: () => Promise<void>;
+    errorLobbyMembers: string | null;
+    loadingLobbyMembers: boolean;
 }
 
-const LobbyItem: React.FC<LobbyItemProps> = ({ lobbyData, refetchLobbies }) => {
+const LobbyItem: React.FC<LobbyItemProps> = (
+    {
+        lobbyMembers,
+        refetchLobbyMembers,
+        refetchMatches,
+        matches,
+        loadingMatches,
+        errorMatches,
+        leaderboard,
+        errorLobbyLeaderboard,
+        loadingLobbyLeaderboard,
+        refetchLobbyLeaderboard,
+        loadingLobbyMembers,
+        errorLobbyMembers,
+        refetchLobbies,
+        lobbyData
+    }
+) => {
     const { user } = useAuth();
-    const lobbyId = lobbyData.id;
-    const { matches, loading: loadingMatches, error: errorMatches, refetchMatches } = useLobbyMatches(lobbyId);
-    const { lobbyMembers, loading: loadingLobbyMembers, error: errorLobbyMembers, refetchLobbyMembers } = useLobbyMembers(lobbyId);
-    const { leaderboard, error, loading, refetchLobbyLeaderboard } = useLobbyLeaderboard(lobbyId);
-
     if (!user) return null;
 
+    const { id: lobbyId } = lobbyData;
     const isLobbyMember = lobbyMembers.some((member) => member.userId === user.id);
-
-    const handleJoinLobby = async (lobby: Lobby) => {
-        const joinLobbySubmitData = {
-            user_id: user.id,
-            lobby_id: lobby.id,
-        }
-        try {
-            await joinLobby(joinLobbySubmitData);
-            await refetchLobbyMembers();
-            toast.success(MESSAGES.SUCCESS.JOINED_LOBBY)
-        } catch (error) {
-            if (error instanceof Error) {
-                toast.error(error.message);
-            } else {
-                toast.error(MESSAGES.ERROR.UNKNOWN);
-            }
-        }
-    }
 
     const handleLeaveLobby = async (lobbyId: string) => {
         if (!window.confirm('Jesteś pewien?')) return;
@@ -96,7 +100,6 @@ const LobbyItem: React.FC<LobbyItemProps> = ({ lobbyData, refetchLobbies }) => {
 
     return (
         <li>
-            <button onClick={() => handleJoinLobby(lobbyData)}>join lobby</button>
             <button onClick={() => handleLeaveLobby(lobbyId)}>leave lobby</button>
             <button onClick={() => handleDeleteLobby(lobbyId)}>delete lobby</button>
             <h4>{lobbyData.game_type}</h4>
@@ -104,7 +107,7 @@ const LobbyItem: React.FC<LobbyItemProps> = ({ lobbyData, refetchLobbies }) => {
             {isLobbyMember
                 ? (<>
                     <CreateMatchForm onMatchCreated={refetchMatches} onLeaderboardUpdated={refetchLobbyLeaderboard} lobbyData={lobbyData} />
-                    <LobbyLeaderboard leaderboard={leaderboard} loading={loading} error={error} />
+                    <LobbyLeaderboard leaderboard={leaderboard} loading={loadingLobbyLeaderboard} error={errorLobbyLeaderboard} />
                     <h4>Matches:</h4>
                     {errorMatches
                         ? <p>{errorMatches}</p>
