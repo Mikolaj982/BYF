@@ -2,9 +2,10 @@ import React from 'react';
 import GroupItem from '../../../../features/groups/components/GroupItem/GroupItem';
 import { useParams } from 'react-router-dom';
 import { useOutletContext } from 'react-router-dom';
+import { DashboardOutletContext } from '../../types/outletContext.types';
 
 const GroupItemWrapper: React.FC = () => {
-    const { groups, loading, refetchGroups } = useOutletContext();
+    const { groups, loading, refetchGroups } = useOutletContext<DashboardOutletContext>();
     const { groupId } = useParams();
 
     if (loading) return <p>Loading...</p>

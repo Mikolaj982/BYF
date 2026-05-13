@@ -6,6 +6,7 @@ import { toast } from 'react-toastify'
 import { MESSAGES } from '../../../../utils/messages'
 import { useAuth } from '../../../auth/useAuth'
 import { useLobbyMembers } from '../../hooks/useLobbyMembers'
+import { DashboardLayoutOutletContext } from '../../../../pages/Dashboard/types/outletContext.types'
 
 type LobbyCardProps = {
     lobbyId: string,
@@ -18,7 +19,7 @@ type LobbyCardProps = {
 
 const LobbyCard: React.FC<LobbyCardProps> = ({ lobbyId, groupId, gameType, loadingLobbyMembersCounts, refetchLobbyMembersCounts, membersCount }) => {
     const { refetchLobbyMembers } = useLobbyMembers(lobbyId);
-    const { loadingLobbies } = useOutletContext();
+    const { loadingLobbies } = useOutletContext<DashboardLayoutOutletContext>();
 
     const navigate = useNavigate();
     const { user } = useAuth();
