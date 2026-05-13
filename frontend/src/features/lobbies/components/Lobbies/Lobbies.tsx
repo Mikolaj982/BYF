@@ -1,20 +1,16 @@
 import React from 'react'
 import { Lobby } from '../../types/lobby.types';
-import { useNavigate, useParams } from 'react-router-dom';
-import { Paper, Stack, Typography } from '@mui/material';
+import { Stack, Typography } from '@mui/material';
+import LobbyCard from '../LobbyCard/LobbyCard';
+import { useLobbyMembersCounts } from '../../hooks/useLobbyMembersCounts';
 
 type LobbiesProps = {
-    lobbies: Lobby[]
+    lobbies: Lobby[],
+    lobbiesIds: string[]
 }
 
-const Lobbies: React.FC<LobbiesProps> = ({ lobbies }) => {
-    const { groupId } = useParams();
-    const navigate = useNavigate();
-
-    const handleSelectLobby = (id: string) => {
-        navigate(`/dashboard/group/${groupId}/lobby/${id}`)
-    };
-
+const Lobbies: React.FC<LobbiesProps> = ({ lobbies, lobbiesIds }) => {
+    const { lobbyMembersCounts, refetchLobbyMembersCounts, loading: loadingLobbyMembersCounts } = useLobbyMembersCounts(lobbiesIds);
     return (
         <Stack padding={3}>
             <Typography sx={{
@@ -26,8 +22,17 @@ const Lobbies: React.FC<LobbiesProps> = ({ lobbies }) => {
             </Typography>
             <Stack>
                 {lobbies.map((lobby: Lobby) => {
+                    const membersCount = lobbyMembersCounts[lobby.id] || 0;
                     return (
-                        <Paper key={lobby.id} onClick={() => handleSelectLobby(lobby.id)}>{lobby.game_type}</Paper>
+                        <LobbyCard
+                            lobbyId={lobby.id}
+                            groupId={lobby.group_id}
+                            gameType={lobby.game_type}
+                            membersCount={membersCount}
+                            refetchLobbyMembersCounts={refetchLobbyMembersCounts}
+                            loadingLobbyMembersCounts={loadingLobbyMembersCounts}
+                            key={lobby.id}
+                        />
                     )
                 })}
             </Stack>
