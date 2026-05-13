@@ -10,7 +10,7 @@ const Dashboard: React.FC = () => {
     return (
         <Box component='div' sx={{ display: 'flex', height: '100vh', bgcolor: 'background.default' }}>
             <Sidebar groups={groups} loading={loading} error={error} refetchGroups={refetchGroups} />
-            <Box component='div' sx={{ flex: 1 }}>
+            <Box component='div' sx={{ flex: 1, overflow: 'auto' }}>
                 <Outlet context={{ groups, loading, refetchGroups }} />
             </Box>
             <ToastContainer />
