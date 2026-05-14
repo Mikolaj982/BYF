@@ -1,6 +1,7 @@
 import React from 'react';
 import LobbyMemberBar from '../LobbyMemberBar/LobbyMemberBar';
 import { LobbyMemberWithUsername } from '../../types/lobby.types';
+import { CircularProgress, Stack, Typography } from '@mui/material';
 
 type LobbyMembersProps = {
     members: LobbyMemberWithUsername[],
@@ -11,22 +12,44 @@ type LobbyMembersProps = {
 const LobbyMembers: React.FC<LobbyMembersProps> = ({ members, loading, error }) => {
 
     return (
-        <div className='bg-slate-600 p-[10px]'>
-            <h3>Uczestnicy lobby:</h3>
-            {error
-                ? <p>{error}</p>
-                : loading
-                    ? <p>Loading...</p>
+        <Stack padding={3} spacing={1}>
+            <Typography sx={{
+                fontSize: 14,
+                color: 'text.secondary'
+            }}
+            >
+                LOBBY MEMBERS
+            </Typography>
+            {
+                loading
+                    ?
+                    <CircularProgress
+                        size={20}
+                        sx={{ m: 1 }}
+                    />
                     :
-                    (members.length === 0)
-                        ? <p>lista jest pusta</p>
-                        : (<ul>
-                            {members.map((member) => (
-                                <LobbyMemberBar username={member.username} key={member.userId} />
-                            ))}
-                        </ul>)
+                    (
+                        (members.length === 0)
+                            ?
+                            <Typography>List is empty</Typography>
+                            :
+                            (
+                                <Stack
+                                    direction='row'
+                                    spacing={1}
+                                >
+                                    {members.map((member) => (
+                                        <LobbyMemberBar
+                                            username={member.username}
+                                            key={member.userId}
+                                        />
+                                    ))}
+                                </Stack>
+                            )
+                    )
             }
-        </div>
+            {error && <p>{error}</p>}
+        </Stack>
     )
 };
 

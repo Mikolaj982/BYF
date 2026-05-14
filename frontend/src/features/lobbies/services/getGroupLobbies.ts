@@ -7,7 +7,8 @@ export async function getGroupLobbies(groupId: string): Promise<Lobby[]> {
         .select(`
             id,
             group_id,
-            game_type
+            game_type,
+            created_by
         `)
         .eq('group_id', groupId)
 
@@ -20,6 +21,7 @@ export async function getGroupLobbies(groupId: string): Promise<Lobby[]> {
             id: item.id,
             group_id: item.group_id,
             game_type: item.game_type,
+            created_by: item.created_by
         }]
     });
 };

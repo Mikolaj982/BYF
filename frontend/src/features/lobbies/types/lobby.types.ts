@@ -2,6 +2,7 @@ export type Lobby = {
     id: string;
     group_id: string;
     game_type: string;
+    created_by: string;
 };
 
 export type LobbyMember = {

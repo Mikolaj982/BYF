@@ -1,10 +1,27 @@
+import { Avatar, Chip } from '@mui/material';
 import React from 'react';
 
-const LobbyMemberBar: React.FC<{ username: string }> = ({ username }) => {
+type LobbyMemberBar = {
+    username: string
+}
+
+const LobbyMemberBar: React.FC<LobbyMemberBar> = ({ username }) => {
+    const usernameFirstLetter: string = username.split('')[0] ?? 'p';
     return (
-        <li className='rounded-lg text-richBlack bg-coolGray py-2 px-3 mt-2 text-center w-full font-medium hover:bg-slate-500 hover:cursor-pointer'>
-            <p>nickname: {username}</p>
-        </li>
+        <Chip
+            avatar={
+                <Avatar
+                    color='black'
+                    sx={{
+                        bgcolor: 'primary.main',
+                        fontSize: 10
+                    }}>
+                    {usernameFirstLetter.toUpperCase()}
+                </Avatar>
+            }
+            label={username}
+            variant='outlined'
+        />
     );
 };
 
