@@ -10,6 +10,9 @@ import { deleteLobby } from '../../services/deleteLobby';
 import { deleteMatch } from '../../services/deleteMatch';
 import { useAuth } from '../../../auth/useAuth';
 import { Leaderboard } from '../../services/lobbyLeaderboard';
+import { useOutletContext } from 'react-router-dom';
+import { DashboardOutletContext } from '../../../../pages/Dashboard/types/outletContext.types';
+import LobbyHeader from '../LobbyHeader/LobbyHeader';
 
 type LobbyItemProps = {
     lobbyData: Lobby;
@@ -46,10 +49,11 @@ const LobbyItem: React.FC<LobbyItemProps> = (
         lobbyData
     }
 ) => {
+
     const { user } = useAuth();
     if (!user) return null;
 
-    const { id: lobbyId } = lobbyData;
+    const isOwner = lobbyData.created_by === user.id;
     const isLobbyMember = lobbyMembers.some((member) => member.userId === user.id);
 
     const handleLeaveLobby = async (lobbyId: string) => {
@@ -100,10 +104,17 @@ const LobbyItem: React.FC<LobbyItemProps> = (
 
     return (
         <li>
-            <button onClick={() => handleLeaveLobby(lobbyId)}>leave lobby</button>
-            <button onClick={() => handleDeleteLobby(lobbyId)}>delete lobby</button>
-            <h4>{lobbyData.game_type}</h4>
-            <LobbyMembers members={lobbyMembers} loading={loadingLobbyMembers} error={errorLobbyMembers} />
+            <LobbyHeader
+                onLeave={handleLeaveLobby}
+                onDelete={handleDeleteLobby}
+                lobbyData={lobbyData}
+                isOwner={isOwner}
+            />
+            <LobbyMembers
+                members={lobbyMembers}
+                loading={loadingLobbyMembers}
+                error={errorLobbyMembers}
+            />
             {isLobbyMember
                 ? (<>
                     <CreateMatchForm onMatchCreated={refetchMatches} onLeaderboardUpdated={refetchLobbyLeaderboard} lobbyData={lobbyData} />

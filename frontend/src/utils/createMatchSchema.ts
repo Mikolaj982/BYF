@@ -2,27 +2,30 @@ import * as Yup from 'yup';
 import { MESSAGES } from './messages';
 
 export const createMatchSchema = Yup.object({
-    firstUserId: Yup
-        .string()
-        .required(MESSAGES.ERROR.REQUIRED),
-    secondUserId: Yup
-        .string()
-        .required(MESSAGES.ERROR.REQUIRED)
+    players: Yup.array()
+        .of(
+            Yup.object({
+                userId: Yup.string()
+                    .required(MESSAGES.ERROR.REQUIRED),
+
+                score: Yup.number()
+                    .required(MESSAGES.ERROR.REQUIRED)
+                    .min(0),
+            })
+        )
+        .required()
+        .min(2, 'Mecz musi mieć minimum 2 graczy')
         .test(
-            'not-same-user-id',
+            'unique-users',
             'Nie możesz wybrać tego samego użytkownika',
-            function (value) {
-                const { firstUserId } = this.parent;
+            (players) => {
+                if (!players) return true;
 
-                if (!value || !firstUserId) return true;
+                const userIds = players.map(
+                    (player) => player.userId
+                );
 
-                return firstUserId !== value;
+                return new Set(userIds).size === userIds.length;
             }
         ),
-    firstUserScore: Yup
-        .number()
-        .required(MESSAGES.ERROR.REQUIRED),
-    secondUserScore: Yup
-        .number()
-        .required(MESSAGES.ERROR.REQUIRED),
 });
