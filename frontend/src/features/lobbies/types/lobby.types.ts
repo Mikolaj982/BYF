@@ -17,17 +17,23 @@ export type LobbyMemberWithUsername = {
 
 export type LobbyMatchData = {
     lobby_id: string,
+    gameName: string,
     participants: {
         user_id: string,
         score: number,
     }[],
 };
 
+export type Player = {
+    userId: string,
+    username: string,
+    score: number,
+};
+
 export type Match = {
     matchId: string,
-    players: {
-        userId: string,
-        username: string,
-        score: number,
-    }[],
+    gameName: string,
+    players: Player[],
+    createdAt: string,
+    owner: string,
 }

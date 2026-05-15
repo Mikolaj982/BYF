@@ -12,7 +12,7 @@ const ConfirmDialog: React.FC<ConfirmDialogProps> = ({ title, description, onCon
 
     return <>
         <Button
-            color='error'
+            variant='text'
             onClick={() => setOpen(true)}
         >
             Delete

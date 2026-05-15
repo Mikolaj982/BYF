@@ -1,16 +1,16 @@
 import React, { useState } from 'react'
 import { toast } from 'react-toastify';
 import { MESSAGES } from '../../../../utils/messages';
-import AddButton from '../../../../shared/components/AddButton/AddButton';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Controller, useForm, useWatch } from 'react-hook-form';
-import { FormControl, FormHelperText, InputLabel, Select, MenuItem, FilledInput, Button, DialogContent, TextField, DialogTitle, Dialog, DialogActions, Autocomplete, Chip, Box, Typography, Stack } from '@mui/material';
+import { Button, DialogContent, TextField, DialogTitle, Dialog, DialogActions, Autocomplete, Chip, Typography, Stack } from '@mui/material';
 import { createMatchSchema } from '../../../../utils/createMatchSchema';
 import { Lobby, LobbyMatchData } from '../../types/lobby.types';
 import { createMatch } from '../../services/createMatch';
 import { useLobbyMembers } from '../../hooks/useLobbyMembers';
 
 type CreateMatchFormData = {
+    gameName: string;
     players: {
         userId: string;
         score: number;
@@ -21,6 +21,7 @@ const CreateMatchForm: React.FC<{ onMatchCreated: () => Promise<void>, lobbyData
     const { lobbyMembers } = useLobbyMembers(lobbyData.id);
     const { id } = lobbyData;
     const match: CreateMatchFormData = {
+        gameName: '',
         players: [],
     };
     const { handleSubmit, reset, control } = useForm({
@@ -33,6 +34,7 @@ const CreateMatchForm: React.FC<{ onMatchCreated: () => Promise<void>, lobbyData
     const submitMatchData = async (match: CreateMatchFormData) => {
         const createMatchFormDataPlusLobbyId: LobbyMatchData = {
             lobby_id: id,
+            gameName: match.gameName,
             participants: match.players.map((player) => ({
                 user_id: player.userId,
                 score: player.score,
@@ -55,12 +57,24 @@ const CreateMatchForm: React.FC<{ onMatchCreated: () => Promise<void>, lobbyData
         };
     };
     return <>
-        <Button onClick={() => setOpen(true)}>+MATCH</Button>
+        <Button variant='outlined' onClick={() => setOpen(true)}>+MATCH</Button>
         <Dialog open={open}>
             <DialogTitle>
                 create match
             </DialogTitle>
             <DialogContent>
+                <Controller
+                    name="gameName"
+                    control={control}
+                    render={({ field, fieldState }) => (
+                        <TextField
+                            {...field}
+                            label='Name'
+                            error={!!fieldState.error}
+                            helperText={fieldState.error?.message}
+                        />
+                    )}
+                />
                 <Controller
                     name="players"
                     control={control}
