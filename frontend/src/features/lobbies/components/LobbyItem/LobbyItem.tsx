@@ -1,18 +1,16 @@
 import React from 'react';
 import { Lobby, LobbyMemberWithUsername, Match } from '../../types/lobby.types';
-import CreateMatchForm from '../CreateMatchForm/CreateMatchForm';
 import LobbyMembers from '../LobbyMembers/LobbyMembers';
 import LobbyLeaderboard from '../LobbyLeaderboard/LobbyLeaderboard';
 import { leaveLobby } from '../../services/leaveLobby';
 import { MESSAGES } from '../../../../utils/messages';
 import { toast } from 'react-toastify';
 import { deleteLobby } from '../../services/deleteLobby';
-import { deleteMatch } from '../../services/deleteMatch';
 import { useAuth } from '../../../auth/useAuth';
 import { Leaderboard } from '../../services/lobbyLeaderboard';
-import { useOutletContext } from 'react-router-dom';
-import { DashboardOutletContext } from '../../../../pages/Dashboard/types/outletContext.types';
 import LobbyHeader from '../LobbyHeader/LobbyHeader';
+import Matches from '../Matches/Matches';
+import { Stack } from '@mui/material';
 
 type LobbyItemProps = {
     lobbyData: Lobby;
@@ -86,24 +84,8 @@ const LobbyItem: React.FC<LobbyItemProps> = (
         }
     };
 
-    const handleDeleteMatch = async (matchId: string) => {
-        if (!window.confirm('Jesteś pewien?')) return;
-        try {
-            await deleteMatch(matchId);
-            await refetchMatches();
-            await refetchLobbyLeaderboard();
-            toast.success(MESSAGES.SUCCESS.DELETED_MATCH);
-        } catch (error) {
-            if (error instanceof Error) {
-                toast.error(error.message);
-            } else {
-                toast.error(MESSAGES.ERROR.UNKNOWN)
-            }
-        }
-    };
-
     return (
-        <li>
+        <Stack>
             <LobbyHeader
                 onLeave={handleLeaveLobby}
                 onDelete={handleDeleteLobby}
@@ -116,33 +98,28 @@ const LobbyItem: React.FC<LobbyItemProps> = (
                 error={errorLobbyMembers}
             />
             {isLobbyMember
-                ? (<>
-                    <CreateMatchForm onMatchCreated={refetchMatches} onLeaderboardUpdated={refetchLobbyLeaderboard} lobbyData={lobbyData} />
-                    <LobbyLeaderboard leaderboard={leaderboard} loading={loadingLobbyLeaderboard} error={errorLobbyLeaderboard} />
-                    <h4>Matches:</h4>
-                    {errorMatches
-                        ? <p>{errorMatches}</p>
-                        : loadingMatches
-                            ? <p>Loading...</p>
-                            : matches.length === 0
-                                ? <p>Brak meczów</p>
-                                : (matches.map((match) => {
-                                    return (
-                                        <div key={match.matchId}>
-                                            {match.players.map((p) => {
-                                                return (
-                                                    <div key={p.userId}>
-                                                        <p>{p.username}: {p.score}</p>
-                                                    </div>
-                                                )
-                                            })}
-                                            <button onClick={() => handleDeleteMatch(match.matchId)}>delete match</button>
-                                        </div>
-                                    )
-                                }))
-                    }</>)
-                : ''}
-        </li>
+                ?
+                (
+                    <>
+                        <Matches
+                            matches={matches}
+                            loadingMatches={loadingMatches}
+                            errorMatches={errorMatches}
+                            refetchLobbyLeaderboard={refetchLobbyLeaderboard}
+                            refetchMatches={refetchMatches}
+                            lobbyData={lobbyData}
+                        />
+                        <LobbyLeaderboard
+                            leaderboard={leaderboard}
+                            loading={loadingLobbyLeaderboard}
+                            error={errorLobbyLeaderboard}
+                        />
+                    </>
+                )
+                :
+                ''
+            }
+        </Stack>
     )
 };
 

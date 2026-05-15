@@ -2,6 +2,8 @@ import * as Yup from 'yup';
 import { MESSAGES } from './messages';
 
 export const createMatchSchema = Yup.object({
+    gameName: Yup.string()
+        .required(MESSAGES.ERROR.REQUIRED),
     players: Yup.array()
         .of(
             Yup.object({

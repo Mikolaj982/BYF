@@ -6,6 +6,7 @@ export async function getLobbyMatches(lobbyId: string): Promise<Match[]> {
         .from('matches')
         .select(`
             id,
+            game_name,
             match_participants (
                 user_id,
                 profiles (username)
@@ -13,7 +14,9 @@ export async function getLobbyMatches(lobbyId: string): Promise<Match[]> {
             match_scores (
                 user_id,
                 score
-            )
+            ),
+            created_at,
+            created_by
             `)
         .eq('lobby_id', lobbyId);
 
@@ -41,7 +44,10 @@ export async function getLobbyMatches(lobbyId: string): Promise<Match[]> {
 
         return {
             matchId: match.id,
+            gameName: match.game_name,
             players,
+            createdAt: match.created_at,
+            owner: match.created_by
         };
     });
-};
+}; 
