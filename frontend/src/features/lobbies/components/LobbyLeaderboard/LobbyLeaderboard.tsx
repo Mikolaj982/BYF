@@ -70,6 +70,7 @@ const LobbyLeaderboard: React.FC<LobbyLeaderboardProps> = (
                                                 playerData={player}
                                                 place={index + 1}
                                                 maxScore={maxScore}
+                                                isPodium={index < 3}
                                             />
                                         </Fragment>
                                     )))
