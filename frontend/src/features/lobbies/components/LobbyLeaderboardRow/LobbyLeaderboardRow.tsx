@@ -6,18 +6,31 @@ type LobbyLeaderboardRowProps = {
     playerData: Leaderboard;
     place: number;
     maxScore: number;
+    isPodium: boolean;
 };
+
+type PodiumConfigType = Record<number, { color: string }>;
+
 
 const LobbyLeaderboardRow: React.FC<LobbyLeaderboardRowProps> = (
     {
         playerData,
         place,
-        maxScore
+        maxScore,
+        isPodium
     }
 ) => {
     const progressValue = maxScore > 0
         ? (playerData.total_score / maxScore) * 100
         : 0;
+
+    const podiumConfig: PodiumConfigType = {
+        1: { color: '#E67E22' },
+        2: { color: '#7F8C8D' },
+        3: { color: '#A04020' },
+    };
+
+    const medal = isPodium ? podiumConfig[place] : null;
 
     return (
         <Stack
@@ -31,12 +44,12 @@ const LobbyLeaderboardRow: React.FC<LobbyLeaderboardRowProps> = (
                 borderColor: '#2A2A2A',
                 transition: '0.2s ease',
                 '&:hover': {
-                    backgroundColor: '#1e1e1e',
+                    backgroundColor: medal ? `${medal?.color}15` : '#1e1e1e',
                 },
             }}
         >
             <Typography
-                color='#2a2a2a'
+                color={medal?.color ?? "#2a2a2a"}
                 fontWeight='bold'
             >
                 {place}
