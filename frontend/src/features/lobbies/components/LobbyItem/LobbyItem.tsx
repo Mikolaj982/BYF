@@ -113,6 +113,7 @@ const LobbyItem: React.FC<LobbyItemProps> = (
                             leaderboard={leaderboard}
                             loading={loadingLobbyLeaderboard}
                             error={errorLobbyLeaderboard}
+                            lobbyData={lobbyData}
                         />
                     </>
                 )

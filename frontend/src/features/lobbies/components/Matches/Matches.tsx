@@ -42,14 +42,24 @@ const Matches: React.FC<MatchesProps> = (
     };
 
     return (
-        <Stack
-            padding={3}
-            spacing={1}
-        >
+        <Stack padding={3} spacing={1}>
             <Stack direction='row' justifyContent='space-between'>
-                <Stack alignItems='baseline' gap={1}>
-                    <Typography fontSize={14} color='text.secondary'>MATCHES HISTORY</Typography>
-                    <Typography variant="body2" color="text.secondary">{matches.length} mecze</Typography>
+                <Stack
+                    alignItems='baseline'
+                    gap={1}
+                >
+                    <Typography
+                        fontSize={14}
+                        color='text.secondary'
+                    >
+                        MATCHES HISTORY
+                    </Typography>
+                    <Typography
+                        variant="body2"
+                        color="text.secondary"
+                    >
+                        {matches.length} mecze
+                    </Typography>
                 </Stack>
                 <CreateMatchForm
                     onMatchCreated={refetchMatches}
@@ -66,11 +76,16 @@ const Matches: React.FC<MatchesProps> = (
                     :
                     loadingMatches
                         ?
-                        <CircularProgress size={20} sx={{ m: 1 }} />
+                        <CircularProgress
+                            size={20}
+                            sx={{ m: 1 }}
+                        />
                         :
                         matches.length === 0
                             ?
-                            <Typography>History is empty</Typography>
+                            <Typography>
+                                History is empty
+                            </Typography>
                             :
                             (
                                 <Stack spacing={1}>
