@@ -23,6 +23,28 @@ const LobbyLeaderboard: React.FC<LobbyLeaderboardProps> = (
     const lobbyName = lobbyData.game_type;
     const leaderboardPlayersCount = leaderboard.length;
     const sortedLeaderboard = leaderboard.toSorted((a, b) => b.total_score - a.total_score);
+    const sortedPlayersScoresWithDraw = sortedLeaderboard.reduce<(Leaderboard & { place: number })[]>(
+        (
+            acc,
+            player,
+            index,
+            arr
+        ) => {
+            const place = 1;
+            if (index === 0) {
+                acc.push({ ...player, place });
+                return acc;
+            } else {
+                const prevPlace = acc[index - 1].place;
+                if (arr[index].total_score === arr[index - 1].total_score) {
+                    acc.push({ ...player, place: prevPlace });
+                    return acc;
+                } else {
+                    acc.push({ ...player, place: prevPlace + 1 });
+                    return acc;
+                }
+            }
+        }, []);
     const maxScore = sortedLeaderboard.length > 0 ? sortedLeaderboard[0].total_score : 0;
 
     return (
@@ -62,15 +84,13 @@ const LobbyLeaderboard: React.FC<LobbyLeaderboardProps> = (
                                         brak wyników
                                     </Typography>
                                     :
-                                    (sortedLeaderboard.map((player, index) => (
+                                    (sortedPlayersScoresWithDraw.map((player, index) => (
                                         <Fragment key={index}>
                                             {index !== 0 && <Divider />}
                                             <LobbyLeaderboardRow
                                                 key={player.user_id}
                                                 playerData={player}
-                                                place={index + 1}
                                                 maxScore={maxScore}
-                                                isPodium={index < 3}
                                             />
                                         </Fragment>
                                     )))

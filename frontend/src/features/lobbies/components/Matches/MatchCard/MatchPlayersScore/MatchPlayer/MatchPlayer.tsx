@@ -1,13 +1,15 @@
 import React from 'react'
 import { Avatar, Chip, Stack, Typography } from '@mui/material'
+import { getMedal } from '../../../../../../../constants/podiumConfig';
+import { Player } from '../../../../../types/lobby.types';
 
 type MatchPlayerProps = {
-    username: string,
-    score: number,
+    playerData: Player & { place: number }
 }
 
-const MatchPlayer: React.FC<MatchPlayerProps> = ({ username, score }) => {
-    const usernameFirstLetter: string = username.split('')[0] ?? 'p';
+const MatchPlayer: React.FC<MatchPlayerProps> = ({ playerData }) => {
+    const usernameFirstLetter: string = playerData.username.split('')[0] ?? 'p';
+    const medal = getMedal(playerData.place);
 
     return (
         <Chip
@@ -30,21 +32,22 @@ const MatchPlayer: React.FC<MatchPlayerProps> = ({ username, score }) => {
                     alignItems="center"
                 >
                     <Typography sx={{ fontSize: 12, color: '#707070' }}>
-                        {username}
+                        {playerData.username}
                     </Typography>
                     <Typography sx={{ fontSize: 12, color: 'text.secondary' }}>
-                        {score}
+                        {playerData.score}
                     </Typography>
                 </Stack>
             }
             variant='outlined'
             sx={{
-                borderColor: '#2A2A2A',
-                borderWidth: 2,
+                borderColor: medal ? `${medal?.color}` : '#2A2A2A',
                 borderRadius: 6,
                 transition: '0.2s ease',
+                backgroundColor: medal ? `${medal?.color}15` : '#1e1e1e',
+
                 '&:hover': {
-                    borderColor: '#707070',
+                    borderColor: medal ? null : '#707070',
                 },
             }}
         />
