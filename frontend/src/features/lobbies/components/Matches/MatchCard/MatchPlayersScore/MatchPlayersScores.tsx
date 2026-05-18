@@ -1,12 +1,12 @@
-import React from 'react'
-import { Stack } from '@mui/material'
-import MatchPlayer from './MatchPlayer/MatchPlayer'
-import { Player } from '../../../../types/lobby.types'
-import { assignPlaces } from '../../../../../../constants/podiumConfig'
+import React from 'react';
+import { Stack } from '@mui/material';
+import MatchPlayer from './MatchPlayer/MatchPlayer';
+import { Player } from '../../../../types/lobby.types';
+import { assignPlaces } from '../../../../../../utils/podiumUtils';
 
 type MatchPlayersScoresProps = {
-    players: Player[]
-}
+    players: Player[];
+};
 
 const MatchPlayersScores: React.FC<MatchPlayersScoresProps> = ({ players }) => {
     const sortedPlayersScoresWithDraw = assignPlaces(players);
@@ -15,6 +15,6 @@ const MatchPlayersScores: React.FC<MatchPlayersScoresProps> = ({ players }) => {
             {sortedPlayersScoresWithDraw.map(player => <MatchPlayer key={player.userId} playerData={player} />)}
         </Stack>
     )
-}
+};
 
-export default MatchPlayersScores 
+export default MatchPlayersScores; 

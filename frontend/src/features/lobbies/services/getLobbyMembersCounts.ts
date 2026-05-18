@@ -4,10 +4,10 @@ export async function getLobbyMembersCounts(lobbyIds: string[]): Promise<Record<
     const { data, error } = await supabase
         .from('lobby_members')
         .select('lobby_id')
-        .in('lobby_id', lobbyIds)
+        .in('lobby_id', lobbyIds);
 
-    if (error) throw new Error(error.message)
-    if (!data) return {}
+    if (error) throw new Error(error.message);
+    if (!data) return {};
 
     const counts = data.reduce((acc, row) => {
         if (!row.lobby_id) return acc;

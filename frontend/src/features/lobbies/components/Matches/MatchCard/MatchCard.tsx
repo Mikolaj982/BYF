@@ -1,15 +1,15 @@
 import React from 'react';
 import { Divider, Paper, Stack } from '@mui/material';
-import { Lobby, Match, Player } from '../../../types/lobby.types';
+import { Match } from '../../../types/lobby.types';
 import MatchPlayersScores from './MatchPlayersScore/MatchPlayersScores';
 import MatchInfo from './MatchInfo/MatchInfo';
 import ConfirmDialog from '../../../../../shared/components/ConfirmDialog/ConfirmDialog';
 import { useAuth } from '../../../../auth/useAuth';
 
 type MatchCardProps = {
-    match: Match,
-    onDelete: (id: string) => Promise<void>
-}
+    match: Match;
+    onDelete: (id: string) => Promise<void>;
+};
 
 const MatchCard: React.FC<MatchCardProps> = ({ match, onDelete }) => {
     const { user } = useAuth();
@@ -66,7 +66,7 @@ const MatchCard: React.FC<MatchCardProps> = ({ match, onDelete }) => {
                 }
             </Stack>
         </Paper>
-    );
-}
+    )
+};
 
-export default MatchCard
+export default MatchCard;

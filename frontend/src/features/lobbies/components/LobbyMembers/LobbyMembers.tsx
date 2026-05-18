@@ -1,13 +1,13 @@
 import React from 'react';
-import LobbyMemberBar from '../LobbyMemberBar/LobbyMemberBar';
-import { LobbyMemberWithUsername } from '../../types/lobby.types';
+import LobbyMemberBarProps from '../LobbyMemberBar/LobbyMemberBar';
+import { LobbyMember } from '../../types/lobby.types';
 import { CircularProgress, Stack, Typography } from '@mui/material';
 
 type LobbyMembersProps = {
-    members: LobbyMemberWithUsername[],
-    loading: boolean,
-    error: string | null,
-}
+    members: LobbyMember[];
+    loading: boolean;
+    error: string | null;
+};
 
 const LobbyMembers: React.FC<LobbyMembersProps> = ({ members, loading, error }) => {
 
@@ -39,7 +39,7 @@ const LobbyMembers: React.FC<LobbyMembersProps> = ({ members, loading, error }) 
                                     spacing={1}
                                 >
                                     {members.map((member) => (
-                                        <LobbyMemberBar
+                                        <LobbyMemberBarProps
                                             username={member.username}
                                             key={member.userId}
                                         />

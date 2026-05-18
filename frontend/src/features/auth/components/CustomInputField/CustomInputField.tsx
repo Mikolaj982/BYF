@@ -117,7 +117,7 @@ const CustomInputField: React.FC<CustomInputProps> = forwardRef<HTMLInputElement
                 />
                 {helperText && <FormHelperText>{helperText}</FormHelperText>}
             </FormControl>
-        );
+        )
     });
 
 export default CustomInputField;

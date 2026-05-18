@@ -14,7 +14,7 @@ type MatchesProps = {
     refetchMatches: () => Promise<void>;
     refetchLobbyLeaderboard: () => Promise<void>;
     lobbyData: Lobby;
-}
+};
 
 const Matches: React.FC<MatchesProps> = (
     {
@@ -101,6 +101,6 @@ const Matches: React.FC<MatchesProps> = (
             }
         </Stack>
     )
-}
+};
 
-export default Matches
+export default Matches;

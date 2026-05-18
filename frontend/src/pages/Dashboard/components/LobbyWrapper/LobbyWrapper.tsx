@@ -9,10 +9,29 @@ import { DashboardLayoutOutletContext } from '../../types/outletContext.types';
 
 const LobbyWrapper: React.FC = () => {
     const { lobbyId } = useParams();
-    const { lobbies, refetchLobbies, loading: loadingLobbies } = useOutletContext<DashboardLayoutOutletContext>();
-    const { matches, loading: loadingMatches, error: errorMatches, refetchMatches } = useLobbyMatches(lobbyId ?? '');
-    const { leaderboard, error: errorLobbyLeaderboard, loading: loadingLobbyLeaderboard, refetchLobbyLeaderboard } = useLobbyLeaderboard(lobbyId ?? '');
-    const { lobbyMembers, loading: loadingLobbyMembers, error: errorLobbyMembers, refetchLobbyMembers } = useLobbyMembers(lobbyId ?? '');
+    const {
+        lobbies,
+        refetchLobbies,
+        loading: loadingLobbies
+    } = useOutletContext<DashboardLayoutOutletContext>();
+    const {
+        matches,
+        loading: loadingMatches,
+        error: errorMatches,
+        refetchMatches
+    } = useLobbyMatches(lobbyId ?? '');
+    const {
+        leaderboard,
+        error: errorLobbyLeaderboard,
+        loading: loadingLobbyLeaderboard,
+        refetchLobbyLeaderboard
+    } = useLobbyLeaderboard(lobbyId ?? '');
+    const {
+        lobbyMembers,
+        loading: loadingLobbyMembers,
+        error: errorLobbyMembers,
+        refetchLobbyMembers
+    } = useLobbyMembers(lobbyId ?? '');
 
 
     if (loadingLobbies) return <p>Loading...</p>
@@ -39,6 +58,6 @@ const LobbyWrapper: React.FC = () => {
             refetchLobbyMembers={refetchLobbyMembers}
         />
     )
-}
+};
 
 export default LobbyWrapper;

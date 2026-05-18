@@ -26,7 +26,7 @@ function App() {
         </Routes>
       </Router >
     </ThemeProvider>
-  );
-}
+  )
+};
 
 export default App;

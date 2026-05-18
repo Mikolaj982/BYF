@@ -14,7 +14,7 @@ export function useLobbyMembersCounts(lobbyIds: string[]) {
             setLobbyMembersCounts(data || {});
         } catch (error) {
             if (error instanceof Error) {
-                setError(error.message)
+                setError(error.message);
             }
         } finally {
             setLoading(false);
@@ -26,14 +26,13 @@ export function useLobbyMembersCounts(lobbyIds: string[]) {
             setLoading(false);
             return;
         }
-        // setLobbyMembersCounts({})
-        loadLobbyMembersCounts()
-    }, [lobbyIds])
+        loadLobbyMembersCounts();
+    }, [lobbyIds]);
 
     return {
         lobbyMembersCounts,
         loading,
         error,
         refetchLobbyMembersCounts: loadLobbyMembersCounts,
-    }
+    };
 }

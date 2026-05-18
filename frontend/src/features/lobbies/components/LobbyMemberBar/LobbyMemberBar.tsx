@@ -1,11 +1,11 @@
 import { Avatar, Chip } from '@mui/material';
 import React from 'react';
 
-type LobbyMemberBar = {
-    username: string
-}
+type LobbyMemberBarProps = {
+    username: string;
+};
 
-const LobbyMemberBar: React.FC<LobbyMemberBar> = ({ username }) => {
+const LobbyMemberBar: React.FC<LobbyMemberBarProps> = ({ username }) => {
     const usernameFirstLetter: string = username.split('')[0] ?? 'p';
     return (
         <Chip
@@ -22,7 +22,7 @@ const LobbyMemberBar: React.FC<LobbyMemberBar> = ({ username }) => {
             label={username}
             variant='outlined'
         />
-    );
+    )
 };
 
 export default LobbyMemberBar;

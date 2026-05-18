@@ -14,7 +14,7 @@ import { FormFields } from '../../../../pages/LoginRegister/LoginRegisterPage';
 interface FormProps {
     labels: FormFields[];
     isLogin: boolean;
-}
+};
 
 const Form: React.FC<FormProps> = ({ labels, isLogin }) => {
     const navigate = useNavigate();
@@ -23,17 +23,17 @@ const Form: React.FC<FormProps> = ({ labels, isLogin }) => {
         email: '',
         password: '',
         confirmPassword: '',
-    }
+    };
     const userCredientials = {
         usernameOrEmail: '',
         password: '',
-    }
+    };
     const defaultYupValues = isLogin
         ? userData
-        : userCredientials
+        : userCredientials;
 
     const defaultResolver = isLogin
-        ? loginSchema : registerSchema
+        ? loginSchema : registerSchema;
 
     const { register, handleSubmit, formState: { errors }, reset } = useForm<UserFormData>({
         defaultValues: defaultYupValues,
@@ -92,6 +92,6 @@ const Form: React.FC<FormProps> = ({ labels, isLogin }) => {
             </form>
         </div>
     )
-}
+};
 
 export default Form;

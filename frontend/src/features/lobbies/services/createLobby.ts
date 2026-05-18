@@ -1,10 +1,10 @@
 import { supabase } from "../../../shared/api/supabaseClient";
 
 export type CreateLobbyData = {
-    groupId: string,
-    gameType: string,
-    owner: string,
-}
+    groupId: string;
+    gameType: string;
+    owner: string;
+};
 
 export async function createLobby(createLobbyData: CreateLobbyData): Promise<void> {
     const { groupId, gameType, owner } = createLobbyData;
@@ -14,8 +14,8 @@ export async function createLobby(createLobbyData: CreateLobbyData): Promise<voi
             group_id: groupId,
             game_type: gameType,
             created_by: owner,
-        }])
+        }]);
 
     if (error) throw error;
-};
+}
 

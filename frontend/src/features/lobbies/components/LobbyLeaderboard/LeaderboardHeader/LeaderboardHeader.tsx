@@ -1,10 +1,10 @@
+import React from 'react';
 import { Chip, Paper, Stack, Typography } from '@mui/material';
-import React from 'react'
 
 type LeaderboardHeaderProps = {
     lobbyName: string;
     participantsCount: number;
-}
+};
 
 const LeaderboardHeader: React.FC<LeaderboardHeaderProps> = ({ lobbyName, participantsCount }) => {
     return (
@@ -44,6 +44,6 @@ const LeaderboardHeader: React.FC<LeaderboardHeaderProps> = ({ lobbyName, partic
             </Stack>
         </Paper>
     )
-}
+};
 
-export default LeaderboardHeader
+export default LeaderboardHeader;

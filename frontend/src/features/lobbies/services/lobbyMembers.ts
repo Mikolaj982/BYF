@@ -1,7 +1,7 @@
 import { supabase } from "../../../shared/api/supabaseClient";
-import { LobbyMemberWithUsername } from "../types/lobby.types";
+import { LobbyMember } from "../types/lobby.types";
 
-export async function getLobbyMembers(lobbyId: string): Promise<LobbyMemberWithUsername[]> {
+export async function getLobbyMembers(lobbyId: string): Promise<LobbyMember[]> {
     const { data, error } = await supabase
         .from('lobby_members')
         .select(`
@@ -26,4 +26,4 @@ export async function getLobbyMembers(lobbyId: string): Promise<LobbyMemberWithU
             username: profile?.username ?? 'unknown',
         }];
     });
-};
+}

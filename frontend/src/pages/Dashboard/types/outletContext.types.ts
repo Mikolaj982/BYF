@@ -6,10 +6,10 @@ export type DashboardOutletContext = {
     loading: boolean;
     error: string | null;
     refetchGroups: () => Promise<void>;
-}
+};
 
 export type DashboardLayoutOutletContext = DashboardOutletContext & {
     lobbies: Lobby[];
     loadingLobbies: boolean;
     refetchLobbies: () => Promise<void>;
-}
+};

@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 import { ToastContainer } from 'react-toastify';
 import { Outlet } from "react-router-dom";
 import Box from '@mui/material/Box';
@@ -15,8 +15,7 @@ const Dashboard: React.FC = () => {
             </Box>
             <ToastContainer />
         </Box>
-    );
+    )
 };
-
 
 export default Dashboard;

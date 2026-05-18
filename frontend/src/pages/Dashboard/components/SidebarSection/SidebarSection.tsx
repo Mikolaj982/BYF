@@ -4,24 +4,21 @@ import { UserGroup } from '../../../../features/groups/types/group.types';
 import { useNavigate } from 'react-router-dom';
 
 type SidebarSectionProps = {
-    loading: boolean,
-    groups: UserGroup[],
-    error: string | null,
-}
+    loading: boolean;
+    groups: UserGroup[];
+    error: string | null;
+};
 
 const SidebarSection: React.FC<SidebarSectionProps> = ({ loading, error, groups }) => {
 
     const navigate = useNavigate();
 
     const handleSelectGroup = (id: string) => {
-        navigate(`group/${id}`)
+        navigate(`group/${id}`);
     };
 
     return (
-        <Box
-            component='div'
-            sx={{ padding: 2 }}
-        >
+        <Box component='div' sx={{ padding: 2 }}>
             <Typography sx={{ fontSize: 14, color: 'text.secondary' }}>
                 Your groups
             </Typography>
@@ -43,13 +40,13 @@ const SidebarSection: React.FC<SidebarSectionProps> = ({ loading, error, groups 
                                         <ListItemText primary={group.name} />
                                         <Chip label={group.role} />
                                     </ListItemButton>
-                                );
+                                )
                             })}
                         </List>
                     )}
             {error && <Typography>{error}</Typography>}
         </Box>
     )
-}
+};
 
-export default SidebarSection
+export default SidebarSection;

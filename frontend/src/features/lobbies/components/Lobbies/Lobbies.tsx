@@ -1,13 +1,13 @@
-import React from 'react'
+import React from 'react';
 import { Lobby } from '../../types/lobby.types';
 import { Stack, Typography } from '@mui/material';
 import LobbyCard from '../LobbyCard/LobbyCard';
 import { useLobbyMembersCounts } from '../../hooks/useLobbyMembersCounts';
 
 type LobbiesProps = {
-    lobbies: Lobby[],
-    lobbiesIds: string[]
-}
+    lobbies: Lobby[];
+    lobbiesIds: string[];
+};
 
 const Lobbies: React.FC<LobbiesProps> = ({ lobbies, lobbiesIds }) => {
     const { lobbyMembersCounts, refetchLobbyMembersCounts, loading: loadingLobbyMembersCounts } = useLobbyMembersCounts(lobbiesIds);
@@ -31,8 +31,8 @@ const Lobbies: React.FC<LobbiesProps> = ({ lobbies, lobbiesIds }) => {
                         return (
                             <LobbyCard
                                 lobbyId={lobby.id}
-                                groupId={lobby.group_id}
-                                gameType={lobby.game_type}
+                                groupId={lobby.groupId}
+                                gameType={lobby.gameType}
                                 membersCount={membersCount}
                                 refetchLobbyMembersCounts={refetchLobbyMembersCounts}
                                 loadingLobbyMembersCounts={loadingLobbyMembersCounts}
@@ -44,6 +44,6 @@ const Lobbies: React.FC<LobbiesProps> = ({ lobbies, lobbiesIds }) => {
             </Stack>
         </Stack>
     )
-}
+};
 
 export default Lobbies;

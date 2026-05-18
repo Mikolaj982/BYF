@@ -1,11 +1,11 @@
-import React from 'react'
-import { Stack, Typography } from '@mui/material'
+import React from 'react';
+import { Stack, Typography } from '@mui/material';
 
 type MatchInfoProps = {
-    playersCount: number,
-    createdAt: string,
-    gameName: string,
-}
+    playersCount: number;
+    createdAt: string;
+    gameName: string;
+};
 
 const MatchInfo: React.FC<MatchInfoProps> = (
     {
@@ -27,6 +27,6 @@ const MatchInfo: React.FC<MatchInfoProps> = (
             </Typography>
         </Stack>
     )
-}
+};
 
-export default MatchInfo
+export default MatchInfo;

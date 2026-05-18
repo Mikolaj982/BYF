@@ -1,5 +1,5 @@
 import React from 'react';
-import { Lobby, LobbyMemberWithUsername, Match } from '../../types/lobby.types';
+import { Lobby, LobbyMember, Match } from '../../types/lobby.types';
 import LobbyMembers from '../LobbyMembers/LobbyMembers';
 import LobbyLeaderboard from '../LobbyLeaderboard/LobbyLeaderboard';
 import { leaveLobby } from '../../services/leaveLobby';
@@ -7,7 +7,7 @@ import { MESSAGES } from '../../../../utils/messages';
 import { toast } from 'react-toastify';
 import { deleteLobby } from '../../services/deleteLobby';
 import { useAuth } from '../../../auth/useAuth';
-import { Leaderboard } from '../../services/lobbyLeaderboard';
+import { Leaderboard } from '../../types/lobby.types';
 import LobbyHeader from '../LobbyHeader/LobbyHeader';
 import Matches from '../Matches/Matches';
 import { Stack } from '@mui/material';
@@ -23,11 +23,11 @@ type LobbyItemProps = {
     loadingLobbyLeaderboard: boolean;
     errorLobbyLeaderboard: string | null;
     refetchLobbyLeaderboard: () => Promise<void>;
-    lobbyMembers: LobbyMemberWithUsername[];
+    lobbyMembers: LobbyMember[];
     refetchLobbyMembers: () => Promise<void>;
     errorLobbyMembers: string | null;
     loadingLobbyMembers: boolean;
-}
+};
 
 const LobbyItem: React.FC<LobbyItemProps> = (
     {
@@ -51,7 +51,7 @@ const LobbyItem: React.FC<LobbyItemProps> = (
     const { user } = useAuth();
     if (!user) return null;
 
-    const isOwner = lobbyData.created_by === user.id;
+    const isOwner = lobbyData.createdBy === user.id;
     const isLobbyMember = lobbyMembers.some((member) => member.userId === user.id);
 
     const handleLeaveLobby = async (lobbyId: string) => {

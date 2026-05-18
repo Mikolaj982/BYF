@@ -1,17 +1,17 @@
 import React, { Fragment } from 'react';
 import LobbyLeaderboardRow from '../LobbyLeaderboardRow/LobbyLeaderboardRow';
-import { Leaderboard } from '../../services/lobbyLeaderboard';
+import { Leaderboard } from '../../types/lobby.types';
 import { CircularProgress, Divider, Paper, Stack, Typography } from '@mui/material';
 import { Lobby } from '../../types/lobby.types';
 import LeaderboardHeader from './LeaderboardHeader/LeaderboardHeader';
-import { assignPlaces } from '../../../../constants/podiumConfig';
+import { assignPlaces } from '../../../../utils/podiumUtils';
 
 type LobbyLeaderboardProps = {
     leaderboard: Leaderboard[],
     error: string | null,
     loading: boolean,
     lobbyData: Lobby,
-}
+};
 
 const LobbyLeaderboard: React.FC<LobbyLeaderboardProps> = (
     {
@@ -21,7 +21,7 @@ const LobbyLeaderboard: React.FC<LobbyLeaderboardProps> = (
         lobbyData,
     }
 ) => {
-    const lobbyName = lobbyData.game_type;
+    const lobbyName = lobbyData.gameType;
     const leaderboardPlayersCount = leaderboard.length;
     const sortedLeaderboard = leaderboard.toSorted((a, b) => b.score - a.score);
     const sortedPlayersScoresWithDraw = assignPlaces(leaderboard);
@@ -68,7 +68,7 @@ const LobbyLeaderboard: React.FC<LobbyLeaderboardProps> = (
                                         <Fragment key={index}>
                                             {index !== 0 && <Divider />}
                                             <LobbyLeaderboardRow
-                                                key={player.user_id}
+                                                key={player.userId}
                                                 playerData={player}
                                                 maxScore={maxScore}
                                             />
@@ -78,7 +78,7 @@ const LobbyLeaderboard: React.FC<LobbyLeaderboardProps> = (
                 </Stack>
             </Paper>
         </Stack>
-    );
+    )
 };
 
 export default LobbyLeaderboard;

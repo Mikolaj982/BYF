@@ -17,7 +17,19 @@ type CreateMatchFormData = {
     }[];
 };
 
-const CreateMatchForm: React.FC<{ onMatchCreated: () => Promise<void>, lobbyData: Lobby, onLeaderboardUpdated: () => Promise<void> }> = ({ onMatchCreated, lobbyData, onLeaderboardUpdated }) => {
+type CreateMatchFormProps = {
+    onMatchCreated: () => Promise<void>;
+    lobbyData: Lobby;
+    onLeaderboardUpdated: () => Promise<void>;
+};
+
+const CreateMatchForm: React.FC<CreateMatchFormProps> = (
+    {
+        onMatchCreated,
+        lobbyData,
+        onLeaderboardUpdated
+    }
+) => {
     const { lobbyMembers } = useLobbyMembers(lobbyData.id);
     const { id } = lobbyData;
     const match: CreateMatchFormData = {
@@ -33,7 +45,7 @@ const CreateMatchForm: React.FC<{ onMatchCreated: () => Promise<void>, lobbyData
 
     const submitMatchData = async (match: CreateMatchFormData) => {
         const createMatchFormDataPlusLobbyId: LobbyMatchData = {
-            lobby_id: id,
+            lobbyId: id,
             gameName: match.gameName,
             participants: match.players.map((player) => ({
                 user_id: player.userId,
@@ -54,8 +66,9 @@ const CreateMatchForm: React.FC<{ onMatchCreated: () => Promise<void>, lobbyData
             } else {
                 toast.error(MESSAGES.ERROR.UNKNOWN);
             }
-        };
+        }
     };
+
     return <>
         <Button variant='outlined' onClick={() => setOpen(true)}>+MATCH</Button>
         <Dialog open={open}>
@@ -97,7 +110,7 @@ const CreateMatchForm: React.FC<{ onMatchCreated: () => Promise<void>, lobbyData
                                         userId: member.userId,
                                         score: 0,
                                     }))
-                                );
+                                )
                             }}
                             renderTags={(value, getTagProps) => (
                                 value.map((option, index) => {
@@ -148,7 +161,7 @@ const CreateMatchForm: React.FC<{ onMatchCreated: () => Promise<void>, lobbyData
                                         />
                                     )}
                                 />
-                            );
+                            )
                         })}
                     </Stack>
                 )}

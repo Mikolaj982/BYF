@@ -1,23 +1,31 @@
-import React from 'react'
-import { Button, Paper, Stack, Typography } from '@mui/material'
-import { useNavigate, useOutletContext } from 'react-router-dom'
-import { joinLobby } from '../../services/joinLobby'
-import { toast } from 'react-toastify'
-import { MESSAGES } from '../../../../utils/messages'
-import { useAuth } from '../../../auth/useAuth'
-import { useLobbyMembers } from '../../hooks/useLobbyMembers'
-import { DashboardLayoutOutletContext } from '../../../../pages/Dashboard/types/outletContext.types'
+import React from 'react';
+import { Button, Paper, Stack, Typography } from '@mui/material';
+import { useNavigate, useOutletContext } from 'react-router-dom';
+import { joinLobby } from '../../services/joinLobby';
+import { toast } from 'react-toastify';
+import { MESSAGES } from '../../../../utils/messages';
+import { useAuth } from '../../../auth/useAuth';
+import { useLobbyMembers } from '../../hooks/useLobbyMembers';
+import { DashboardLayoutOutletContext } from '../../../../pages/Dashboard/types/outletContext.types';
 
 type LobbyCardProps = {
-    lobbyId: string,
-    groupId: string,
-    gameType: string,
-    membersCount: number,
-    loadingLobbyMembersCounts: boolean,
-    refetchLobbyMembersCounts: () => Promise<void>
-}
+    lobbyId: string;
+    groupId: string;
+    gameType: string;
+    membersCount: number;
+    loadingLobbyMembersCounts: boolean;
+    refetchLobbyMembersCounts: () => Promise<void>;
+};
 
-const LobbyCard: React.FC<LobbyCardProps> = ({ lobbyId, groupId, gameType, refetchLobbyMembersCounts, membersCount }) => {
+const LobbyCard: React.FC<LobbyCardProps> = (
+    {
+        lobbyId,
+        groupId,
+        gameType,
+        refetchLobbyMembersCounts,
+        membersCount
+    }
+) => {
     const { refetchLobbyMembers, lobbyMembers } = useLobbyMembers(lobbyId);
     const { loadingLobbies } = useOutletContext<DashboardLayoutOutletContext>();
     const navigate = useNavigate();
@@ -31,7 +39,7 @@ const LobbyCard: React.FC<LobbyCardProps> = ({ lobbyId, groupId, gameType, refet
         const joinLobbySubmitData = {
             user_id: user.id,
             lobby_id: lobbyId,
-        }
+        };
         try {
             await joinLobby(joinLobbySubmitData);
             await refetchLobbyMembers();
@@ -44,7 +52,7 @@ const LobbyCard: React.FC<LobbyCardProps> = ({ lobbyId, groupId, gameType, refet
                 toast.error(MESSAGES.ERROR.UNKNOWN);
             }
         }
-    }
+    };
 
     const handleSelectLobby = (id: string) => {
         navigate(`/dashboard/group/${groupId}/lobby/${id}`)
@@ -100,6 +108,6 @@ const LobbyCard: React.FC<LobbyCardProps> = ({ lobbyId, groupId, gameType, refet
             </Stack>
         </Paper>
     )
-}
+};
 
 export default LobbyCard;

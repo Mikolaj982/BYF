@@ -6,12 +6,12 @@ export type RegisterData = {
     email: string;
     password: string;
     confirmPassword: string;
-}
+};
 
 export type LoginData = {
     usernameOrEmail: string;
     password: string;
-}
+};
 
 export type UserFormData = RegisterData | LoginData;
 
@@ -84,6 +84,4 @@ export const userAuthService = {
         const { data } = await supabase.auth.getSession();
         return !!data.session;
     }
-
-
-} 
+}; 

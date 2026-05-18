@@ -8,7 +8,7 @@ const GroupItemWrapper: React.FC = () => {
     const { groups, loading, refetchGroups } = useOutletContext<DashboardOutletContext>();
     const { groupId } = useParams();
 
-    if (loading) return <p>Loading...</p>
+    if (loading) return <p>Loading...</p>;
 
     const selectedGroup = groups.find(group => group.id === groupId) ?? null;
 

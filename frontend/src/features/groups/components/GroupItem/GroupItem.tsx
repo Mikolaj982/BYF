@@ -12,8 +12,13 @@ import Lobbies from '../../../lobbies/components/Lobbies/Lobbies';
 import { useOutletContext } from 'react-router-dom';
 import { DashboardLayoutOutletContext } from '../../../../pages/Dashboard/types/outletContext.types';
 
-const GroupItem: React.FC<{ groupData: UserGroup, refetchGroups: () => Promise<void> }> = ({ groupData, refetchGroups }) => {
-  const { id, invite_code } = groupData;
+type GroupItemProps = {
+  groupData: UserGroup;
+  refetchGroups: () => Promise<void>;
+};
+
+const GroupItem: React.FC<GroupItemProps> = ({ groupData, refetchGroups }) => {
+  const { id, inviteCode } = groupData;
   const { lobbies, refetchLobbies } = useOutletContext<DashboardLayoutOutletContext>();
   const lobbiesIds: string[] = useMemo(() => {
     return lobbies.map(lobby => lobby.id)
@@ -57,7 +62,7 @@ const GroupItem: React.FC<{ groupData: UserGroup, refetchGroups: () => Promise<v
         refetchLobbies={refetchLobbies}
         refetchGroups={refetchGroups}
       />
-      <InviteBox inviteCode={invite_code} />
+      <InviteBox inviteCode={inviteCode} />
       <GroupMembers groupId={id} />
       <Lobbies
         lobbies={lobbies}
@@ -65,6 +70,6 @@ const GroupItem: React.FC<{ groupData: UserGroup, refetchGroups: () => Promise<v
       />
     </Stack>
   )
-}
+};
 
 export default GroupItem;

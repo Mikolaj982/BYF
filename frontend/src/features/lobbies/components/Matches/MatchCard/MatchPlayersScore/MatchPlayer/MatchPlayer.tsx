@@ -1,11 +1,11 @@
-import React from 'react'
-import { Avatar, Chip, Stack, Typography } from '@mui/material'
-import { getMedal } from '../../../../../../../constants/podiumConfig';
+import React from 'react';
+import { Avatar, Chip, Stack, Typography } from '@mui/material';
+import { getMedal } from '../../../../../../../utils/podiumUtils';
 import { Player } from '../../../../../types/lobby.types';
 
 type MatchPlayerProps = {
-    playerData: Player & { place: number }
-}
+    playerData: Player & { place: number };
+};
 
 const MatchPlayer: React.FC<MatchPlayerProps> = ({ playerData }) => {
     const usernameFirstLetter: string = playerData.username.split('')[0] ?? 'p';
@@ -52,6 +52,6 @@ const MatchPlayer: React.FC<MatchPlayerProps> = ({ playerData }) => {
             }}
         />
     )
-}
+};
 
-export default MatchPlayer
+export default MatchPlayer;
