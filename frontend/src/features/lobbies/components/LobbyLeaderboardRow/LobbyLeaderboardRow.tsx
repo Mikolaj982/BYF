@@ -10,7 +10,7 @@ type LobbyLeaderboardRowProps = {
 
 const LobbyLeaderboardRow: React.FC<LobbyLeaderboardRowProps> = ({ playerData, maxScore }) => {
     const progressValue = maxScore > 0
-        ? (playerData.total_score / maxScore) * 100
+        ? (playerData.score / maxScore) * 100
         : 0;
 
     const medal = getMedal(playerData.place);
@@ -57,7 +57,7 @@ const LobbyLeaderboardRow: React.FC<LobbyLeaderboardRowProps> = ({ playerData, m
                     }}
                 />
                 <Typography width={40} textAlign='right' color={playerData.place === 1 ? 'text.primary' : '#7f8c8d'} fontWeight='bold'>
-                    {playerData.total_score}
+                    {playerData.score}
                 </Typography>
             </Stack>
         </Stack>

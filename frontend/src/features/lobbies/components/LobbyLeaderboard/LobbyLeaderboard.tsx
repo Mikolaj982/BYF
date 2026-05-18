@@ -4,6 +4,7 @@ import { Leaderboard } from '../../services/lobbyLeaderboard';
 import { CircularProgress, Divider, Paper, Stack, Typography } from '@mui/material';
 import { Lobby } from '../../types/lobby.types';
 import LeaderboardHeader from './LeaderboardHeader/LeaderboardHeader';
+import { assignPlaces } from '../../../../constants/podiumConfig';
 
 type LobbyLeaderboardProps = {
     leaderboard: Leaderboard[],
@@ -22,30 +23,9 @@ const LobbyLeaderboard: React.FC<LobbyLeaderboardProps> = (
 ) => {
     const lobbyName = lobbyData.game_type;
     const leaderboardPlayersCount = leaderboard.length;
-    const sortedLeaderboard = leaderboard.toSorted((a, b) => b.total_score - a.total_score);
-    const sortedPlayersScoresWithDraw = sortedLeaderboard.reduce<(Leaderboard & { place: number })[]>(
-        (
-            acc,
-            player,
-            index,
-            arr
-        ) => {
-            const place = 1;
-            if (index === 0) {
-                acc.push({ ...player, place });
-                return acc;
-            } else {
-                const prevPlace = acc[index - 1].place;
-                if (arr[index].total_score === arr[index - 1].total_score) {
-                    acc.push({ ...player, place: prevPlace });
-                    return acc;
-                } else {
-                    acc.push({ ...player, place: prevPlace + 1 });
-                    return acc;
-                }
-            }
-        }, []);
-    const maxScore = sortedLeaderboard.length > 0 ? sortedLeaderboard[0].total_score : 0;
+    const sortedLeaderboard = leaderboard.toSorted((a, b) => b.score - a.score);
+    const sortedPlayersScoresWithDraw = assignPlaces(leaderboard);
+    const maxScore = sortedLeaderboard.length > 0 ? sortedLeaderboard[0].score : 0;
 
     return (
         <Stack
