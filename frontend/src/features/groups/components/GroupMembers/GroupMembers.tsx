@@ -4,8 +4,8 @@ import { useGroupMembers } from '../../hooks/useGroupMembers';
 import { CircularProgress, Stack, Typography } from '@mui/material';
 
 type GroupMembersProps = {
-    groupId: string
-}
+    groupId: string;
+};
 
 const GroupMembers: React.FC<GroupMembersProps> = ({ groupId }) => {
     const { groupMembers, loading, error } = useGroupMembers(groupId);
@@ -40,7 +40,7 @@ const GroupMembers: React.FC<GroupMembersProps> = ({ groupId }) => {
             {error && <p>{error}</p>}
         </Stack>
     )
-}
+};
 
-export default GroupMembers
+export default GroupMembers;
 

@@ -1,7 +1,7 @@
-import { Avatar, LinearProgress, Stack, Typography } from '@mui/material';
 import React from 'react';
-import { Leaderboard } from '../../services/lobbyLeaderboard';
-import { getMedal } from '../../../../constants/podiumConfig';
+import { Avatar, LinearProgress, Stack, Typography } from '@mui/material';
+import { Leaderboard } from '../../types/lobby.types';
+import { getMedal } from '../../../../utils/podiumUtils';
 
 type LobbyLeaderboardRowProps = {
     playerData: Leaderboard & { place: number };
@@ -62,6 +62,6 @@ const LobbyLeaderboardRow: React.FC<LobbyLeaderboardRowProps> = ({ playerData, m
             </Stack>
         </Stack>
     )
-}
+};
 
-export default LobbyLeaderboardRow
+export default LobbyLeaderboardRow;

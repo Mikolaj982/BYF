@@ -27,7 +27,7 @@ export function useGroupLobbies(groupId: string) {
             return
         }
         loadLobbies();
-    }, [groupId])
+    }, [groupId]);
 
     return {
         lobbies,
@@ -35,4 +35,4 @@ export function useGroupLobbies(groupId: string) {
         error,
         refetchLobbies: loadLobbies
     };
-};
+}

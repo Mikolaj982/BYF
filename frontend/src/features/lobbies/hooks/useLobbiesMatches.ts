@@ -26,7 +26,7 @@ export function useLobbyMatches(lobbyId: string) {
     useEffect(() => {
         if (!lobbyId) {
             setLoading(false);
-            return;
+            return
         }
         setMatches([]);
         loadMatches();
@@ -38,4 +38,4 @@ export function useLobbyMatches(lobbyId: string) {
         loading,
         refetchMatches: loadMatches,
     };
-};
+}

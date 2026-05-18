@@ -1,5 +1,5 @@
 import { supabase } from "../../../shared/api/supabaseClient";
-import { UserGroup } from "../types/group.types";
+import { GroupRole, UserGroup } from "../types/group.types";
 
 export async function getUserGroups(userId: string): Promise<UserGroup[]> {
     const { data, error } = await supabase
@@ -13,7 +13,7 @@ export async function getUserGroups(userId: string): Promise<UserGroup[]> {
                         invite_code
                 )`
         )
-        .eq("user_id", userId)
+        .eq("user_id", userId);
 
     if (error) throw error;
 
@@ -26,9 +26,9 @@ export async function getUserGroups(userId: string): Promise<UserGroup[]> {
             name: group.name,
             id: group.id,
             description: group.description,
-            role: item.role,
-            invite_code: group.invite_code
+            role: item.role as GroupRole,
+            inviteCode: group.invite_code
         }];
-    });
+    })
 };
 

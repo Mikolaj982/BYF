@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState } from 'react';
 import { toast } from 'react-toastify';
 import { MESSAGES } from '../../../../utils/messages';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -10,15 +10,20 @@ import { UserGroup } from '../../../groups/types/group.types';
 import { useAuth } from '../../../auth/useAuth';
 
 type CreateLobbyFormData = {
-    gameType: string,
-}
+    gameType: string;
+};
 
-const CreateLobbyForm: React.FC<{ onSuccess: () => Promise<void>, groupData: UserGroup }> = ({ onSuccess, groupData }) => {
+type CreateLobbyFormProps = {
+    onSuccess: () => Promise<void>;
+    groupData: UserGroup;
+};
+
+const CreateLobbyForm: React.FC<CreateLobbyFormProps> = ({ onSuccess, groupData }) => {
     const { user } = useAuth();
     const { id: groupId } = groupData;
     const lobby: CreateLobbyFormData = {
         gameType: '',
-    }
+    };
     const { handleSubmit, control, formState: { errors }, reset } = useForm({
         defaultValues: lobby,
         resolver: yupResolver<CreateLobbyFormData>(createLobbySchema),

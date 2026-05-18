@@ -27,7 +27,7 @@ export async function getLobbyMatches(lobbyId: string): Promise<Match[]> {
         const participants = match.match_participants;
 
         const players = participants.map(p => {
-            if (!p.user_id) throw new Error('Missing user_id')
+            if (!p.user_id) throw new Error('Missing user_id');
 
             const profile = Array.isArray(p.profiles)
                 ? p.profiles[0]
@@ -39,7 +39,7 @@ export async function getLobbyMatches(lobbyId: string): Promise<Match[]> {
                 userId: p.user_id,
                 username: profile?.username ?? 'unknown',
                 score: score?.score ?? 0
-            }
+            };
         });
 
         return {
@@ -50,4 +50,4 @@ export async function getLobbyMatches(lobbyId: string): Promise<Match[]> {
             owner: match.created_by
         };
     });
-}; 
+}

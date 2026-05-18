@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState } from 'react';
 import { toast } from 'react-toastify';
 import { MESSAGES } from '../../../../utils/messages';
 import { createGroup } from '../../services/createGroup';
@@ -7,24 +7,23 @@ import { createGroupSchema } from '../../../../utils/createGroupSchema';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Controller, useForm } from 'react-hook-form';
 import { Button, DialogContent, Dialog, DialogTitle, DialogActions, TextField } from '@mui/material';
-
-export type CreateGroupSubmitData = {
-    owner: string,
-    name: string,
-    description: string,
-}
+import { CreateGroupSubmitData } from '../../types/group.types';
 
 type CreateGroupFormData = {
-    name: string,
-    description: string,
-}
+    name: string;
+    description: string;
+};
 
-const CreateGroupForm: React.FC<{ onSuccess: () => Promise<void> }> = ({ onSuccess }) => {
+type CreateGroupFormProps = {
+    onSuccess: () => Promise<void>;
+};
+
+const CreateGroupForm: React.FC<CreateGroupFormProps> = ({ onSuccess }) => {
     const { user } = useAuth();
     const group: CreateGroupFormData = {
         name: '',
         description: '',
-    }
+    };
     const { control, handleSubmit, formState: { errors }, reset } = useForm<CreateGroupFormData>({
         defaultValues: group,
         resolver: yupResolver<CreateGroupFormData>(createGroupSchema),
@@ -35,7 +34,7 @@ const CreateGroupForm: React.FC<{ onSuccess: () => Promise<void> }> = ({ onSucce
     const submitGroupData = async (group: CreateGroupFormData) => {
         if (!user?.id) return;
 
-        const createGroupDataPlusOwnerId = {
+        const createGroupDataPlusOwnerId: CreateGroupSubmitData = {
             ...group,
             owner: user.id,
         };
@@ -43,9 +42,9 @@ const CreateGroupForm: React.FC<{ onSuccess: () => Promise<void> }> = ({ onSucce
         try {
             await createGroup(createGroupDataPlusOwnerId);
             await onSuccess();
-            reset();
             toast.success(MESSAGES.SUCCESS.CREATED_GROUP);
             setOpen(false);
+            reset();
         } catch (error: unknown) {
             if (error instanceof Error) {
                 toast.error(error.message);
@@ -53,7 +52,7 @@ const CreateGroupForm: React.FC<{ onSuccess: () => Promise<void> }> = ({ onSucce
                 toast.error(MESSAGES.ERROR.UNKNOWN);
             }
         };
-    }
+    };
 
     return <>
         <Button onClick={() => setOpen(true)} sx={{ flex: 1 }} variant='outlined'>+Create</Button>

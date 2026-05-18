@@ -1,23 +1,27 @@
-import { Controller, useForm } from 'react-hook-form'
-import { Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, FormControl, TextField, Typography } from '@mui/material'
-import { joinGroupByCode } from '../../services/joinGroupByCode'
-import { MESSAGES } from '../../../../utils/messages'
-import { toast } from 'react-toastify'
-import { useState } from 'react'
+import { Controller, useForm } from 'react-hook-form';
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField } from '@mui/material';
+import { joinGroupByCode } from '../../services/joinGroupByCode';
+import { MESSAGES } from '../../../../utils/messages';
+import { toast } from 'react-toastify';
+import { useState } from 'react';
 
-type FormValues = {
-    code: string,
-}
+type JoinGroupFormData = {
+    code: string;
+};
 
-const JoinGroupForm: React.FC<{ onSuccess: () => Promise<void> }> = ({ onSuccess }) => {
+type JoinGroupFormProps = {
+    onSuccess: () => Promise<void>;
+};
+
+const JoinGroupForm: React.FC<JoinGroupFormProps> = ({ onSuccess }) => {
     const [open, setOpen] = useState<boolean>(false);
-    const { control, handleSubmit, reset } = useForm<FormValues>({
+    const { control, handleSubmit, reset } = useForm<JoinGroupFormData>({
         defaultValues: {
             code: ''
         },
     });
 
-    const handleInviteCode = async (data: FormValues) => {
+    const handleInviteCode = async (data: JoinGroupFormData) => {
         try {
             await joinGroupByCode(data.code);
             toast.success(MESSAGES.SUCCESS.JOINED_GROUP);
@@ -30,7 +34,7 @@ const JoinGroupForm: React.FC<{ onSuccess: () => Promise<void> }> = ({ onSuccess
                 toast.error(MESSAGES.ERROR.UNKNOWN);
             }
         }
-    }
+    };
 
     return <>
         <Button onClick={() => setOpen(true)} sx={{ flex: 1 }} variant='outlined'>Join</Button>
@@ -54,10 +58,9 @@ const JoinGroupForm: React.FC<{ onSuccess: () => Promise<void> }> = ({ onSuccess
             </DialogActions>
         </Dialog>
     </>
-}
+};
 
-
-export default JoinGroupForm
+export default JoinGroupForm;
 
 
 

@@ -1,7 +1,10 @@
 import { supabase } from "../../../shared/api/supabaseClient";
-import { CreateGroupSubmitData } from "../components/CreateGroup/CreateGroupForm";
+import { CreateGroupSubmitData } from "../types/group.types";
+import { Database } from "../../../types/database.types";
 
-export async function createGroup(createGroupData: CreateGroupSubmitData): Promise<string> {
+type CreateGroupReturn = Database['public']['Functions']['create_group']['Returns'];
+
+export async function createGroup(createGroupData: CreateGroupSubmitData): Promise<CreateGroupReturn> {
     const { name, description, owner } = createGroupData;
     const { data: id, error } = await supabase.rpc('create_group', {
         input_name: name,

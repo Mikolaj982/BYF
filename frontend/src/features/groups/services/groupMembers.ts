@@ -11,7 +11,7 @@ export async function getGroupMembers(groupId: string): Promise<GroupMember[]> {
                 username
             )`
         )
-        .eq('group_id', groupId)
+        .eq('group_id', groupId);
 
     if (error) throw error;
 

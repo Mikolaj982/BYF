@@ -4,7 +4,7 @@ import React from 'react'
 const GroupMainContent = () => {
     return (
         <Stack>
-
+            {/* WIP */}
         </Stack>
     )
 }

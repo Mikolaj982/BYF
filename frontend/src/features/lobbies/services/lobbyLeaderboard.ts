@@ -1,16 +1,11 @@
 import { supabase } from "../../../shared/api/supabaseClient";
-
-export type Leaderboard = {
-    username: string;
-    score: number;
-    user_id: string;
-}
+import { Leaderboard } from "../types/lobby.types";
 
 type LeaderboardDb = {
     username: string;
     total_score: number;
     user_id: string;
-}
+};
 
 export async function getLobbyLeaderboard(lobbyId: string): Promise<Leaderboard[]> {
     const { data, error } = await supabase.rpc('get_lobby_leaderboard', { input_lobby_id: lobbyId });
@@ -20,7 +15,7 @@ export async function getLobbyLeaderboard(lobbyId: string): Promise<Leaderboard[
         return {
             username: row.username,
             score: row.total_score,
-            user_id: row.user_id,
+            userId: row.user_id,
         };
-    })
-};
+    });
+}

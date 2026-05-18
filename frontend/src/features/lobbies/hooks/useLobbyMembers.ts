@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
-import { LobbyMemberWithUsername } from "../types/lobby.types";
+import { LobbyMember } from "../types/lobby.types";
 import { getLobbyMembers } from "../services/lobbyMembers";
 
 export function useLobbyMembers(lobbyId: string) {
-    const [lobbyMembers, setLobbyMembers] = useState<LobbyMemberWithUsername[]>([]);
+    const [lobbyMembers, setLobbyMembers] = useState<LobbyMember[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
 
@@ -15,7 +15,7 @@ export function useLobbyMembers(lobbyId: string) {
             setLobbyMembers(data || []);
         } catch (error) {
             if (error instanceof Error) {
-                setError(error.message)
+                setError(error.message);
             }
         } finally {
             setLoading(false);
@@ -36,7 +36,7 @@ export function useLobbyMembers(lobbyId: string) {
         loading,
         error,
         refetchLobbyMembers: loadLobbyMembers,
-    }
-};
+    };
+}
 
 

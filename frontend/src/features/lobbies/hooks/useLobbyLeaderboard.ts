@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
-import { getLobbyLeaderboard, Leaderboard } from '../services/lobbyLeaderboard';
+import { getLobbyLeaderboard } from '../services/lobbyLeaderboard';
+import { Leaderboard } from "../types/lobby.types";
 
 export function useLobbyLeaderboard(lobbyId: string) {
-    const [leaderboard, setLeaderboard] = useState<Leaderboard[]>([])
+    const [leaderboard, setLeaderboard] = useState<Leaderboard[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
 
@@ -14,7 +15,7 @@ export function useLobbyLeaderboard(lobbyId: string) {
             setLeaderboard(data || []);
         } catch (error) {
             if (error instanceof Error) {
-                setError(error.message)
+                setError(error.message);
             }
         } finally {
             setLoading(false);
@@ -35,5 +36,5 @@ export function useLobbyLeaderboard(lobbyId: string) {
         loading,
         error,
         refetchLobbyLeaderboard: loadLobbyLeaderboard,
-    }
-};
+    };
+}

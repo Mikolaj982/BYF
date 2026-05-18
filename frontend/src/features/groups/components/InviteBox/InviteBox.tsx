@@ -1,9 +1,9 @@
-import React from 'react'
-import { Button, Paper, Stack, Typography } from '@mui/material'
+import React from 'react';
+import { Button, Paper, Stack, Typography } from '@mui/material';
 
 type InviteBoxProps = {
-    inviteCode: string
-}
+    inviteCode: string;
+};
 
 const InviteBox: React.FC<InviteBoxProps> = ({ inviteCode }) => {
     return (
@@ -35,6 +35,6 @@ const InviteBox: React.FC<InviteBoxProps> = ({ inviteCode }) => {
             </Paper >
         </Stack>
     )
-}
+};
 
-export default InviteBox
+export default InviteBox;

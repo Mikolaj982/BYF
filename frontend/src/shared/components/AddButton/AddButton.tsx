@@ -6,12 +6,12 @@ type AddButton = {
     handleClick?: () => void,
     className?: string,
     label?: string,
-}
+};
 
 const AddButton: React.FC<AddButton> = ({ handleClick, className, label }) => {
     return (
         <Button aria-label='add' onClick={handleClick} className={className}>{label ? label : <AddCircleOutline />}</Button>
     )
-}
+};
 
-export default AddButton
+export default AddButton;

@@ -10,7 +10,7 @@ export async function getGroupLobbies(groupId: string): Promise<Lobby[]> {
             game_type,
             created_by
         `)
-        .eq('group_id', groupId)
+        .eq('group_id', groupId);
 
     if (error) throw error;
 
@@ -19,9 +19,9 @@ export async function getGroupLobbies(groupId: string): Promise<Lobby[]> {
 
         return [{
             id: item.id,
-            group_id: item.group_id,
-            game_type: item.game_type,
-            created_by: item.created_by
+            groupId: item.group_id,
+            gameType: item.game_type,
+            createdBy: item.created_by
         }]
     });
-};
+}

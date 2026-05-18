@@ -1,11 +1,11 @@
-import { Button, Dialog, DialogActions, DialogContent, DialogTitle } from '@mui/material'
-import React, { useState } from 'react'
+import React, { useState } from 'react';
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle } from '@mui/material';
 
 type ConfirmDialogProps = {
-    title: string,
-    description: string,
-    onConfirm: (id?: string) => void,
-}
+    title: string;
+    description: string;
+    onConfirm: (id?: string) => void;
+};
 
 const ConfirmDialog: React.FC<ConfirmDialogProps> = ({ title, description, onConfirm }) => {
     const [open, setOpen] = useState<boolean>(false);
@@ -34,6 +34,6 @@ const ConfirmDialog: React.FC<ConfirmDialogProps> = ({ title, description, onCon
             </DialogActions>
         </Dialog>
     </>
-}
+};
 
-export default ConfirmDialog
+export default ConfirmDialog;

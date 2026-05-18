@@ -2,7 +2,7 @@ import { supabase } from "../../../shared/api/supabaseClient";
 import { DB_ERROR_CODES } from "../../../constants/dbErrors";
 import { Database } from "../../../types/database.types";
 
-type LobbyMember = Database['public']['Tables']['lobby_members']['Insert']
+type LobbyMember = Database['public']['Tables']['lobby_members']['Insert'];
 
 export async function joinLobby(lobbyData: LobbyMember): Promise<void> {
     const { user_id: userId, lobby_id: lobbyId } = lobbyData;
@@ -12,7 +12,7 @@ export async function joinLobby(lobbyData: LobbyMember): Promise<void> {
         .insert([{
             user_id: userId,
             lobby_id: lobbyId
-        }])
+        }]);
 
     if (error) {
         if (error.code === DB_ERROR_CODES.UNIQUE_VIOLATION) {
@@ -20,4 +20,4 @@ export async function joinLobby(lobbyData: LobbyMember): Promise<void> {
         }
         throw error;
     }
-};
+}

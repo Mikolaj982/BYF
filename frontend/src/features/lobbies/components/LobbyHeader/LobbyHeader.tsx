@@ -1,14 +1,14 @@
-import React from 'react'
-import { Button, Stack, Typography } from '@mui/material'
-import ConfirmDialog from '../../../../shared/components/ConfirmDialog/ConfirmDialog'
-import { Lobby } from '../../types/lobby.types'
+import React from 'react';
+import { Button, Stack, Typography } from '@mui/material';
+import ConfirmDialog from '../../../../shared/components/ConfirmDialog/ConfirmDialog';
+import { Lobby } from '../../types/lobby.types';
 
 type LobbyHeaderProps = {
-    onLeave: (id: string) => void,
-    lobbyData: Lobby,
-    onDelete: (id: string) => void,
-    isOwner: boolean
-}
+    onLeave: (id: string) => void;
+    lobbyData: Lobby;
+    onDelete: (id: string) => void;
+    isOwner: boolean;
+};
 
 const LobbyHeader: React.FC<LobbyHeaderProps> = (
     {
@@ -18,7 +18,7 @@ const LobbyHeader: React.FC<LobbyHeaderProps> = (
         isOwner
     }
 ) => {
-    const { id, game_type } = lobbyData;
+    const { id, gameType } = lobbyData;
 
     return (
         <Stack
@@ -28,7 +28,7 @@ const LobbyHeader: React.FC<LobbyHeaderProps> = (
             sx={{ px: 3, py: 3, borderBottom: 1, borderColor: 'divider' }}
         >
             <Typography variant='h6'>
-                {game_type}
+                {gameType}
             </Typography>
             <Stack direction='row'>
                 {
@@ -60,6 +60,6 @@ const LobbyHeader: React.FC<LobbyHeaderProps> = (
             </Stack>
         </Stack>
     )
-}
+};
 
-export default LobbyHeader
+export default LobbyHeader;
