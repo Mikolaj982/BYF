@@ -8,6 +8,10 @@ import { createMatchSchema } from '../../../../utils/createMatchSchema';
 import { Lobby, LobbyMatchData } from '../../types/lobby.types';
 import { createMatch } from '../../services/createMatch';
 import { useLobbyMembers } from '../../hooks/useLobbyMembers';
+import { getErrorMessage } from '../../../../utils/errorUtils/getErrorMessage';
+import { LoadingState } from '../../../../shared/components/LoadingState/LoadingState';
+import { ErrorState } from '../../../../shared/components/ErrorState/ErrorState';
+import EmptyState from '../../../../shared/components/EmptyState/EmptyState';
 
 type CreateMatchFormData = {
     gameName: string;
@@ -18,19 +22,19 @@ type CreateMatchFormData = {
 };
 
 type CreateMatchFormProps = {
-    onMatchCreated: () => Promise<void>;
+    refetchMatches: () => Promise<void>;
     lobbyData: Lobby;
-    onLeaderboardUpdated: () => Promise<void>;
+    refetchLeaderboard: () => Promise<void>;
 };
 
 const CreateMatchForm: React.FC<CreateMatchFormProps> = (
     {
-        onMatchCreated,
+        refetchMatches,
         lobbyData,
-        onLeaderboardUpdated
+        refetchLeaderboard
     }
 ) => {
-    const { lobbyMembers } = useLobbyMembers(lobbyData.id);
+    const { lobbyMembers, loading: loadingLobbyMembers, error: lobbyMembersError } = useLobbyMembers(lobbyData.id);
     const { id } = lobbyData;
     const match: CreateMatchFormData = {
         gameName: '',
@@ -55,22 +59,23 @@ const CreateMatchForm: React.FC<CreateMatchFormProps> = (
 
         try {
             await createMatch(createMatchFormDataPlusLobbyId);
-            await onMatchCreated();
-            await onLeaderboardUpdated();
+            await refetchMatches();
+            await refetchLeaderboard();
             toast.success(MESSAGES.SUCCESS.CREATED_MATCH)
             setOpen(false);
             reset();
         } catch (error: unknown) {
-            if (error instanceof Error) {
-                toast.error(error.message);
-            } else {
-                toast.error(MESSAGES.ERROR.UNKNOWN);
-            }
+            toast.error(getErrorMessage(error));
         }
     };
 
     return <>
-        <Button variant='outlined' onClick={() => setOpen(true)}>+MATCH</Button>
+        <Button
+            variant='outlined'
+            onClick={() => setOpen(true)}
+        >
+            +MATCH
+        </Button>
         <Dialog open={open}>
             <DialogTitle>
                 create match
@@ -135,36 +140,44 @@ const CreateMatchForm: React.FC<CreateMatchFormProps> = (
                         />
                     )}
                 />
-                {watchedPlayers.length >= 2 && (
-                    <Stack direction='column' gap={1.5}>
-                        <Typography variant="caption" color="text.secondary">
-                            Wyniki
-                        </Typography>
-                        {watchedPlayers.map((player, index) => {
-                            const name = lobbyMembers.find(m => m.userId === player.userId)?.username;
-                            return (
-                                <Controller
-                                    key={player.userId}
-                                    name={`players.${index}.score`}
-                                    control={control}
-                                    rules={{ required: true, min: { value: 0, message: 'Min 0' } }}
-                                    render={({ field, fieldState }) => (
-                                        <TextField
-                                            {...field}
-                                            onChange={e => field.onChange(Number(e.target.value))}
-                                            label={name}
-                                            type="number"
-                                            size="small"
-                                            inputProps={{ min: 0 }}
-                                            error={!!fieldState.error}
-                                            helperText={fieldState.error?.message}
-                                        />
-                                    )}
-                                />
+                {
+                    loadingLobbyMembers
+                        ? <LoadingState />
+                        : lobbyMembersError
+                            ? <ErrorState error={lobbyMembersError} />
+                            : watchedPlayers.length >= 2 && (
+                                <Stack direction='column' gap={1.5}>
+                                    <Typography variant="caption" color="text.secondary">
+                                        Wyniki
+                                    </Typography>
+                                    {
+                                        watchedPlayers.map((player, index) => {
+                                            const name = lobbyMembers.find(m => m.userId === player.userId)?.username ?? 'Unknown';
+                                            return (
+                                                <Controller
+                                                    key={player.userId}
+                                                    name={`players.${index}.score`}
+                                                    control={control}
+                                                    rules={{ required: true, min: { value: 0, message: 'Min 0' } }}
+                                                    render={({ field, fieldState }) => (
+                                                        <TextField
+                                                            {...field}
+                                                            onChange={e => field.onChange(Number(e.target.value))}
+                                                            label={name}
+                                                            type="number"
+                                                            size="small"
+                                                            inputProps={{ min: 0 }}
+                                                            error={!!fieldState.error}
+                                                            helperText={fieldState.error?.message}
+                                                        />
+                                                    )}
+                                                />
+                                            )
+                                        })
+                                    }
+                                </Stack>
                             )
-                        })}
-                    </Stack>
-                )}
+                }
             </DialogContent>
             <DialogActions>
                 <Button onClick={handleSubmit(submitMatchData)}>Create</Button>

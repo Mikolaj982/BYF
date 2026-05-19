@@ -30,24 +30,18 @@ const GroupHeader: React.FC<GroupHeaderProps> = (
             justifyContent='space-between'
             sx={{ px: 3, py: 3, borderBottom: 1, borderColor: 'divider' }}
         >
-            <Typography variant='h6'>
-                {name}
-            </Typography>
+            <Typography variant='h6'>{name}</Typography>
             <Stack direction='row'>
                 {
                     role === GroupRole.Member
-                        ?
-                        (
-                            <Button
-                                onClick={() => handleLeaveGroup(id)}
-                                sx={{ flex: 1 }}
-                                variant='outlined'
-                            >
-                                Leave
-                            </Button>
+                        ? (
+                            <ConfirmDialog
+                                title='Leave group?'
+                                description='You will be missed.'
+                                onConfirm={() => handleLeaveGroup(id)}
+                            />
                         )
-                        :
-                        (
+                        : (
                             <Stack direction='row' spacing={2}>
                                 <ConfirmDialog
                                     title='Delete group?'
@@ -63,7 +57,8 @@ const GroupHeader: React.FC<GroupHeaderProps> = (
                                     groupData={groupData}
                                 />
                             </Stack>
-                        )}
+                        )
+                }
             </Stack>
         </Stack>
     )

@@ -1,14 +1,17 @@
 import React, { Fragment } from 'react';
 import LobbyLeaderboardRow from '../LobbyLeaderboardRow/LobbyLeaderboardRow';
 import { Leaderboard } from '../../types/lobby.types';
-import { CircularProgress, Divider, Paper, Stack, Typography } from '@mui/material';
+import { Divider, Paper, Stack, Typography } from '@mui/material';
 import { Lobby } from '../../types/lobby.types';
 import LeaderboardHeader from './LeaderboardHeader/LeaderboardHeader';
 import { assignPlaces } from '../../../../utils/podiumUtils';
+import { LoadingState } from '../../../../shared/components/LoadingState/LoadingState';
+import { ErrorState } from '../../../../shared/components/ErrorState/ErrorState';
+import EmptyState from '../../../../shared/components/EmptyState/EmptyState';
 
 type LobbyLeaderboardProps = {
     leaderboard: Leaderboard[],
-    error: string | null,
+    error: unknown,
     loading: boolean,
     lobbyData: Lobby,
 };
@@ -45,35 +48,24 @@ const LobbyLeaderboard: React.FC<LobbyLeaderboardProps> = (
                 />
                 <Stack py={1}>
                     {
-                        error
-                            ?
-                            <Typography>
-                                {error}
-                            </Typography>
-                            :
-                            loading
-                                ?
-                                <CircularProgress
-                                    size={20}
-                                    sx={{ m: 1 }}
-                                />
-                                :
-                                (leaderboard.length === 0)
-                                    ?
-                                    <Typography>
-                                        brak wyników
-                                    </Typography>
-                                    :
-                                    (sortedPlayersScoresWithDraw.map((player, index) => (
-                                        <Fragment key={index}>
-                                            {index !== 0 && <Divider />}
-                                            <LobbyLeaderboardRow
-                                                key={player.userId}
-                                                playerData={player}
-                                                maxScore={maxScore}
-                                            />
-                                        </Fragment>
-                                    )))
+                        loading
+                            ? <LoadingState />
+                            : error
+                                ? <ErrorState error={error} />
+                                : (!leaderboard.length)
+                                    ? <EmptyState message='No results yet.' />
+                                    : (
+                                        sortedPlayersScoresWithDraw.map((player, index) => (
+                                            <Fragment key={index}>
+                                                {index !== 0 && <Divider />}
+                                                <LobbyLeaderboardRow
+                                                    key={player.userId}
+                                                    playerData={player}
+                                                    maxScore={maxScore}
+                                                />
+                                            </Fragment>
+                                        ))
+                                    )
                     }
                 </Stack>
             </Paper>

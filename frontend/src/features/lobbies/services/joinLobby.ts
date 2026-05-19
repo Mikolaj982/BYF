@@ -1,6 +1,6 @@
-import { supabase } from "../../../shared/api/supabaseClient";
-import { DB_ERROR_CODES } from "../../../constants/dbErrors";
-import { Database } from "../../../types/database.types";
+import { supabase } from '../../../shared/api/supabaseClient';
+import { DB_ERROR_CODES } from '../../../constants/dbErrors';
+import { Database } from '../../../types/database.types';
 
 type LobbyMember = Database['public']['Tables']['lobby_members']['Insert'];
 
@@ -16,8 +16,8 @@ export async function joinLobby(lobbyData: LobbyMember): Promise<void> {
 
     if (error) {
         if (error.code === DB_ERROR_CODES.UNIQUE_VIOLATION) {
-            throw new Error("Już jesteś w lobby");
+            throw new Error('You are already in the lobby.');
         }
-        throw error;
+        throw new Error(error.message);
     }
 }

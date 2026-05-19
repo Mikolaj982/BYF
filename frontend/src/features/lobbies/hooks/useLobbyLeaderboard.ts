@@ -5,7 +5,7 @@ import { Leaderboard } from "../types/lobby.types";
 export function useLobbyLeaderboard(lobbyId: string) {
     const [leaderboard, setLeaderboard] = useState<Leaderboard[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
-    const [error, setError] = useState<string | null>(null);
+    const [error, setError] = useState<unknown>(null);
 
     const loadLobbyLeaderboard = async function () {
         setError(null);
@@ -14,9 +14,7 @@ export function useLobbyLeaderboard(lobbyId: string) {
             const data = await getLobbyLeaderboard(lobbyId);
             setLeaderboard(data || []);
         } catch (error) {
-            if (error instanceof Error) {
-                setError(error.message);
-            }
+            setError(error);
         } finally {
             setLoading(false);
         }

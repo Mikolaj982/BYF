@@ -5,7 +5,7 @@ import { Match } from "../types/lobby.types";
 export function useLobbyMatches(lobbyId: string) {
     const [matches, setMatches] = useState<Match[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
-    const [error, setError] = useState<string | null>(null);
+    const [error, setError] = useState<unknown>(null);
 
     const loadMatches = async function (): Promise<void> {
         setError(null);
@@ -15,9 +15,7 @@ export function useLobbyMatches(lobbyId: string) {
             const data = await getLobbyMatches(lobbyId);
             setMatches(data || []);
         } catch (error) {
-            if (error instanceof Error) {
-                setError(error.message);
-            }
+            setError(error);
         } finally {
             setLoading(false);
         }

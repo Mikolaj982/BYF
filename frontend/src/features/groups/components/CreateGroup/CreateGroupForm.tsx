@@ -8,6 +8,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { Controller, useForm } from 'react-hook-form';
 import { Button, DialogContent, Dialog, DialogTitle, DialogActions, TextField } from '@mui/material';
 import { CreateGroupSubmitData } from '../../types/group.types';
+import { getErrorMessage } from '../../../../utils/errorUtils/getErrorMessage';
 
 type CreateGroupFormData = {
     name: string;
@@ -45,13 +46,9 @@ const CreateGroupForm: React.FC<CreateGroupFormProps> = ({ onSuccess }) => {
             toast.success(MESSAGES.SUCCESS.CREATED_GROUP);
             setOpen(false);
             reset();
-        } catch (error: unknown) {
-            if (error instanceof Error) {
-                toast.error(error.message);
-            } else {
-                toast.error(MESSAGES.ERROR.UNKNOWN);
-            }
-        };
+        } catch (error) {
+            toast.error(getErrorMessage(error));
+        }
     };
 
     return <>

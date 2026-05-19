@@ -1,26 +1,28 @@
 export const MESSAGES = {
     SUCCESS: {
-        USER_REGISTERED: 'Rejestracja przebiegła pomyślnie!',
-        USER_LOGGED: 'Logowanie przebiegło pomyślnie!',
-        CREATED_GROUP: 'Utworzyłeś grupę!',
-        DELETED_GROUP: 'Grupa została usunięta.',
-        UPDATED_GROUP: 'Grupa została edytowana.',
-        CREATED_LOBBY: 'Lobby zostało utworzone!',
-        JOINED_LOBBY: 'Dołączyłeś do lobby!',
-        JOINED_GROUP: 'Dołączyłeś do grupy!',
-        LEFT_GROUP: 'Opuściłeś grupę.',
-        CREATED_MATCH: 'Utworzyłeś mecz!',
-        LEFT_LOBBY: 'Opuściłeś lobby.',
-        DELETED_LOBBY: 'Lobby usunięte.',
-        DELETED_MATCH: 'Mecz usunięty.'
+        USER_REGISTERED: 'Registration successful!',
+        USER_LOGGED: 'Logged in successfully!',
+        CREATED_GROUP: 'Group created!',
+        DELETED_GROUP: 'Group deleted.',
+        UPDATED_GROUP: 'Group updated.',
+        CREATED_LOBBY: 'Lobby created!',
+        JOINED_LOBBY: 'You joined the lobby!',
+        JOINED_GROUP: 'You joined the group!',
+        LEFT_GROUP: 'You left the group.',
+        CREATED_MATCH: 'Match created!',
+        LEFT_LOBBY: 'You left the lobby.',
+        DELETED_LOBBY: 'Lobby deleted.',
+        DELETED_MATCH: 'Match deleted.'
     },
     ERROR: {
-        REQUIRED: 'To pole jest wymagane.',
-        INVALID_EMAIL: 'Nieprawidłowy email.',
-        INVALID_PASSWORD: 'Hasło musi mieć co najmniej 8 znaków, w tym: dużą literę, małą literę, cyfrę i znak specjalny.',
-        NOT_MATCHES_PASSWORD: 'Hasła muszą być identyczne',
-        LOGIN_FAILED: 'Ups! Mamy problem z logowaniem. Sprawdź dane i spróbuj ponownie.',
-        REGISTER_FAILED: 'Ups! Mamy problem z rejestracją. Sprawdź dane i spróbuj ponownie.',
-        UNKNOWN: 'Nieznany błąd. Spróbuj ponownie.'
+        REQUIRED: 'This field is required.',
+        INVALID_EMAIL: 'Invalid email address.',
+        INVALID_PASSWORD: 'Password must be at least 8 characters long and include an uppercase letter, lowercase letter, number, and special character.',
+        NOT_MATCHES_PASSWORD: 'Passwords must match.',
+        LOGIN_FAILED: 'Login failed. Please check your credentials and try again.',
+        REGISTER_FAILED: 'Registration failed. Please check your details and try again.',
+        UNKNOWN: 'Something went wrong. Please try again.',
+        ALREADY_EXISTS: 'Already exists.',
+        LOAD_GROUPS: 'Failed to load groups. Please try again.'
     }
-};
+}

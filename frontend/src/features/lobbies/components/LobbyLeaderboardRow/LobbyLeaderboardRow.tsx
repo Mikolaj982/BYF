@@ -42,7 +42,10 @@ const LobbyLeaderboardRow: React.FC<LobbyLeaderboardRowProps> = ({ playerData, m
             <Typography>
                 {playerData.username}
             </Typography>
-            <Stack marginLeft='auto' direction='row' alignItems='center'>
+            <Stack
+                marginLeft='auto'
+                direction='row'
+                alignItems='center'>
                 <LinearProgress
                     variant='determinate'
                     value={progressValue}
@@ -56,7 +59,12 @@ const LobbyLeaderboardRow: React.FC<LobbyLeaderboardRowProps> = ({ playerData, m
                         },
                     }}
                 />
-                <Typography width={40} textAlign='right' color={playerData.place === 1 ? 'text.primary' : '#7f8c8d'} fontWeight='bold'>
+                <Typography
+                    width={40}
+                    textAlign='right'
+                    color={playerData.place === 1 ? 'text.primary' : '#7f8c8d'}
+                    fontWeight='bold'
+                >
                     {playerData.score}
                 </Typography>
             </Stack>

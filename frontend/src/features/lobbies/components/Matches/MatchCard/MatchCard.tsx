@@ -13,11 +13,10 @@ type MatchCardProps = {
 
 const MatchCard: React.FC<MatchCardProps> = ({ match, onDelete }) => {
     const { user } = useAuth();
-    if (!user) return;
-
     const { players, createdAt, owner, matchId, gameName } = match;
-    const isOwner = owner === user.id;
+    const isOwner = owner === user!.id;
     const playersCount = match.players.length;
+
     return (
         <Paper
             variant='outlined'
@@ -48,9 +47,7 @@ const MatchCard: React.FC<MatchCardProps> = ({ match, onDelete }) => {
                 />
                 <MatchPlayersScores players={players} />
                 {
-                    isOwner
-                    &&
-                    (
+                    isOwner && (
                         <Stack
                             direction='row'
                             spacing={2}

@@ -5,7 +5,7 @@ import { getGroupMembers } from "../services/groupMembers";
 export function useGroupMembers(groupId: string) {
     const [groupMembers, setGroupMembers] = useState<GroupMember[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
-    const [error, setError] = useState<string | null>(null);
+    const [error, setError] = useState<unknown>(null);
 
     const loadMembers = async function (id: string): Promise<void> {
         setError(null);
@@ -15,9 +15,7 @@ export function useGroupMembers(groupId: string) {
             const data = await getGroupMembers(id);
             setGroupMembers(data || []);
         } catch (error) {
-            if (error instanceof Error) {
-                setError(error.message);
-            }
+            setError(error);
         } finally {
             setLoading(false);
         }

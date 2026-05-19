@@ -1,12 +1,12 @@
 import React from 'react';
 import { Button, Paper, Stack, Typography } from '@mui/material';
-import { useNavigate, useOutletContext } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { joinLobby } from '../../services/joinLobby';
 import { toast } from 'react-toastify';
 import { MESSAGES } from '../../../../utils/messages';
 import { useAuth } from '../../../auth/useAuth';
 import { useLobbyMembers } from '../../hooks/useLobbyMembers';
-import { DashboardLayoutOutletContext } from '../../../../pages/Dashboard/types/outletContext.types';
+import { getErrorMessage } from '../../../../utils/errorUtils/getErrorMessage';
 
 type LobbyCardProps = {
     lobbyId: string;
@@ -26,31 +26,24 @@ const LobbyCard: React.FC<LobbyCardProps> = (
         membersCount
     }
 ) => {
-    const { refetchLobbyMembers, lobbyMembers } = useLobbyMembers(lobbyId);
-    const { loadingLobbies } = useOutletContext<DashboardLayoutOutletContext>();
-    const navigate = useNavigate();
     const { user } = useAuth();
-    if (!user) return null;
-    if (!groupId) return <p>Brak groupId</p>;
-    if (loadingLobbies) return <p>Loading...</p>;
-    const isMember = lobbyMembers.some((member) => user.id === member.userId);
+    const { refetchLobbyMembers, lobbyMembers } = useLobbyMembers(lobbyId);
+    const navigate = useNavigate();
+    const isMember = lobbyMembers.some((member) => user!.id === member.userId);
 
     const handleJoinLobby = async (lobbyId: string) => {
         const joinLobbySubmitData = {
-            user_id: user.id,
+            user_id: user!.id,
             lobby_id: lobbyId,
         };
+
         try {
             await joinLobby(joinLobbySubmitData);
             await refetchLobbyMembers();
             await refetchLobbyMembersCounts();
             toast.success(MESSAGES.SUCCESS.JOINED_LOBBY)
         } catch (error) {
-            if (error instanceof Error) {
-                toast.error(error.message);
-            } else {
-                toast.error(MESSAGES.ERROR.UNKNOWN);
-            }
+            toast.error(getErrorMessage(error));
         }
     };
 
@@ -59,10 +52,7 @@ const LobbyCard: React.FC<LobbyCardProps> = (
     };
 
     return (
-        <Paper
-            variant='outlined'
-            sx={{ p: 2 }}
-        >
+        <Paper variant='outlined' sx={{ p: 2 }}>
             <Stack>
                 <Typography>
                     {gameType}
@@ -98,10 +88,7 @@ const LobbyCard: React.FC<LobbyCardProps> = (
                     >
                         ENTER LOBBY
                     </Button>
-                    <Button
-                        color='primary'
-                        variant='outlined'
-                    >
+                    <Button color='primary' variant='outlined'>
                         RESULTS
                     </Button>
                 </Stack>

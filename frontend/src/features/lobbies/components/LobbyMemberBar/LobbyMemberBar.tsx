@@ -6,7 +6,7 @@ type LobbyMemberBarProps = {
 };
 
 const LobbyMemberBar: React.FC<LobbyMemberBarProps> = ({ username }) => {
-    const usernameFirstLetter: string = username.split('')[0] ?? 'p';
+    const usernameFirstLetter: string = username.split('')[0] ?? 'P';
     return (
         <Chip
             avatar={

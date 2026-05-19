@@ -9,6 +9,7 @@ import { updateGroupSchema } from '../../../../utils/updateGroupSchema';
 import { updateGroup } from '../../services/updateGroup';
 import { UserGroup } from '../../types/group.types';
 import { UpdateGroupFormData } from '../../types/group.types';
+import { getErrorMessage } from '../../../../utils/errorUtils/getErrorMessage';
 
 type UpdateGroupFormProps = {
     onSuccess: () => Promise<void>;
@@ -29,7 +30,6 @@ const UpdateGroupForm: React.FC<UpdateGroupFormProps> = ({ onSuccess, groupData 
 
     const submitGroupData = async (data: UpdateGroupFormData) => {
         if (!user?.id) return;
-
         try {
             await updateGroup(groupData.id, data);
             await onSuccess();
@@ -37,19 +37,27 @@ const UpdateGroupForm: React.FC<UpdateGroupFormProps> = ({ onSuccess, groupData 
             setOpen(false);
             reset();
         } catch (error: unknown) {
-            if (error instanceof Error) {
-                toast.error(error.message);
-            } else {
-                toast.error(MESSAGES.ERROR.UNKNOWN);
-            }
+            toast.error(getErrorMessage(error));
         }
     };
 
     return <>
-        <Button onClick={() => setOpen(true)} sx={{ flex: 1 }} variant='outlined'>Update</Button>
+        <Button
+            onClick={() => setOpen(true)}
+            sx={{ flex: 1 }}
+            variant='outlined'
+        >
+            Update
+        </Button>
         <Dialog open={open}>
             <DialogTitle>Update group</DialogTitle>
-            <DialogContent sx={{ display: 'flex', flexDirection: 'column', gap: 2, pt: 2 }}>
+            <DialogContent
+                sx={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: 2,
+                    pt: 2
+                }}>
                 <Controller
                     name='name'
                     control={control}

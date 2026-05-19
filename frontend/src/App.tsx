@@ -8,6 +8,7 @@ import { ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import DashboardLayout from './pages/Dashboard/components/DashboardLayout/DashboardLayout';
 import LobbyWrapper from './pages/Dashboard/components/LobbyWrapper/LobbyWrapper';
+import PrivateRoute from './features/auth/components/PrivateRoute/PrivateRoute';
 
 function App() {
   return (
@@ -16,10 +17,12 @@ function App() {
       <Router>
         <Routes>
           <Route path='/' element={<LoginRegisterPage />} />
-          <Route path='/dashboard' element={<Dashboard />}>
-            <Route path='group/:groupId' element={<DashboardLayout />}>
-              <Route index element={<GroupItemWrapper />} />
-              <Route path='lobby/:lobbyId' element={<LobbyWrapper />}>
+          <Route element={<PrivateRoute />}>
+            <Route path='/dashboard' element={<Dashboard />}>
+              <Route path='group/:groupId' element={<DashboardLayout />}>
+                <Route index element={<GroupItemWrapper />} />
+                <Route path='lobby/:lobbyId' element={<LobbyWrapper />}>
+                </Route>
               </Route>
             </Route>
           </Route>

@@ -11,21 +11,22 @@ import { Leaderboard } from '../../types/lobby.types';
 import LobbyHeader from '../LobbyHeader/LobbyHeader';
 import Matches from '../Matches/Matches';
 import { Stack } from '@mui/material';
+import { getErrorMessage } from '../../../../utils/errorUtils/getErrorMessage';
 
 type LobbyItemProps = {
     lobbyData: Lobby;
     refetchLobbies: () => Promise<void>;
     matches: Match[];
     loadingMatches: boolean;
-    errorMatches: string | null;
+    errorMatches: unknown;
     refetchMatches: () => Promise<void>;
     leaderboard: Leaderboard[];
     loadingLobbyLeaderboard: boolean;
-    errorLobbyLeaderboard: string | null;
+    errorLobbyLeaderboard: unknown;
     refetchLobbyLeaderboard: () => Promise<void>;
     lobbyMembers: LobbyMember[];
     refetchLobbyMembers: () => Promise<void>;
-    errorLobbyMembers: string | null;
+    errorLobbyMembers: unknown;
     loadingLobbyMembers: boolean;
 };
 
@@ -47,40 +48,27 @@ const LobbyItem: React.FC<LobbyItemProps> = (
         lobbyData
     }
 ) => {
-
     const { user } = useAuth();
-    if (!user) return null;
-
-    const isOwner = lobbyData.createdBy === user.id;
-    const isLobbyMember = lobbyMembers.some((member) => member.userId === user.id);
+    const isOwner = lobbyData.createdBy === user!.id;
+    const isLobbyMember = lobbyMembers.some((member) => member.userId === user!.id);
 
     const handleLeaveLobby = async (lobbyId: string) => {
-        if (!window.confirm('Jesteś pewien?')) return;
         try {
             await leaveLobby(lobbyId);
             await refetchLobbyMembers();
             toast.success(MESSAGES.SUCCESS.LEFT_LOBBY);
         } catch (error) {
-            if (error instanceof Error) {
-                toast.error(error.message);
-            } else {
-                toast.error(MESSAGES.ERROR.UNKNOWN)
-            }
+            toast.error(getErrorMessage(error));
         }
     };
 
     const handleDeleteLobby = async (lobbyId: string) => {
-        if (!window.confirm('Jesteś pewien?')) return;
         try {
             await deleteLobby(lobbyId);
             await refetchLobbies();
             toast.success(MESSAGES.SUCCESS.DELETED_LOBBY);
         } catch (error) {
-            if (error instanceof Error) {
-                toast.error(error.message);
-            } else {
-                toast.error(MESSAGES.ERROR.UNKNOWN)
-            }
+            toast.error(getErrorMessage(error));
         }
     };
 
@@ -97,9 +85,8 @@ const LobbyItem: React.FC<LobbyItemProps> = (
                 loading={loadingLobbyMembers}
                 error={errorLobbyMembers}
             />
-            {isLobbyMember
-                ?
-                (
+            {
+                isLobbyMember && (
                     <>
                         <Matches
                             matches={matches}
@@ -117,8 +104,6 @@ const LobbyItem: React.FC<LobbyItemProps> = (
                         />
                     </>
                 )
-                :
-                ''
             }
         </Stack>
     )

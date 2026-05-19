@@ -4,7 +4,7 @@ import { getLobbyMembersCounts } from "../services/getLobbyMembersCounts";
 export function useLobbyMembersCounts(lobbyIds: string[]) {
     const [lobbyMembersCounts, setLobbyMembersCounts] = useState<Record<string, number>>({});
     const [loading, setLoading] = useState<boolean>(true);
-    const [error, setError] = useState<string | null>(null);
+    const [error, setError] = useState<unknown>(null);
 
     const loadLobbyMembersCounts = async function () {
         setError(null);
@@ -13,9 +13,7 @@ export function useLobbyMembersCounts(lobbyIds: string[]) {
             const data = await getLobbyMembersCounts(lobbyIds);
             setLobbyMembersCounts(data || {});
         } catch (error) {
-            if (error instanceof Error) {
-                setError(error.message);
-            }
+            setError(error);
         } finally {
             setLoading(false);
         }
