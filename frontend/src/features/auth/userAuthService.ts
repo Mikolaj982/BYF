@@ -1,5 +1,6 @@
 import { MESSAGES } from "../../utils/messages";
 import { supabase } from "../../shared/api/supabaseClient";
+import { getErrorMessage } from "../../utils/errorUtils/getErrorMessage";
 
 export type RegisterData = {
     username: string;
@@ -47,11 +48,7 @@ export const userAuthService = {
             return data;
 
         } catch (error: unknown) {
-            let message = MESSAGES.ERROR.REGISTER_FAILED;
-            if (error instanceof Error) {
-                message = error.message;
-            }
-            throw new Error(message);
+            throw new Error(getErrorMessage(error, MESSAGES.ERROR.REGISTER_FAILED));
         }
     },
     login: async (userData: LoginData) => {
@@ -66,11 +63,7 @@ export const userAuthService = {
 
             return data;
         } catch (error: unknown) {
-            let message = MESSAGES.ERROR.REGISTER_FAILED;
-            if (error instanceof Error) {
-                message = error.message;
-            }
-            throw new Error(message);
+            throw new Error(getErrorMessage(error, MESSAGES.ERROR.LOGIN_FAILED));
         }
     },
 

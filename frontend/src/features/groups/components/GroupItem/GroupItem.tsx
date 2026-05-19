@@ -11,6 +11,7 @@ import InviteBox from '../InviteBox/InviteBox';
 import Lobbies from '../../../lobbies/components/Lobbies/Lobbies';
 import { useOutletContext } from 'react-router-dom';
 import { DashboardLayoutOutletContext } from '../../../../pages/Dashboard/types/outletContext.types';
+import { getErrorMessage } from '../../../../utils/errorUtils/getErrorMessage';
 
 type GroupItemProps = {
   groupData: UserGroup;
@@ -28,28 +29,19 @@ const GroupItem: React.FC<GroupItemProps> = ({ groupData, refetchGroups }) => {
     try {
       await deleteGroup(groupId);
       await refetchGroups();
-      toast.success(MESSAGES.SUCCESS.DELETED_GROUP)
+      toast.success(MESSAGES.SUCCESS.DELETED_GROUP);
     } catch (error) {
-      if (error instanceof Error) {
-        toast.error(error.message);
-      } else {
-        toast.error(MESSAGES.ERROR.UNKNOWN);
-      }
+      toast.error(getErrorMessage(error));
     }
   };
 
   const handleLeaveGroup = async (groupId: string) => {
-    if (!window.confirm('Jesteś pewien?')) return;
     try {
       await leaveGroup(groupId);
       await refetchGroups();
       toast.success(MESSAGES.SUCCESS.LEFT_GROUP);
     } catch (error) {
-      if (error instanceof Error) {
-        toast.error(error.message);
-      } else {
-        toast.error(MESSAGES.ERROR.UNKNOWN)
-      }
+      toast.error(getErrorMessage(error));
     }
   };
 
@@ -67,6 +59,7 @@ const GroupItem: React.FC<GroupItemProps> = ({ groupData, refetchGroups }) => {
       <Lobbies
         lobbies={lobbies}
         lobbiesIds={lobbiesIds}
+        groupData={groupData}
       />
     </Stack>
   )

@@ -4,6 +4,7 @@ import { joinGroupByCode } from '../../services/joinGroupByCode';
 import { MESSAGES } from '../../../../utils/messages';
 import { toast } from 'react-toastify';
 import { useState } from 'react';
+import { getErrorMessage } from '../../../../utils/errorUtils/getErrorMessage';
 
 type JoinGroupFormData = {
     code: string;
@@ -24,20 +25,22 @@ const JoinGroupForm: React.FC<JoinGroupFormProps> = ({ onSuccess }) => {
     const handleInviteCode = async (data: JoinGroupFormData) => {
         try {
             await joinGroupByCode(data.code);
-            toast.success(MESSAGES.SUCCESS.JOINED_GROUP);
             await onSuccess();
+            toast.success(MESSAGES.SUCCESS.JOINED_GROUP);
             reset();
         } catch (error) {
-            if (error instanceof Error) {
-                toast.error(error.message);
-            } else {
-                toast.error(MESSAGES.ERROR.UNKNOWN);
-            }
+            toast.error(getErrorMessage(error));
         }
     };
 
     return <>
-        <Button onClick={() => setOpen(true)} sx={{ flex: 1 }} variant='outlined'>Join</Button>
+        <Button
+            onClick={() => setOpen(true)}
+            sx={{ flex: 1 }}
+            variant='outlined'
+        >
+            Join
+        </Button>
         <Dialog open={open}>
             <DialogTitle>Join Group</DialogTitle>
             <DialogContent>

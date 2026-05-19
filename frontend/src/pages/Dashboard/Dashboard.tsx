@@ -6,12 +6,12 @@ import Sidebar from './components/Sidebar/Sidebar';
 import { useUserGroups } from '../../features/groups/hooks/useUserGroups';
 
 const Dashboard: React.FC = () => {
-    const { groups, loading, error, refetchGroups } = useUserGroups();
+    const { groups, loading: loadingGroups, error: groupsError, refetchGroups } = useUserGroups();
     return (
         <Box component='div' sx={{ display: 'flex', height: '100vh', bgcolor: 'background.default' }}>
-            <Sidebar groups={groups} loading={loading} error={error} refetchGroups={refetchGroups} />
+            <Sidebar groups={groups} loadingGroups={loadingGroups} groupsError={groupsError} refetchGroups={refetchGroups} />
             <Box component='div' sx={{ flex: 1, overflow: 'auto' }}>
-                <Outlet context={{ groups, loading, refetchGroups }} />
+                <Outlet context={{ groups, loadingGroups, groupsError, refetchGroups }} />
             </Box>
             <ToastContainer />
         </Box>

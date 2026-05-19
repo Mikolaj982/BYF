@@ -5,7 +5,7 @@ import { getLobbyMembers } from "../services/lobbyMembers";
 export function useLobbyMembers(lobbyId: string) {
     const [lobbyMembers, setLobbyMembers] = useState<LobbyMember[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
-    const [error, setError] = useState<string | null>(null);
+    const [error, setError] = useState<unknown>(null);
 
     const loadLobbyMembers = async function () {
         setError(null);
@@ -14,9 +14,7 @@ export function useLobbyMembers(lobbyId: string) {
             const data = await getLobbyMembers(lobbyId);
             setLobbyMembers(data || []);
         } catch (error) {
-            if (error instanceof Error) {
-                setError(error.message);
-            }
+            setError(error);
         } finally {
             setLoading(false);
         }

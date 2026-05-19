@@ -4,11 +4,21 @@ import { useGroupLobbies } from '../../../../features/lobbies/hooks/useGroupLobb
 import { DashboardOutletContext } from '../../types/outletContext.types';
 
 const DashboardLayout: React.FC = () => {
-    const { groups, loading: loadingGroups, error: groupsError, refetchGroups } = useOutletContext<DashboardOutletContext>();
+    const { groups, loadingGroups, groupsError, refetchGroups } = useOutletContext<DashboardOutletContext>();
     const { groupId } = useParams();
-    const { lobbies, loading: loadingLobbies, refetchLobbies } = useGroupLobbies(groupId ?? '');
+    const { lobbies, loading: loadingLobbies, refetchLobbies, error: lobbiesError } = useGroupLobbies(groupId ?? '');
+
     return (
-        <Outlet context={{ groups, loadingGroups, groupsError, refetchGroups, lobbies, loadingLobbies, refetchLobbies }} />
+        <Outlet context={{
+            groups,
+            loadingGroups,
+            groupsError,
+            refetchGroups,
+            lobbies,
+            loadingLobbies,
+            refetchLobbies,
+            lobbiesError
+        }} />
     )
 };
 

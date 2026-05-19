@@ -6,8 +6,8 @@ import { UserGroup } from "../types/group.types";
 export function useUserGroups() {
     const [groups, setGroups] = useState<UserGroup[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
-    const [error, setError] = useState<string | null>(null);
-    const { user } = useAuth();
+    const [error, setError] = useState<unknown>(null);
+    const { user, loading: loadingAuth } = useAuth();
 
     const loadGroups = async function () {
         if (!user) return;
@@ -18,21 +18,20 @@ export function useUserGroups() {
             setGroups(data || []);
             setError(null);
         } catch (error) {
-            if (error instanceof Error) {
-                setError(error.message)
-            }
+            setError(error);
         } finally {
             setLoading(false);
         }
     };
 
     useEffect(() => {
+        if (loadingAuth) return;
         if (!user) {
             setLoading(false);
-            return
-        };
+            return;
+        }
         loadGroups();
-    }, [user]);
+    }, [user, loadingAuth]);
 
     return {
         groups,

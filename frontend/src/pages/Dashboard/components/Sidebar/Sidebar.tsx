@@ -6,18 +6,18 @@ import SidebarHeader from '../SidebarHeader/SidebarHeader';
 import { UserGroup } from '../../../../features/groups/types/group.types';
 
 type SidebarProps = {
-    loading: boolean;
-    error: string | null;
     groups: UserGroup[];
     refetchGroups: () => Promise<void>;
+    groupsError: unknown;
+    loadingGroups: boolean;
 };
 
 const Sidebar: React.FC<SidebarProps> = (
     {
-        loading,
-        error,
         groups,
-        refetchGroups
+        refetchGroups,
+        groupsError,
+        loadingGroups,
     }
 ) => {
     return (
@@ -32,7 +32,7 @@ const Sidebar: React.FC<SidebarProps> = (
         >
             <SidebarHeader />
             <Box component='div' sx={{ flexGrow: 1, overflow: 'auto' }}>
-                <SidebarSection loading={loading} error={error} groups={groups} />
+                <SidebarSection loadingGroups={loadingGroups} groups={groups} groupsError={groupsError} refetchGroups={refetchGroups} />
             </Box>
             <SidebarBottom refetchGroups={refetchGroups} />
         </Box>

@@ -6,26 +6,32 @@ import { useLobbyMatches } from '../../../../features/lobbies/hooks/useLobbiesMa
 import LobbyItem from '../../../../features/lobbies/components/LobbyItem/LobbyItem';
 import { useLobbyMembers } from '../../../../features/lobbies/hooks/useLobbyMembers';
 import { DashboardLayoutOutletContext } from '../../types/outletContext.types';
+import { ErrorState } from '../../../../shared/components/ErrorState/ErrorState';
+import { Stack } from '@mui/material';
+import { LoadingState } from '../../../../shared/components/LoadingState/LoadingState';
 
 const LobbyWrapper: React.FC = () => {
     const { lobbyId } = useParams();
     const {
         lobbies,
         refetchLobbies,
-        loading: loadingLobbies
+        loadingLobbies
     } = useOutletContext<DashboardLayoutOutletContext>();
+
     const {
         matches,
         loading: loadingMatches,
         error: errorMatches,
         refetchMatches
     } = useLobbyMatches(lobbyId ?? '');
+
     const {
         leaderboard,
         error: errorLobbyLeaderboard,
         loading: loadingLobbyLeaderboard,
         refetchLobbyLeaderboard
     } = useLobbyLeaderboard(lobbyId ?? '');
+
     const {
         lobbyMembers,
         loading: loadingLobbyMembers,
@@ -33,12 +39,18 @@ const LobbyWrapper: React.FC = () => {
         refetchLobbyMembers
     } = useLobbyMembers(lobbyId ?? '');
 
-
-    if (loadingLobbies) return <p>Loading...</p>
-
+    if (loadingLobbies) return <LoadingState />;
     const selectedLobby = lobbies.find(lobby => lobby.id === lobbyId) ?? null;
-
-    if (!selectedLobby) return <p>Nie znaleziono lobby</p>;
+    if (!selectedLobby) return (
+        <Stack
+            alignItems="center"
+            justifyContent="center"
+            gap={2}
+            p={2}
+        >
+            <ErrorState error='Lobby not found.' />
+        </Stack>
+    );
 
     return (
         <LobbyItem

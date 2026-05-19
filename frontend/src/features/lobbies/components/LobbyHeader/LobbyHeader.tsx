@@ -33,28 +33,19 @@ const LobbyHeader: React.FC<LobbyHeaderProps> = (
             <Stack direction='row'>
                 {
                     isOwner
-                        ?
-                        (
-                            <Stack
-                                direction='row'
-                                spacing={2}
-                            >
-                                <ConfirmDialog
-                                    title='Delete lobby?'
-                                    description='This action cannot be undone.'
-                                    onConfirm={() => onDelete(id)}
-                                />
-                            </Stack>
+                        ? (
+                            <ConfirmDialog
+                                title='Delete lobby?'
+                                description='This action cannot be undone.'
+                                onConfirm={() => onDelete(id)}
+                            />
                         )
-                        :
-                        (
-                            <Button
-                                onClick={() => onLeave(id)}
-                                sx={{ flex: 1 }}
-                                variant='outlined'
-                            >
-                                Leave
-                            </Button>
+                        : (
+                            <ConfirmDialog
+                                title='Leave lobby?'
+                                description='You will be missed.'
+                                onConfirm={() => onLeave(id)}
+                            />
                         )
                 }
             </Stack>

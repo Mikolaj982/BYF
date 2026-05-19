@@ -5,17 +5,16 @@ import { getGroupLobbies } from "../services/getGroupLobbies";
 export function useGroupLobbies(groupId: string) {
     const [lobbies, setLobbies] = useState<Lobby[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
-    const [error, setError] = useState<string | null>(null);
+    const [error, setError] = useState<unknown>(null);
+
     const loadLobbies = async function () {
-        setError(null);
         setLoading(true);
         try {
             const data = await getGroupLobbies(groupId);
             setLobbies(data || []);
+            setError(null);
         } catch (error) {
-            if (error instanceof Error) {
-                setError(error.message);
-            }
+            setError(error);
         } finally {
             setLoading(false);
         }
@@ -24,7 +23,7 @@ export function useGroupLobbies(groupId: string) {
     useEffect(() => {
         if (!groupId) {
             setLoading(false);
-            return
+            return;
         }
         loadLobbies();
     }, [groupId]);
