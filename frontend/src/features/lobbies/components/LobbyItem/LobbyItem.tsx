@@ -12,6 +12,7 @@ import LobbyHeader from '../LobbyHeader/LobbyHeader';
 import Matches from '../Matches/Matches';
 import { Stack } from '@mui/material';
 import { getErrorMessage } from '../../../../utils/errorUtils/getErrorMessage';
+import { useNavigate } from 'react-router-dom';
 
 type LobbyItemProps = {
     lobbyData: Lobby;
@@ -49,8 +50,10 @@ const LobbyItem: React.FC<LobbyItemProps> = (
     }
 ) => {
     const { user } = useAuth();
+    const navigate = useNavigate();
     const isOwner = lobbyData.createdBy === user!.id;
     const isLobbyMember = lobbyMembers.some((member) => member.userId === user!.id);
+    const groupId = lobbyData.groupId;
 
     const handleLeaveLobby = async (lobbyId: string) => {
         try {
@@ -65,6 +68,7 @@ const LobbyItem: React.FC<LobbyItemProps> = (
     const handleDeleteLobby = async (lobbyId: string) => {
         try {
             await deleteLobby(lobbyId);
+            navigate(`/dashboard/group/${groupId}`);
             await refetchLobbies();
             toast.success(MESSAGES.SUCCESS.DELETED_LOBBY);
         } catch (error) {
