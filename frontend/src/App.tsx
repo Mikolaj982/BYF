@@ -1,7 +1,7 @@
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import GroupItemWrapper from './pages/Dashboard/components/GroupItemWrapper/GroupItemWrapper';
 import Dashboard from './pages/Dashboard/Dashboard';
 import LoginRegisterPage from './pages/LoginRegister/LoginRegisterPage';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import 'react-toastify/dist/ReactToastify.css';
 import { muiTheme } from './shared/theme/muiTheme';
 import { ThemeProvider } from '@mui/material/styles';
@@ -9,6 +9,7 @@ import CssBaseline from '@mui/material/CssBaseline';
 import DashboardLayout from './pages/Dashboard/components/DashboardLayout/DashboardLayout';
 import LobbyWrapper from './pages/Dashboard/components/LobbyWrapper/LobbyWrapper';
 import PrivateRoute from './features/auth/components/PrivateRoute/PrivateRoute';
+import EmptyDashboard from './pages/Dashboard/components/EmptyDashboard/EmptyDashboard';
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
           <Route path='/' element={<LoginRegisterPage />} />
           <Route element={<PrivateRoute />}>
             <Route path='/dashboard' element={<Dashboard />}>
+              <Route index element={<EmptyDashboard />} />
               <Route path='group/:groupId' element={<DashboardLayout />}>
                 <Route index element={<GroupItemWrapper />} />
                 <Route path='lobby/:lobbyId' element={<LobbyWrapper />}>

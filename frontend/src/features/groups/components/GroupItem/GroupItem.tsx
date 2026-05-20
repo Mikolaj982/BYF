@@ -12,6 +12,7 @@ import Lobbies from '../../../lobbies/components/Lobbies/Lobbies';
 import { useOutletContext } from 'react-router-dom';
 import { DashboardLayoutOutletContext } from '../../../../pages/Dashboard/types/outletContext.types';
 import { getErrorMessage } from '../../../../utils/errorUtils/getErrorMessage';
+import { useNavigate } from 'react-router-dom';
 
 type GroupItemProps = {
   groupData: UserGroup;
@@ -19,15 +20,17 @@ type GroupItemProps = {
 };
 
 const GroupItem: React.FC<GroupItemProps> = ({ groupData, refetchGroups }) => {
+  const navigate = useNavigate();
   const { id, inviteCode } = groupData;
   const { lobbies, refetchLobbies } = useOutletContext<DashboardLayoutOutletContext>();
   const lobbiesIds: string[] = useMemo(() => {
-    return lobbies.map(lobby => lobby.id)
+    return lobbies.map(lobby => lobby.id);
   }, [lobbies]);
 
   const handleDeleteGroup = async (groupId: string) => {
     try {
       await deleteGroup(groupId);
+      navigate('/dashboard');
       await refetchGroups();
       toast.success(MESSAGES.SUCCESS.DELETED_GROUP);
     } catch (error) {
