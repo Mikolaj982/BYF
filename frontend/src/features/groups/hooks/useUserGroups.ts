@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useAuth } from "../../auth/useAuth";
+import { useAuth } from "../../auth/hooks/useAuth";
 import { getUserGroups } from "../services/getGroups";
 import { UserGroup } from "../types/group.types";
 

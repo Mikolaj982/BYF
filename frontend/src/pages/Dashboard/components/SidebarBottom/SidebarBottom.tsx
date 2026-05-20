@@ -2,6 +2,7 @@ import React from 'react';
 import CreateGroupForm from '../../../../features/groups/components/CreateGroup/CreateGroupForm';
 import JoinGroupForm from '../../../../features/groups/components/JoinGroup/JoinGroup';
 import { Stack } from '@mui/material';
+import LogoutButton from '../../../../features/auth/components/LogoutButton/LogoutButton';
 
 type SidebarBottomProps = {
     refetchGroups: () => Promise<void>;
@@ -16,6 +17,7 @@ const SidebarBottom: React.FC<SidebarBottomProps> = ({ refetchGroups }) => {
         >
             <CreateGroupForm onSuccess={refetchGroups} />
             <JoinGroupForm onSuccess={refetchGroups} />
+            <LogoutButton />
         </Stack>
     )
 };

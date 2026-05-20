@@ -1,6 +1,6 @@
 import React from 'react';
 import { Typography, Box, Avatar } from '@mui/material';
-import { useAuth } from '../../../../features/auth/useAuth';
+import { useAuth } from '../../../../features/auth/hooks/useAuth';
 
 const SidebarHeader: React.FC = () => {
     const { user } = useAuth();

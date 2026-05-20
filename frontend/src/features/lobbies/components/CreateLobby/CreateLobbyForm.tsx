@@ -7,7 +7,7 @@ import { Button, Dialog, DialogTitle, TextField, DialogContent, DialogActions } 
 import { createLobby, CreateLobbyData } from '../../services/createLobby';
 import { createLobbySchema } from '../../../../utils/createLobbySchema';
 import { UserGroup } from '../../../groups/types/group.types';
-import { useAuth } from '../../../auth/useAuth';
+import { useAuth } from '../../../auth/hooks/useAuth';
 
 type CreateLobbyFormData = {
     gameType: string;

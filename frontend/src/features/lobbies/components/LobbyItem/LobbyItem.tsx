@@ -6,7 +6,7 @@ import { leaveLobby } from '../../services/leaveLobby';
 import { MESSAGES } from '../../../../utils/messages';
 import { toast } from 'react-toastify';
 import { deleteLobby } from '../../services/deleteLobby';
-import { useAuth } from '../../../auth/useAuth';
+import { useAuth } from '../../../auth/hooks/useAuth';
 import { Leaderboard } from '../../types/lobby.types';
 import LobbyHeader from '../LobbyHeader/LobbyHeader';
 import Matches from '../Matches/Matches';
