@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { toast } from 'react-toastify';
 import { MESSAGES } from '../../../../utils/messages';
 import { createGroup } from '../../services/createGroup';
-import { useAuth } from '../../../auth/useAuth';
+import { useAuth } from '../../../auth/hooks/useAuth';
 import { createGroupSchema } from '../../../../utils/createGroupSchema';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Controller, useForm } from 'react-hook-form';

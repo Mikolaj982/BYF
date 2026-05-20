@@ -2,6 +2,7 @@ export const MESSAGES = {
     SUCCESS: {
         USER_REGISTERED: 'Registration successful!',
         USER_LOGGED: 'Logged in successfully!',
+        USER_LOGGED_OUT: 'Logged out.',
         CREATED_GROUP: 'Group created!',
         DELETED_GROUP: 'Group deleted.',
         UPDATED_GROUP: 'Group updated.',

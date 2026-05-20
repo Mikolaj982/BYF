@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { joinLobby } from '../../services/joinLobby';
 import { toast } from 'react-toastify';
 import { MESSAGES } from '../../../../utils/messages';
-import { useAuth } from '../../../auth/useAuth';
+import { useAuth } from '../../../auth/hooks/useAuth';
 import { useLobbyMembers } from '../../hooks/useLobbyMembers';
 import { getErrorMessage } from '../../../../utils/errorUtils/getErrorMessage';
 

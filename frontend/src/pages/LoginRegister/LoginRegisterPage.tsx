@@ -2,8 +2,7 @@ import React, { useState } from 'react';
 import { ToastContainer } from 'react-toastify';
 import Form from '../../features/auth/components/Form/Form';
 import Typewriter from 'typewriter-effect';
-
-export type FormFields = "username" | "email" | "confirmPassword" | "password" | "usernameOrEmail";
+import { FormFields } from '../../features/auth/types/auth.types';
 
 const Register: React.FC = () => {
     const loginLabels: FormFields[] = ["usernameOrEmail", "password"];

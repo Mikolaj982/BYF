@@ -2,16 +2,17 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { registerSchema, loginSchema } from '../../../../utils/loginRegisterSchema';
 import { ThemeProvider } from '@mui/material';
 import React, { useEffect } from 'react'
-import { userAuthService, LoginData, RegisterData, UserFormData } from '../../userAuthService'
+import { userAuthService } from '../../service/userAuthService';
 import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import { MESSAGES } from '../../../../utils/messages';
 import muiTheme from './Form.styles';
 import CustomInputField from '../CustomInputField/CustomInputField';
-import { FormFields } from '../../../../pages/LoginRegister/LoginRegisterPage';
+import { FormFields, UserFormData, LoginData, RegisterData } from '../../types/auth.types';
+import { getErrorMessage } from '../../../../utils/errorUtils/getErrorMessage';
 
-interface FormProps {
+type FormProps = {
     labels: FormFields[];
     isLogin: boolean;
 };
@@ -48,21 +49,17 @@ const Form: React.FC<FormProps> = ({ labels, isLogin }) => {
         try {
             if (isLogin) {
                 await userAuthService.login(userData as LoginData);
-                reset();
                 toast.success(MESSAGES.SUCCESS.USER_LOGGED);
-                setTimeout(() => navigate('/dashboard'));
+                reset();
+                navigate('/dashboard');
             } else {
                 await userAuthService.register(userData as RegisterData);
-                reset();
                 toast.success(MESSAGES.SUCCESS.USER_REGISTERED);
-                setTimeout(() => navigate('/dashboard'));
+                reset();
+                navigate('/dashboard');
             }
         } catch (error: unknown) {
-            if (error instanceof Error) {
-                toast.error(error.message);
-            } else {
-                toast.error(MESSAGES.ERROR.UNKNOWN);
-            }
+            toast.error(getErrorMessage(error));
         };
     };
 

@@ -4,7 +4,7 @@ import { Match } from '../../../types/lobby.types';
 import MatchPlayersScores from './MatchPlayersScore/MatchPlayersScores';
 import MatchInfo from './MatchInfo/MatchInfo';
 import ConfirmDialog from '../../../../../shared/components/ConfirmDialog/ConfirmDialog';
-import { useAuth } from '../../../../auth/useAuth';
+import { useAuth } from '../../../../auth/hooks/useAuth';
 
 type MatchCardProps = {
     match: Match;

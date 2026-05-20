@@ -7,7 +7,7 @@ import IconButton from '@mui/material/IconButton';
 import FormHelperText from '@mui/material/FormHelperText';
 import { Visibility, VisibilityOff, EmailRounded, VerifiedUserRounded } from '@mui/icons-material';
 
-interface CustomInputProps {
+type CustomInputProps = {
     label: string;
     helperText?: string;
     error?: boolean;

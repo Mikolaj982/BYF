@@ -1,6 +1,6 @@
 import React from 'react';
 import { Navigate, Outlet } from 'react-router-dom';
-import { useAuth } from '../../useAuth';
+import { useAuth } from '../../hooks/useAuth';
 import { LoadingState } from '../../../../shared/components/LoadingState/LoadingState';
 
 const PrivateRoute = () => {
