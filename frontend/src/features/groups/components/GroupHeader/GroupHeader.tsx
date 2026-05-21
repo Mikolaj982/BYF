@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Stack, Typography } from '@mui/material';
+import { Stack, Typography } from '@mui/material';
 import UpdateGroupForm from '../UpdateGroup/UpdateGroupForm';
 import CreateLobbyForm from '../../../lobbies/components/CreateLobby/CreateLobbyForm';
 import { GroupRole, UserGroup } from '../../types/group.types';

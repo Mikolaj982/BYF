@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { LobbyMember } from "../types/lobby.types";
 import { getLobbyMembers } from "../services/lobbyMembers";
 
@@ -7,7 +7,7 @@ export function useLobbyMembers(lobbyId: string) {
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<unknown>(null);
 
-    const loadLobbyMembers = async function () {
+    const loadLobbyMembers = useCallback(async function () {
         setError(null);
         setLoading(true);
         try {
@@ -18,7 +18,7 @@ export function useLobbyMembers(lobbyId: string) {
         } finally {
             setLoading(false);
         }
-    };
+    }, [lobbyId]);
 
     useEffect(() => {
         if (!lobbyId) {
@@ -27,7 +27,7 @@ export function useLobbyMembers(lobbyId: string) {
         }
         setLobbyMembers([]);
         loadLobbyMembers();
-    }, [lobbyId]);
+    }, [lobbyId, loadLobbyMembers]);
 
     return {
         lobbyMembers,
