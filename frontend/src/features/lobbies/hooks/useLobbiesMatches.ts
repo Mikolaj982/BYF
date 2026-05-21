@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { getLobbyMatches } from "../services/lobbyMatchesService";
 import { Match } from "../types/lobby.types";
 
@@ -7,7 +7,7 @@ export function useLobbyMatches(lobbyId: string) {
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<unknown>(null);
 
-    const loadMatches = async function (): Promise<void> {
+    const loadMatches = useCallback(async function (): Promise<void> {
         setError(null);
         setLoading(true);
 
@@ -19,7 +19,7 @@ export function useLobbyMatches(lobbyId: string) {
         } finally {
             setLoading(false);
         }
-    };
+    }, [lobbyId]);
 
     useEffect(() => {
         if (!lobbyId) {
@@ -28,7 +28,7 @@ export function useLobbyMatches(lobbyId: string) {
         }
         setMatches([]);
         loadMatches();
-    }, [lobbyId]);
+    }, [lobbyId, loadMatches]);
 
     return {
         matches,

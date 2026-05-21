@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Stack, Typography } from '@mui/material';
+import { Stack, Typography } from '@mui/material';
 import ConfirmDialog from '../../../../shared/components/ConfirmDialog/ConfirmDialog';
 import { Lobby } from '../../types/lobby.types';
 

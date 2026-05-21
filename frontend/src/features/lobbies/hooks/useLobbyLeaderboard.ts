@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { getLobbyLeaderboard } from '../services/lobbyLeaderboard';
 import { Leaderboard } from "../types/lobby.types";
 
@@ -7,7 +7,7 @@ export function useLobbyLeaderboard(lobbyId: string) {
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<unknown>(null);
 
-    const loadLobbyLeaderboard = async function () {
+    const loadLobbyLeaderboard = useCallback(async function () {
         setError(null);
         setLoading(true);
         try {
@@ -18,7 +18,7 @@ export function useLobbyLeaderboard(lobbyId: string) {
         } finally {
             setLoading(false);
         }
-    };
+    }, [lobbyId]);
 
     useEffect(() => {
         if (!lobbyId) {
@@ -27,7 +27,7 @@ export function useLobbyLeaderboard(lobbyId: string) {
         }
         setLeaderboard([]);
         loadLobbyLeaderboard();
-    }, [lobbyId]);
+    }, [lobbyId, loadLobbyLeaderboard]);
 
     return {
         leaderboard,

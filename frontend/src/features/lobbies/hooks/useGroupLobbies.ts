@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { Lobby } from "../types/lobby.types";
 import { getGroupLobbies } from "../services/getGroupLobbies";
 
@@ -7,7 +7,7 @@ export function useGroupLobbies(groupId: string) {
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<unknown>(null);
 
-    const loadLobbies = async function () {
+    const loadLobbies = useCallback(async function () {
         setLoading(true);
         try {
             const data = await getGroupLobbies(groupId);
@@ -18,7 +18,7 @@ export function useGroupLobbies(groupId: string) {
         } finally {
             setLoading(false);
         }
-    };
+    }, [groupId]);
 
     useEffect(() => {
         if (!groupId) {
@@ -26,7 +26,7 @@ export function useGroupLobbies(groupId: string) {
             return;
         }
         loadLobbies();
-    }, [groupId]);
+    }, [groupId, loadLobbies]);
 
     return {
         lobbies,

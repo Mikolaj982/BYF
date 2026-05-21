@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { getLobbyMembersCounts } from "../services/getLobbyMembersCounts";
 
 export function useLobbyMembersCounts(lobbyIds: string[]) {
@@ -6,7 +6,7 @@ export function useLobbyMembersCounts(lobbyIds: string[]) {
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<unknown>(null);
 
-    const loadLobbyMembersCounts = async function () {
+    const loadLobbyMembersCounts = useCallback(async function () {
         setError(null);
         setLoading(true);
         try {
@@ -17,7 +17,7 @@ export function useLobbyMembersCounts(lobbyIds: string[]) {
         } finally {
             setLoading(false);
         }
-    };
+    }, [lobbyIds]);
 
     useEffect(() => {
         if (lobbyIds.length === 0) {
@@ -25,7 +25,7 @@ export function useLobbyMembersCounts(lobbyIds: string[]) {
             return;
         }
         loadLobbyMembersCounts();
-    }, [lobbyIds]);
+    }, [lobbyIds, loadLobbyMembersCounts]);
 
     return {
         lobbyMembersCounts,

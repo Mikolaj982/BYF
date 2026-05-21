@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useAuth } from "../../auth/hooks/useAuth";
 import { getUserGroups } from "../services/getGroups";
 import { UserGroup } from "../types/group.types";
@@ -9,7 +9,7 @@ export function useUserGroups() {
     const [error, setError] = useState<unknown>(null);
     const { user, loading: loadingAuth } = useAuth();
 
-    const loadGroups = async function () {
+    const loadGroups = useCallback(async function () {
         if (!user) return;
         setLoading(true);
 
@@ -22,7 +22,7 @@ export function useUserGroups() {
         } finally {
             setLoading(false);
         }
-    };
+    }, [user]);
 
     useEffect(() => {
         if (loadingAuth) return;
@@ -31,7 +31,7 @@ export function useUserGroups() {
             return;
         }
         loadGroups();
-    }, [user, loadingAuth]);
+    }, [user, loadingAuth, loadGroups]);
 
     return {
         groups,

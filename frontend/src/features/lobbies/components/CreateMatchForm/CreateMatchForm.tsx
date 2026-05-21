@@ -11,7 +11,6 @@ import { useLobbyMembers } from '../../hooks/useLobbyMembers';
 import { getErrorMessage } from '../../../../utils/errorUtils/getErrorMessage';
 import { LoadingState } from '../../../../shared/components/LoadingState/LoadingState';
 import { ErrorState } from '../../../../shared/components/ErrorState/ErrorState';
-import EmptyState from '../../../../shared/components/EmptyState/EmptyState';
 
 type CreateMatchFormData = {
     gameName: string;
