@@ -1,9 +1,12 @@
 import React from 'react';
-import { Stack, Typography } from '@mui/material';
+import { IconButton, Stack, Typography, useMediaQuery, useTheme } from '@mui/material';
 import UpdateGroupForm from '../UpdateGroup/UpdateGroupForm';
 import CreateLobbyForm from '../../../lobbies/components/CreateLobby/CreateLobbyForm';
 import { GroupRole, UserGroup } from '../../types/group.types';
 import ConfirmDialog from '../../../../shared/components/ConfirmDialog/ConfirmDialog';
+import { useOutletContext } from 'react-router-dom';
+import { DashboardLayoutOutletContext } from '../../../../pages/Dashboard/types/outletContext.types';
+import MenuIcon from '@mui/icons-material/Menu';
 
 type GroupHeaderProps = {
     handleLeaveGroup: (id: string) => void;
@@ -22,7 +25,11 @@ const GroupHeader: React.FC<GroupHeaderProps> = (
         handleDeleteGroup
     }
 ) => {
+    const { onOpenSidebar } = useOutletContext<DashboardLayoutOutletContext>();
+    const theme = useTheme();
+    const isMobile = useMediaQuery(theme.breakpoints.down('md'));
     const { id, role, name } = groupData;
+
     return (
         <Stack
             component='div'
@@ -30,7 +37,15 @@ const GroupHeader: React.FC<GroupHeaderProps> = (
             justifyContent='space-between'
             sx={{ px: 3, py: 3, borderBottom: 1, borderColor: 'divider' }}
         >
-            <Typography variant='h6'>{name}</Typography>
+            {isMobile && (
+                <IconButton
+                    onClick={onOpenSidebar}
+                    sx={{ mr: 2 }}
+                >
+                    <MenuIcon />
+                </IconButton>
+            )}
+            <Typography variant='h6' alignContent='center'>{name}</Typography>
             <Stack direction='row'>
                 {
                     role === GroupRole.Member

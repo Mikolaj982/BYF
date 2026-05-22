@@ -6,6 +6,7 @@ export type DashboardOutletContext = {
     loadingGroups: boolean;
     groupsError: unknown;
     refetchGroups: () => Promise<void>;
+    onOpenSidebar: () => void;
 };
 
 export type DashboardLayoutOutletContext = DashboardOutletContext & {
