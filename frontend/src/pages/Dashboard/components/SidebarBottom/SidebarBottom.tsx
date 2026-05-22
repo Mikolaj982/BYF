@@ -13,7 +13,13 @@ const SidebarBottom: React.FC<SidebarBottomProps> = ({ refetchGroups }) => {
         <Stack
             direction='row'
             alignItems='center'
-            sx={{ padding: 2, borderTop: 1, borderColor: 'grey.800', alignItems: 'stretch', gap: 1 }}
+            sx={{
+                padding: 2,
+                borderTop: 1,
+                borderColor: 'grey.800',
+                alignItems: 'stretch',
+                gap: 1
+            }}
         >
             <CreateGroupForm onSuccess={refetchGroups} />
             <JoinGroupForm onSuccess={refetchGroups} />

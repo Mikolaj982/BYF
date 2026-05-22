@@ -52,10 +52,16 @@ const CreateGroupForm: React.FC<CreateGroupFormProps> = ({ onSuccess }) => {
     };
 
     return <>
-        <Button onClick={() => setOpen(true)} sx={{ flex: 1 }} variant='outlined'>+Create</Button>
+        <Button
+            onClick={() => setOpen(true)}
+            sx={{ flex: 1 }}
+            variant='outlined'
+        >
+            +Create
+        </Button>
         <Dialog open={open}>
             <DialogTitle>Create group</DialogTitle>
-            <DialogContent sx={{ display: 'flex', flexDirection: 'column', gap: 2, pt: 2 }}>
+            <DialogContent>
                 <Controller
                     name='name'
                     control={control}
@@ -82,7 +88,7 @@ const CreateGroupForm: React.FC<CreateGroupFormProps> = ({ onSuccess }) => {
                 />
             </DialogContent>
             <DialogActions>
-                <Button onClick={() => setOpen(false)}>Cancel</Button>
+                <Button onClick={() => setOpen(false)} variant='outlined'>Cancel</Button>
                 <Button onClick={handleSubmit(submitGroupData)} variant='contained'>Submit</Button>
             </DialogActions>
         </Dialog>

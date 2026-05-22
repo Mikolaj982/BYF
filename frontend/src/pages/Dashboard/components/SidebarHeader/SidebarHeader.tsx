@@ -30,7 +30,7 @@ const SidebarHeader: React.FC = () => {
                 <Avatar sx={{ bgcolor: 'secondary.main' }}>
                     {usernameFirstLetter.toUpperCase()}
                 </Avatar>
-                <Typography variant='h6' sx={{ fontSize: 12 }}>
+                <Typography variant='h6'>
                     {username.toUpperCase()}
                 </Typography>
             </Box>
