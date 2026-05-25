@@ -89,26 +89,24 @@ const LobbyItem: React.FC<LobbyItemProps> = (
                 loading={loadingLobbyMembers}
                 error={errorLobbyMembers}
             />
-            {
-                isLobbyMember && (
-                    <>
-                        <Matches
-                            matches={matches}
-                            loadingMatches={loadingMatches}
-                            errorMatches={errorMatches}
-                            refetchLobbyLeaderboard={refetchLobbyLeaderboard}
-                            refetchMatches={refetchMatches}
-                            lobbyData={lobbyData}
-                        />
-                        <LobbyLeaderboard
-                            leaderboard={leaderboard}
-                            loading={loadingLobbyLeaderboard}
-                            error={errorLobbyLeaderboard}
-                            lobbyData={lobbyData}
-                        />
-                    </>
-                )
-            }
+            {isLobbyMember && (
+                <>
+                    <Matches
+                        matches={matches}
+                        loadingMatches={loadingMatches}
+                        errorMatches={errorMatches}
+                        refetchLobbyLeaderboard={refetchLobbyLeaderboard}
+                        refetchMatches={refetchMatches}
+                        lobbyData={lobbyData}
+                    />
+                    <LobbyLeaderboard
+                        leaderboard={leaderboard}
+                        loading={loadingLobbyLeaderboard}
+                        error={errorLobbyLeaderboard}
+                        lobbyData={lobbyData}
+                    />
+                </>
+            )}
         </Stack>
     )
 };

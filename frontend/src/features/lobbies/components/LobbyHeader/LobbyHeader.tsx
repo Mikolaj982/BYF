@@ -1,7 +1,12 @@
 import React from 'react';
-import { Stack, Typography } from '@mui/material';
+import { IconButton, Stack, Typography, useMediaQuery, useTheme } from '@mui/material';
 import ConfirmDialog from '../../../../shared/components/ConfirmDialog/ConfirmDialog';
 import { Lobby } from '../../types/lobby.types';
+import MenuIcon from '@mui/icons-material/Menu';
+import { useOutletContext } from 'react-router-dom';
+import { DashboardLayoutOutletContext } from '../../../../pages/Dashboard/types/outletContext.types';
+import IconMenuMobile from '../../../../shared/components/IconMenuMobile/IconMenuMobile';
+import LobbyMenuItems from './LobbyMenuItems/LobbyMenuItems';
 
 type LobbyHeaderProps = {
     onLeave: (id: string) => void;
@@ -18,6 +23,9 @@ const LobbyHeader: React.FC<LobbyHeaderProps> = (
         isOwner
     }
 ) => {
+    const { onOpenSidebar } = useOutletContext<DashboardLayoutOutletContext>();
+    const theme = useTheme();
+    const isMobile = useMediaQuery(theme.breakpoints.down('md'));
     const { id, gameType } = lobbyData;
 
     return (
@@ -27,28 +35,52 @@ const LobbyHeader: React.FC<LobbyHeaderProps> = (
             justifyContent='space-between'
             sx={{ px: 3, py: 3, borderBottom: 1, borderColor: 'divider' }}
         >
-            <Typography variant='h6'>
-                {gameType}
-            </Typography>
-            <Stack direction='row'>
-                {
-                    isOwner
-                        ? (
-                            <ConfirmDialog
-                                title='Delete lobby?'
-                                description='This action cannot be undone.'
-                                onConfirm={() => onDelete(id)}
-                            />
-                        )
-                        : (
-                            <ConfirmDialog
-                                title='Leave lobby?'
-                                description='You will be missed.'
-                                onConfirm={() => onLeave(id)}
-                            />
-                        )
-                }
-            </Stack>
+            {isMobile ? (
+                <Stack direction='row' justifyContent='space-between' width='100%'>
+                    <IconButton
+                        onClick={onOpenSidebar}
+                        sx={{ mr: 0 }}
+                    >
+                        <MenuIcon />
+                    </IconButton>
+                    <Typography alignContent='center'>{gameType}</Typography>
+                    <IconMenuMobile>
+                        <LobbyMenuItems
+                            onLeave={() => onLeave(id)}
+                            onDelete={() => onDelete(id)}
+                            lobbyData={lobbyData}
+                            isOwner={isOwner}
+                        />
+                    </IconMenuMobile>
+                </Stack>
+            ) : (
+                <>
+                    <Typography variant='h6'>
+                        {gameType}
+                    </Typography>
+                    <Stack direction='row'>
+                        {
+                            isOwner
+                                ? (
+                                    <ConfirmDialog
+                                        title='Delete lobby?'
+                                        description='This action cannot be undone.'
+                                        onConfirm={() => onDelete(id)}
+                                        label='delete'
+                                    />
+                                )
+                                : (
+                                    <ConfirmDialog
+                                        title='Leave lobby?'
+                                        description='You will be missed.'
+                                        onConfirm={() => onLeave(id)}
+                                        label='leave'
+                                    />
+                                )
+                        }
+                    </Stack>
+                </>
+            )}
         </Stack>
     )
 };

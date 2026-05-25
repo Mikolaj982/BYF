@@ -7,6 +7,8 @@ import ConfirmDialog from '../../../../shared/components/ConfirmDialog/ConfirmDi
 import { useOutletContext } from 'react-router-dom';
 import { DashboardLayoutOutletContext } from '../../../../pages/Dashboard/types/outletContext.types';
 import MenuIcon from '@mui/icons-material/Menu';
+import IconMenuMobile from '../../../../shared/components/IconMenuMobile/IconMenuMobile';
+import GroupMenuItems from './GroupMenuItems/GroupMenuItems';
 
 type GroupHeaderProps = {
     handleLeaveGroup: (id: string) => void;
@@ -35,47 +37,73 @@ const GroupHeader: React.FC<GroupHeaderProps> = (
             component='div'
             direction='row'
             justifyContent='space-between'
-            sx={{ px: 3, py: 3, borderBottom: 1, borderColor: 'divider' }}
+            sx={{
+                py: { xs: 1, md: 3 },
+                px: { xs: 1, md: 3 },
+                borderBottom: 1,
+                borderColor: 'divider',
+                flexWrap: 'wrap',
+                overflow: 'hidden'
+            }}
         >
-            {isMobile && (
-                <IconButton
-                    onClick={onOpenSidebar}
-                    sx={{ mr: 2 }}
-                >
-                    <MenuIcon />
-                </IconButton>
-            )}
-            <Typography variant='h6' alignContent='center'>{name}</Typography>
-            <Stack direction='row'>
-                {
-                    role === GroupRole.Member
-                        ? (
-                            <ConfirmDialog
-                                title='Leave group?'
-                                description='You will be missed.'
-                                onConfirm={() => handleLeaveGroup(id)}
+            {isMobile
+                ? (
+                    <Stack direction='row' justifyContent='space-between' width='100%'>
+                        <IconButton
+                            onClick={onOpenSidebar}
+                            sx={{ mr: 0 }}
+                        >
+                            <MenuIcon />
+                        </IconButton>
+                        <Typography alignContent='center'>{name}</Typography>
+                        <IconMenuMobile>
+                            <GroupMenuItems
+                                groupData={groupData}
+                                refetchGroups={refetchGroups}
+                                refetchLobbies={refetchLobbies}
+                                handleDeleteGroup={handleDeleteGroup}
+                                handleLeaveGroup={handleLeaveGroup}
                             />
-                        )
-                        : (
-                            <Stack direction='row' spacing={2}>
-                                <ConfirmDialog
-                                    title='Delete group?'
-                                    description='This action cannot be undone.'
-                                    onConfirm={() => handleDeleteGroup(id)}
-                                />
-                                <UpdateGroupForm
-                                    onSuccess={refetchGroups}
-                                    groupData={groupData}
-                                />
-                                <CreateLobbyForm
-                                    onSuccess={refetchLobbies}
-                                    groupData={groupData}
-                                />
-                            </Stack>
-                        )
-                }
-            </Stack>
-        </Stack>
+                        </IconMenuMobile>
+                    </Stack>
+                )
+                : (
+                    <>
+                        <Typography alignContent='center'>{name}</Typography>
+                        <Stack direction='row' >
+                            {
+                                role === GroupRole.Member
+                                    ? (
+                                        <ConfirmDialog
+                                            title='Leave group?'
+                                            description='You will be missed.'
+                                            onConfirm={() => handleLeaveGroup(id)}
+                                            label='leave'
+                                        />
+                                    )
+                                    : (
+                                        <Stack direction='row' spacing={{ xs: 1, md: 2 }}>
+                                            <ConfirmDialog
+                                                title='Delete group?'
+                                                description='This action cannot be undone.'
+                                                onConfirm={() => handleDeleteGroup(id)}
+                                                label='delete'
+                                            />
+                                            <UpdateGroupForm
+                                                onSuccess={refetchGroups}
+                                                groupData={groupData}
+                                            />
+                                            <CreateLobbyForm
+                                                onSuccess={refetchLobbies}
+                                                groupData={groupData}
+                                            />
+                                        </Stack>
+                                    )
+                            }
+                        </Stack>
+                    </>
+                )}
+        </Stack >
     )
 };
 

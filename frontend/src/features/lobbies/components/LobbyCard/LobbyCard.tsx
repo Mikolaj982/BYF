@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Paper, Stack, Typography } from '@mui/material';
+import { Button, Paper, Stack, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { joinLobby } from '../../services/joinLobby';
 import { toast } from 'react-toastify';
@@ -30,6 +30,8 @@ const LobbyCard: React.FC<LobbyCardProps> = (
     const { refetchLobbyMembers, lobbyMembers } = useLobbyMembers(lobbyId);
     const navigate = useNavigate();
     const isMember = lobbyMembers.some((member) => user!.id === member.userId);
+    const theme = useTheme();
+    const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
     const handleJoinLobby = async (lobbyId: string) => {
         const joinLobbySubmitData = {
@@ -52,7 +54,12 @@ const LobbyCard: React.FC<LobbyCardProps> = (
     };
 
     return (
-        <Paper variant='outlined' sx={{ p: 2 }}>
+        <Paper
+            variant='outlined'
+            sx={{
+                p: 2,
+                width: { xs: '100%', md: 'auto' }
+            }}>
             <Stack>
                 <Typography>
                     {gameType}
@@ -64,10 +71,12 @@ const LobbyCard: React.FC<LobbyCardProps> = (
                     direction='row'
                     spacing={2}
                     paddingTop={2}
+                    justifyContent='space-between'
                     sx={{
                         '& .MuiButton-root': {
-                            width: 80,
-                            minWidth: 80,
+                            width: { xs: 'stretch', md: 80 },
+                            minWidth: { xs: 'fit-content', md: 80 },
+                            height: { xs: '30px', md: 'auto' },
                             fontSize: 10,
                             padding: '2px 6px',
                         },
