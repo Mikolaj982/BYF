@@ -31,7 +31,12 @@ const EmptyDashboard: React.FC = () => {
                                             <MenuIcon />
                                         </IconButton>
                                     )}
-                                    <Stack alignItems='center' justifyContent='center' gap={2} p={2}>
+                                    <Stack
+                                        alignItems='center'
+                                        justifyContent='center'
+                                        gap={2}
+                                        p={2}
+                                    >
                                         <EmptyState message='There is no groups yet. Create new one, invite your friends. Have fun!' />
                                         <CreateGroupForm onSuccess={refetchGroups} />
                                     </Stack>
@@ -47,7 +52,12 @@ const EmptyDashboard: React.FC = () => {
                                             <MenuIcon />
                                         </IconButton>
                                     )}
-                                    <Stack alignItems='center' justifyContent='center' gap={2} p={2}>
+                                    <Stack
+                                        alignItems='center'
+                                        justifyContent='center'
+                                        gap={2}
+                                        p={2}
+                                    >
                                         <EmptyState message='Choose your group or create another one.' />
                                         <CreateGroupForm onSuccess={refetchGroups} />
                                     </Stack>

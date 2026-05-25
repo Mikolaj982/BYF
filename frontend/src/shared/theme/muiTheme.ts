@@ -71,6 +71,7 @@ export const muiTheme = createTheme({
                 root: {
                     fontSize: '1.25rem',
                     fontWeight: 600,
+                    padding: '16px',
                 },
             },
         },
@@ -87,7 +88,7 @@ export const muiTheme = createTheme({
         MuiDialogActions: {
             styleOverrides: {
                 root: {
-                    padding: '12px',
+                    padding: '16px',
                 },
             },
         },
