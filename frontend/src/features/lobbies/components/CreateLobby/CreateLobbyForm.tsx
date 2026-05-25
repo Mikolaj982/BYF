@@ -17,13 +17,15 @@ type CreateLobbyFormProps = {
     onSuccess: () => Promise<void>;
     groupData: UserGroup;
     trigger?: React.ReactNode;
+    onIconMenuClose?: () => void;
 };
 
 const CreateLobbyForm: React.FC<CreateLobbyFormProps> = (
     {
         onSuccess,
         groupData,
-        trigger
+        trigger,
+        onIconMenuClose
     }
 ) => {
     const { user } = useAuth();
@@ -95,14 +97,26 @@ const CreateLobbyForm: React.FC<CreateLobbyFormProps> = (
                     />
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={() => setOpen(false)} variant='outlined'>
+                    <Button
+                        onClick={() => {
+                            setOpen(false);
+                            onIconMenuClose?.();
+                        }}
+                        variant='outlined'
+                    >
                         Cancel
                     </Button>
-                    <Button onClick={handleSubmit(submitLobbyData)} variant='contained'>
+                    <Button
+                        onClick={handleSubmit(() => {
+                            submitLobbyData(lobby);
+                            onIconMenuClose?.();
+                        })}
+                        variant='contained'
+                    >
                         Submit
                     </Button>
                 </DialogActions>
-            </Dialog>
+            </Dialog >
         </>
     )
 };

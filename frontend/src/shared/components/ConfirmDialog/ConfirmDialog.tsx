@@ -7,6 +7,7 @@ type ConfirmDialogProps = {
     onConfirm: (id?: string) => void;
     trigger?: React.ReactNode;
     label: string;
+    onIconMenuClose?: () => void;
 };
 
 const ConfirmDialog: React.FC<ConfirmDialogProps> = (
@@ -16,6 +17,7 @@ const ConfirmDialog: React.FC<ConfirmDialogProps> = (
         onConfirm,
         trigger,
         label,
+        onIconMenuClose,
     }
 ) => {
     const [open, setOpen] = useState<boolean>(false);
@@ -25,7 +27,7 @@ const ConfirmDialog: React.FC<ConfirmDialogProps> = (
             {trigger
                 ? <Box component='span' onClick={() => setOpen(true)}>
                     {trigger}
-                </Box>
+                </Box >
                 : <Button variant='text' onClick={() => setOpen(true)}>
                     {label}
                 </Button>
@@ -38,10 +40,23 @@ const ConfirmDialog: React.FC<ConfirmDialogProps> = (
                     {description}
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={() => setOpen(false)} variant='outlined'>
+                    <Button
+                        onClick={() => {
+                            setOpen(false);
+                            onIconMenuClose?.()
+                        }}
+                        variant='outlined'
+                    >
                         Cancel
                     </Button>
-                    <Button onClick={() => onConfirm()} variant='contained'>
+                    <Button
+                        onClick={() => {
+                            onConfirm();
+                            setOpen(false);
+                            onIconMenuClose?.()
+                        }}
+                        variant='contained'
+                    >
                         Confirm
                     </Button>
                 </DialogActions>
