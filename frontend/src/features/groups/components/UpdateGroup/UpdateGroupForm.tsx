@@ -15,13 +15,15 @@ type UpdateGroupFormProps = {
     onSuccess: () => Promise<void>;
     groupData: UserGroup;
     trigger?: React.ReactNode;
+    onIconMenuClose?: () => void;
 };
 
 const UpdateGroupForm: React.FC<UpdateGroupFormProps> = (
     {
         onSuccess,
         groupData,
-        trigger
+        trigger,
+        onIconMenuClose
     }
 ) => {
     const { user } = useAuth();
@@ -97,10 +99,22 @@ const UpdateGroupForm: React.FC<UpdateGroupFormProps> = (
                     />
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={() => setOpen(false)} variant='outlined'>
+                    <Button
+                        onClick={() => {
+                            setOpen(false);
+                            onIconMenuClose?.();
+                        }}
+                        variant='outlined'>
                         Cancel
                     </Button>
-                    <Button onClick={handleSubmit(submitGroupData)} variant='contained'>
+                    <Button
+                        onClick={() => {
+                            handleSubmit(submitGroupData);
+                            setOpen(false);
+                            onIconMenuClose?.();
+                        }}
+                        variant='contained'
+                    >
                         Submit
                     </Button>
                 </DialogActions>

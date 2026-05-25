@@ -12,17 +12,14 @@ const IconMenuMobile: React.FC<IconMenuMobileProps> = ({ children }) => {
 
     const handleOpen = (e: React.MouseEvent<HTMLButtonElement>) => setAnchorEl(e.currentTarget);
     const handleClose = () => setAnchorEl(null);
+
     return (
         <Box component='div'>
             <IconButton onClick={handleOpen}>
                 <MoreVertIcon />
             </IconButton>
-            <Menu
-                anchorEl={anchorEl}
-                open={open}
-                onClose={handleClose}
-            >
-                {children}
+            <Menu anchorEl={anchorEl} open={open} onClose={handleClose}>
+                {React.cloneElement(children as React.ReactElement, { onClose: handleClose })}
             </Menu>
         </Box>
     )

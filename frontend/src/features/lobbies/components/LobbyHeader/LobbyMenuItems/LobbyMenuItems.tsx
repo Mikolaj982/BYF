@@ -8,6 +8,7 @@ type LobbyMenuItemsProps = {
     lobbyData: Lobby;
     onDelete: (id: string) => void;
     isOwner: boolean;
+    onClose?: () => void;
 };
 
 const LobbyMenuItems: React.FC<LobbyMenuItemsProps> = (
@@ -15,7 +16,8 @@ const LobbyMenuItems: React.FC<LobbyMenuItemsProps> = (
         onLeave,
         lobbyData,
         onDelete,
-        isOwner
+        isOwner,
+        onClose
     }
 ) => {
     return (
@@ -28,6 +30,7 @@ const LobbyMenuItems: React.FC<LobbyMenuItemsProps> = (
                         onConfirm={() => onDelete(lobbyData.id)}
                         label='delete'
                         trigger={<MenuItem sx={{ justifyContent: 'center' }}>DELETE</MenuItem>}
+                        onIconMenuClose={onClose}
                     />
                 )
                 : (
@@ -37,6 +40,7 @@ const LobbyMenuItems: React.FC<LobbyMenuItemsProps> = (
                         onConfirm={() => onLeave(lobbyData.id)}
                         label='leave'
                         trigger={<MenuItem sx={{ justifyContent: 'center' }}>LEAVE</MenuItem>}
+                        onIconMenuClose={onClose}
                     />
                 )}
         </>

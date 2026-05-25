@@ -12,6 +12,7 @@ type GroupMenuItemsProps = {
     refetchGroups: () => Promise<void>;
     refetchLobbies: () => Promise<void>;
     groupData: UserGroup;
+    onClose?: () => void;
 };
 
 const GroupMenuItems: React.FC<GroupMenuItemsProps> = (
@@ -20,7 +21,8 @@ const GroupMenuItems: React.FC<GroupMenuItemsProps> = (
         handleDeleteGroup,
         refetchGroups,
         refetchLobbies,
-        groupData
+        groupData,
+        onClose
     }
 ) => {
     return (
@@ -32,7 +34,8 @@ const GroupMenuItems: React.FC<GroupMenuItemsProps> = (
                         description='You will be missed.'
                         onConfirm={() => handleLeaveGroup(groupData.id)}
                         label='leave'
-                        trigger={<MenuItem sx={{ justifyContent: 'center' }}>leave</MenuItem>}
+                        trigger={<MenuItem sx={{ justifyContent: 'center' }}>LEAVE GROUP</MenuItem>}
+                        onIconMenuClose={onClose}
                     />
                 )
                 : (
@@ -42,17 +45,20 @@ const GroupMenuItems: React.FC<GroupMenuItemsProps> = (
                             description='This action cannot be undone.'
                             onConfirm={() => handleDeleteGroup(groupData.id)}
                             label='delete'
-                            trigger={<MenuItem sx={{ justifyContent: 'center' }}>delete</MenuItem>}
+                            trigger={<MenuItem sx={{ justifyContent: 'center' }}>DELETE GROUP</MenuItem>}
+                            onIconMenuClose={onClose}
                         />
                         <UpdateGroupForm
                             onSuccess={refetchGroups}
                             groupData={groupData}
-                            trigger={<MenuItem sx={{ justifyContent: 'center' }}>update</MenuItem>}
+                            trigger={<MenuItem sx={{ justifyContent: 'center' }}>UPDATE GROUP</MenuItem>}
+                            onIconMenuClose={onClose}
                         />
                         <CreateLobbyForm
                             onSuccess={refetchLobbies}
                             groupData={groupData}
-                            trigger={<MenuItem sx={{ justifyContent: 'center' }}>create</MenuItem>}
+                            trigger={<MenuItem sx={{ justifyContent: 'center' }}>CREATE LOBBY</MenuItem>}
+                            onIconMenuClose={onClose}
                         />
                     </>
                 )}
