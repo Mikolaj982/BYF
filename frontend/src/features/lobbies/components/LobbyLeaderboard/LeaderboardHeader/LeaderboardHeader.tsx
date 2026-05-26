@@ -20,7 +20,7 @@ const LeaderboardHeader: React.FC<LeaderboardHeaderProps> = ({ lobbyName, partic
                 bgcolor='#1e1e1e'
                 borderRadius='8px 8px 0 0'
             >
-                <Typography color='text.primary'>
+                <Typography color='text.primary' fontWeight='600'>
                     {lobbyName}
                 </Typography>
                 <Chip
@@ -30,7 +30,7 @@ const LeaderboardHeader: React.FC<LeaderboardHeaderProps> = ({ lobbyName, partic
                             color='text.secondary'
                             fontWeight='bold'
                         >
-                            {participantsCount} participants
+                            {participantsCount} players
                         </Typography>
                     }
                     sx={{

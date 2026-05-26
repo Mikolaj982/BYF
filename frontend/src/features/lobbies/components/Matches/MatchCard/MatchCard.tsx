@@ -5,6 +5,7 @@ import MatchPlayersScores from './MatchPlayersScore/MatchPlayersScores';
 import MatchInfo from './MatchInfo/MatchInfo';
 import ConfirmDialog from '../../../../../shared/components/ConfirmDialog/ConfirmDialog';
 import { useAuth } from '../../../../auth/hooks/useAuth';
+import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 
 type MatchCardProps = {
     match: Match;
@@ -23,9 +24,11 @@ const MatchCard: React.FC<MatchCardProps> = ({ match, onDelete }) => {
             sx={{
                 p: 2,
                 transition: '0.2s ease',
-                '&:hover': {
-                    borderColor: 'secondary.main',
-                    boxShadow: 4,
+                '@media (hover: hover)': {
+                    '&:hover': {
+                        borderColor: 'secondary.main',
+                        boxShadow: 4,
+                    },
                 },
             }}
         >
@@ -46,21 +49,21 @@ const MatchCard: React.FC<MatchCardProps> = ({ match, onDelete }) => {
 
                 />
                 <MatchPlayersScores players={players} />
-                {
-                    isOwner && (
-                        <Stack
-                            direction='row'
-                            spacing={2}
-                            sx={{ ml: 'auto !important' }}
-                        >
-                            <ConfirmDialog
-                                title='Delete match?'
-                                description='This action cannot be undone.'
-                                onConfirm={() => onDelete(matchId)}
-                            />
-                        </Stack>
-                    )
-                }
+                {isOwner && (
+                    <Stack
+                        direction='row'
+                        spacing={2}
+                        sx={{ ml: 'auto !important' }}
+                    >
+                        <ConfirmDialog
+                            title='Delete match?'
+                            description='This action cannot be undone.'
+                            onConfirm={() => onDelete(matchId)}
+                            label='DELETE'
+                            trigger={<DeleteOutlineIcon />}
+                        />
+                    </Stack>
+                )}
             </Stack>
         </Paper>
     )

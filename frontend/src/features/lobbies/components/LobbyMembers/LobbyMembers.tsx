@@ -16,7 +16,7 @@ const LobbyMembers: React.FC<LobbyMembersProps> = ({ members, loading, error }) 
 
     return (
         <Stack padding={3} spacing={1}>
-            <Typography sx={{ fontSize: 14, color: 'text.secondary' }}>
+            <Typography fontSize={14} color='text.secondary'>
                 LOBBY MEMBERS
             </Typography>
             {
@@ -27,7 +27,11 @@ const LobbyMembers: React.FC<LobbyMembersProps> = ({ members, loading, error }) 
                         : (!members.length)
                             ? <EmptyState message='No lobby members yet.' />
                             : (
-                                <Stack direction='row' spacing={1}>
+                                <Stack
+                                    direction='row'
+                                    flexWrap='wrap'
+                                    gap={1}
+                                >
                                     {
                                         members.map((member) => (
                                             <LobbyMemberBarProps

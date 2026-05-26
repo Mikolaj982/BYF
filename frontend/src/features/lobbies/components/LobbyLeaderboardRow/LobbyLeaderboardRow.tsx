@@ -19,12 +19,12 @@ const LobbyLeaderboardRow: React.FC<LobbyLeaderboardRowProps> = ({ playerData, m
         <Stack
             direction='row'
             alignItems='center'
+            gap={2}
+            paddingX={3}
+            paddingY={2}
+            borderRadius={0}
+            borderColor='#2A2A2A'
             sx={{
-                gap: 3,
-                px: 3,
-                py: 2,
-                borderRadius: 0,
-                borderColor: '#2A2A2A',
                 transition: '0.2s ease',
                 '&:hover': {
                     backgroundColor: medal ? `${medal?.color}15` : '#1e1e1e',
@@ -37,21 +37,25 @@ const LobbyLeaderboardRow: React.FC<LobbyLeaderboardRowProps> = ({ playerData, m
             >
                 {playerData.place}
             </Typography>
-            <Avatar>
+            <Avatar sx={{ height: '26px', width: '26px' }}>
             </Avatar>
-            <Typography>
+            <Typography flex={1} fontWeight={playerData.place === 1 ? '600' : undefined}>
                 {playerData.username}
             </Typography>
             <Stack
                 marginLeft='auto'
                 direction='row'
-                alignItems='center'>
+                alignItems='center'
+                maxWidth='160px'
+                flex={1}
+                gap={1}
+            >
                 <LinearProgress
                     variant='determinate'
                     value={progressValue}
                     sx={{
-                        width: 100,
-                        height: 6,
+                        width: '100%',
+                        height: 4,
                         borderRadius: 1,
                         backgroundColor: '#2a2a2a',
                         '& .MuiLinearProgress-bar': {
@@ -60,7 +64,7 @@ const LobbyLeaderboardRow: React.FC<LobbyLeaderboardRowProps> = ({ playerData, m
                     }}
                 />
                 <Typography
-                    width={40}
+                    width='30px'
                     textAlign='right'
                     color={playerData.place === 1 ? 'text.primary' : '#7f8c8d'}
                     fontWeight='bold'

@@ -15,15 +15,27 @@ const MatchInfo: React.FC<MatchInfoProps> = (
     }
 ) => {
     return (
-        <Stack color='text.secondary' spacing={1}>
-            <Typography fontSize={14} color='text.primary'>
+        <Stack
+            color='text.secondary'
+            spacing={{ xs: 0.5, md: 1 }}
+            width={{ xs: '70px', md: '130px' }}
+            flexShrink={0}
+            boxSizing='border-box'
+        >
+            <Typography
+                fontSize={14}
+                color='text.primary'
+                overflow='hidden'
+                textOverflow='ellipsis'
+                whiteSpace='nowrap'
+            >
                 {gameName}
             </Typography>
             <Typography variant='body2' fontSize={11}>
                 {new Date(createdAt).toLocaleDateString('pl-PL')}
             </Typography>
-            <Typography fontSize={10}>
-                {playersCount} participants
+            <Typography variant='body2' fontSize={10} noWrap>
+                {playersCount} players
             </Typography>
         </Stack>
     )
