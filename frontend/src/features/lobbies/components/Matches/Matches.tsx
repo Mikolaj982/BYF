@@ -30,6 +30,7 @@ const Matches: React.FC<MatchesProps> = (
         lobbyData
     }
 ) => {
+    const matchesCount = matches.length;
     const handleDeleteMatch = async (matchId: string) => {
         try {
             await deleteMatch(matchId);
@@ -49,7 +50,10 @@ const Matches: React.FC<MatchesProps> = (
                         MATCHES HISTORY
                     </Typography>
                     <Typography variant="body2" color="text.secondary">
-                        {matches.length} mecze
+                        {matchesCount === 0
+                            ? 'No played matches yet'
+                            : `${matchesCount} ${matchesCount === 1 ? 'match' : 'matches'}`
+                        }
                     </Typography>
                 </Stack>
                 <CreateMatchForm
@@ -80,7 +84,7 @@ const Matches: React.FC<MatchesProps> = (
                                 </Stack>
                             )
                             : (
-                                <Stack spacing={1}>
+                                <Stack spacing={1.2}>
                                     {
                                         matches.map((match) => {
                                             return <MatchCard

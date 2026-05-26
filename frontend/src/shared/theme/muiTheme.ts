@@ -15,7 +15,7 @@ export const muiTheme = createTheme({
         },
         text: {
             primary: '#F5F5F5',
-            secondary: '#757575',
+            secondary: '#7F8C8D',
         },
     },
     shape: {

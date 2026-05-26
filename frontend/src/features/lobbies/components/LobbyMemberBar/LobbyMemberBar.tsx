@@ -10,17 +10,27 @@ const LobbyMemberBar: React.FC<LobbyMemberBarProps> = ({ username }) => {
     return (
         <Chip
             avatar={
-                <Avatar
-                    color='black'
-                    sx={{
-                        bgcolor: 'primary.main',
-                        fontSize: 10
-                    }}>
+                <Avatar>
                     {usernameFirstLetter.toUpperCase()}
                 </Avatar>
             }
             label={username}
             variant='outlined'
+            sx={{
+                fontWeight: 500,
+                height: { xs: '26px', md: '34px' },
+                '& .MuiChip-avatar': {
+                    height: { xs: '20px', md: '26px' },
+                    width: { xs: '20px', md: '26px' },
+                    fontSize: { xs: '8px', md: '10px' },
+                    bgcolor: 'text.secondary',
+                    marginRight: 0,
+                    marginLeft: { xs: '3px', md: '4px' }
+                },
+                '& .MuiChip-label': {
+                    padding: { xs: 0.7, md: 1 },
+                },
+            }}
         />
     )
 };

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Paper, Stack, Typography, useMediaQuery, useTheme } from '@mui/material';
+import { Button, Paper, Stack, Typography } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { joinLobby } from '../../services/joinLobby';
 import { toast } from 'react-toastify';
@@ -30,8 +30,6 @@ const LobbyCard: React.FC<LobbyCardProps> = (
     const { refetchLobbyMembers, lobbyMembers } = useLobbyMembers(lobbyId);
     const navigate = useNavigate();
     const isMember = lobbyMembers.some((member) => user!.id === member.userId);
-    const theme = useTheme();
-    const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
     const handleJoinLobby = async (lobbyId: string) => {
         const joinLobbySubmitData = {
