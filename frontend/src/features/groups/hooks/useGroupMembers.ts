@@ -1,39 +1,21 @@
-import { useEffect, useState } from "react";
-import { GroupMember } from "../types/group.types";
 import { getGroupMembers } from "../services/groupMembers";
+import { useQuery } from "@tanstack/react-query";
 
 export function useGroupMembers(groupId: string) {
-    const [groupMembers, setGroupMembers] = useState<GroupMember[]>([]);
-    const [loading, setLoading] = useState<boolean>(true);
-    const [error, setError] = useState<unknown>(null);
-
-    const loadMembers = async function (id: string): Promise<void> {
-        setError(null);
-        setLoading(true);
-
-        try {
-            const data = await getGroupMembers(id);
-            setGroupMembers(data || []);
-        } catch (error) {
-            setError(error);
-        } finally {
-            setLoading(false);
+    const {
+        data: groupMembers,
+        isPending: loadingGroupMembers,
+        error: errorGroupMembers,
+    } = useQuery(
+        {
+            queryKey: ['group_members', groupId],
+            queryFn: () => getGroupMembers(groupId)
         }
-    };
-
-    useEffect(() => {
-        if (!groupId) {
-            setLoading(false);
-            return;
-        }
-        setGroupMembers([]);
-        loadMembers(groupId);
-    }, [groupId])
+    );
 
     return {
         groupMembers,
-        loading,
-        error,
-        refetchGroupMembers: loadMembers,
+        loadingGroupMembers,
+        errorGroupMembers,
     };
 };

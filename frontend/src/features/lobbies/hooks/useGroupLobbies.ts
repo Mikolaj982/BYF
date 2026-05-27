@@ -1,37 +1,22 @@
-import { useState, useEffect, useCallback } from "react";
-import { Lobby } from "../types/lobby.types";
+import { useAuth } from "../../auth/hooks/useAuth";
 import { getGroupLobbies } from "../services/getGroupLobbies";
+import { useQuery } from "@tanstack/react-query";
 
 export function useGroupLobbies(groupId: string) {
-    const [lobbies, setLobbies] = useState<Lobby[]>([]);
-    const [loading, setLoading] = useState<boolean>(true);
-    const [error, setError] = useState<unknown>(null);
-
-    const loadLobbies = useCallback(async function () {
-        setLoading(true);
-        try {
-            const data = await getGroupLobbies(groupId);
-            setLobbies(data || []);
-            setError(null);
-        } catch (error) {
-            setError(error);
-        } finally {
-            setLoading(false);
-        }
-    }, [groupId]);
-
-    useEffect(() => {
-        if (!groupId) {
-            setLoading(false);
-            return;
-        }
-        loadLobbies();
-    }, [groupId, loadLobbies]);
+    const { user, loading: loadingAuth } = useAuth();
+    const {
+        data: lobbies,
+        isPending: loadingLobbies,
+        error: errorLobbies,
+    } = useQuery({
+        queryKey: ['lobbies', groupId],
+        queryFn: () => getGroupLobbies(groupId),
+        enabled: !!user && !loadingAuth && !!groupId
+    });
 
     return {
         lobbies,
-        loading,
-        error,
-        refetchLobbies: loadLobbies
+        loadingLobbies,
+        errorLobbies,
     };
 }

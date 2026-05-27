@@ -1,42 +1,18 @@
-import { useCallback, useEffect, useState } from "react";
 import { useAuth } from "../../auth/hooks/useAuth";
 import { getUserGroups } from "../services/getGroups";
-import { UserGroup } from "../types/group.types";
+import { useQuery } from "@tanstack/react-query";
 
 export function useUserGroups() {
-    const [groups, setGroups] = useState<UserGroup[]>([]);
-    const [loading, setLoading] = useState<boolean>(true);
-    const [error, setError] = useState<unknown>(null);
     const { user, loading: loadingAuth } = useAuth();
-
-    const loadGroups = useCallback(async function () {
-        if (!user) return;
-        setLoading(true);
-
-        try {
-            const data = await getUserGroups(user.id);
-            setGroups(data || []);
-            setError(null);
-        } catch (error) {
-            setError(error);
-        } finally {
-            setLoading(false);
-        }
-    }, [user]);
-
-    useEffect(() => {
-        if (loadingAuth) return;
-        if (!user) {
-            setLoading(false);
-            return;
-        }
-        loadGroups();
-    }, [user, loadingAuth, loadGroups]);
+    const { data: groups, isPending: loadingGroups, error: groupsError } = useQuery({
+        queryKey: ['groups', user?.id],
+        queryFn: () => getUserGroups(user!.id),
+        enabled: !!user && !loadingAuth
+    });
 
     return {
         groups,
-        loading,
-        error,
-        refetchGroups: loadGroups,
+        loadingGroups,
+        groupsError,
     };
 }

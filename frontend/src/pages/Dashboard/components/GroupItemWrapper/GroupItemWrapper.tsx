@@ -1,18 +1,17 @@
 import React from 'react';
 import GroupItem from '../../../../features/groups/components/GroupItem/GroupItem';
 import { useParams } from 'react-router-dom';
-import { useOutletContext } from 'react-router-dom';
-import { DashboardOutletContext } from '../../types/outletContext.types';
 import { ErrorState } from '../../../../shared/components/ErrorState/ErrorState';
 import { Stack } from '@mui/material';
 import { LoadingState } from '../../../../shared/components/LoadingState/LoadingState';
+import { useUserGroups } from '../../../../features/groups/hooks/useUserGroups';
 
 const GroupItemWrapper: React.FC = () => {
-    const { groups, refetchGroups, loadingGroups } = useOutletContext<DashboardOutletContext>();
+    const { groups, loadingGroups } = useUserGroups();
     const { groupId } = useParams();
 
     if (loadingGroups) return <LoadingState />;
-    const selectedGroup = groups.find(group => group.id === groupId) ?? null;
+    const selectedGroup = groups?.find(group => group.id === groupId) ?? null;
 
     if (!selectedGroup) return (
         <Stack
@@ -26,7 +25,7 @@ const GroupItemWrapper: React.FC = () => {
     );
 
     return (
-        <GroupItem groupData={selectedGroup} refetchGroups={refetchGroups} />
+        <GroupItem groupData={selectedGroup} />
     )
 };
 

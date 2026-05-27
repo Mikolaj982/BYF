@@ -10,27 +10,32 @@ import DashboardLayout from './pages/Dashboard/components/DashboardLayout/Dashbo
 import LobbyWrapper from './pages/Dashboard/components/LobbyWrapper/LobbyWrapper';
 import PrivateRoute from './features/auth/components/PrivateRoute/PrivateRoute';
 import EmptyDashboard from './pages/Dashboard/components/EmptyDashboard/EmptyDashboard';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 function App() {
+  const queryClient = new QueryClient();
+
   return (
-    <ThemeProvider theme={muiTheme}>
-      <CssBaseline />
-      <Router>
-        <Routes>
-          <Route path='/' element={<LoginRegisterPage />} />
-          <Route element={<PrivateRoute />}>
-            <Route path='/dashboard' element={<Dashboard />}>
-              <Route index element={<EmptyDashboard />} />
-              <Route path='group/:groupId' element={<DashboardLayout />}>
-                <Route index element={<GroupItemWrapper />} />
-                <Route path='lobby/:lobbyId' element={<LobbyWrapper />}>
+    <QueryClientProvider client={queryClient}>
+      <ThemeProvider theme={muiTheme}>
+        <CssBaseline />
+        <Router>
+          <Routes>
+            <Route path='/' element={<LoginRegisterPage />} />
+            <Route element={<PrivateRoute />}>
+              <Route path='/dashboard' element={<Dashboard />}>
+                <Route index element={<EmptyDashboard />} />
+                <Route path='group/:groupId' element={<DashboardLayout />}>
+                  <Route index element={<GroupItemWrapper />} />
+                  <Route path='lobby/:lobbyId' element={<LobbyWrapper />}>
+                  </Route>
                 </Route>
               </Route>
             </Route>
-          </Route>
-        </Routes>
-      </Router >
-    </ThemeProvider>
+          </Routes>
+        </Router >
+      </ThemeProvider>
+    </QueryClientProvider>
   )
 };
 

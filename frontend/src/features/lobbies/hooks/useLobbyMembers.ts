@@ -1,39 +1,25 @@
-import { useCallback, useEffect, useState } from "react";
-import { LobbyMember } from "../types/lobby.types";
+import { useAuth } from "../../auth/hooks/useAuth";
 import { getLobbyMembers } from "../services/lobbyMembers";
+import { useQuery } from "@tanstack/react-query";
 
 export function useLobbyMembers(lobbyId: string) {
-    const [lobbyMembers, setLobbyMembers] = useState<LobbyMember[]>([]);
-    const [loading, setLoading] = useState<boolean>(true);
-    const [error, setError] = useState<unknown>(null);
-
-    const loadLobbyMembers = useCallback(async function () {
-        setError(null);
-        setLoading(true);
-        try {
-            const data = await getLobbyMembers(lobbyId);
-            setLobbyMembers(data || []);
-        } catch (error) {
-            setError(error);
-        } finally {
-            setLoading(false);
+    const { user, loading: authLoading } = useAuth();
+    const {
+        data: lobbyMembers,
+        isPending: loadingLobbyMembers,
+        error: errorLobbyMembers
+    } = useQuery(
+        {
+            queryKey: ['lobby_members', lobbyId],
+            queryFn: () => getLobbyMembers(lobbyId),
+            enabled: !!user && !authLoading && !!lobbyId,
         }
-    }, [lobbyId]);
-
-    useEffect(() => {
-        if (!lobbyId) {
-            setLoading(false);
-            return;
-        }
-        setLobbyMembers([]);
-        loadLobbyMembers();
-    }, [lobbyId, loadLobbyMembers]);
+    );
 
     return {
         lobbyMembers,
-        loading,
-        error,
-        refetchLobbyMembers: loadLobbyMembers,
+        loadingLobbyMembers,
+        errorLobbyMembers,
     };
 }
 

@@ -6,22 +6,10 @@ import { LoadingState } from '../../../../shared/components/LoadingState/Loading
 import { ErrorState } from '../../../../shared/components/ErrorState/ErrorState';
 import CreateGroupForm from '../../../../features/groups/components/CreateGroup/CreateGroupForm';
 import EmptyState from '../../../../shared/components/EmptyState/EmptyState';
+import { useUserGroups } from '../../../../features/groups/hooks/useUserGroups';
 
-type SidebarSectionProps = {
-    groups: UserGroup[];
-    groupsError: unknown;
-    loadingGroups: boolean;
-    refetchGroups: () => Promise<void>;
-};
-
-const SidebarSection: React.FC<SidebarSectionProps> = (
-    {
-        groups,
-        groupsError,
-        loadingGroups,
-        refetchGroups
-    }
-) => {
+const SidebarSection: React.FC = () => {
+    const { groups, loadingGroups, groupsError } = useUserGroups();
     const navigate = useNavigate();
     const handleSelectGroup = (id: string) => {
         navigate(`group/${id}`);
@@ -37,11 +25,11 @@ const SidebarSection: React.FC<SidebarSectionProps> = (
                     ? <LoadingState />
                     : groupsError
                         ? <ErrorState error={groupsError} />
-                        : (!groups.length)
+                        : (!groups?.length)
                             ? (
                                 <Stack alignItems="center" justifyContent="center" gap={2} p={2}>
                                     <EmptyState message='You are not a member of any group yet.' />
-                                    <CreateGroupForm onSuccess={refetchGroups} />
+                                    <CreateGroupForm />
                                 </Stack>
                             ) : (
                                 <List>

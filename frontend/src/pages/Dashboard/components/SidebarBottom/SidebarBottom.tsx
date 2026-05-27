@@ -4,11 +4,8 @@ import JoinGroupForm from '../../../../features/groups/components/JoinGroup/Join
 import { Stack } from '@mui/material';
 import LogoutButton from '../../../../features/auth/components/LogoutButton/LogoutButton';
 
-type SidebarBottomProps = {
-    refetchGroups: () => Promise<void>;
-};
+const SidebarBottom: React.FC = () => {
 
-const SidebarBottom: React.FC<SidebarBottomProps> = ({ refetchGroups }) => {
     return (
         <Stack
             direction='row'
@@ -21,8 +18,8 @@ const SidebarBottom: React.FC<SidebarBottomProps> = ({ refetchGroups }) => {
                 gap: 1
             }}
         >
-            <CreateGroupForm onSuccess={refetchGroups} />
-            <JoinGroupForm onSuccess={refetchGroups} />
+            <CreateGroupForm />
+            <JoinGroupForm />
             <LogoutButton />
         </Stack>
     )
