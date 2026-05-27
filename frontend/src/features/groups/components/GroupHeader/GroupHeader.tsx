@@ -45,10 +45,7 @@ const GroupHeader: React.FC<GroupHeaderProps> = (
             {isMobile
                 ? (
                     <Stack direction='row' justifyContent='space-between' width='100%'>
-                        <IconButton
-                            onClick={onOpenSidebar}
-                            sx={{ mr: 0 }}
-                        >
+                        <IconButton onClick={onOpenSidebar} sx={{ mr: 0 }}>
                             <MenuIcon />
                         </IconButton>
                         <Typography alignContent='center' fontWeight='600'>

@@ -17,7 +17,24 @@ const Matches: React.FC = () => {
     const { lobbyId } = useParams();
     const { matches, loadingMatches, errorMatches } = useLobbyMatches(lobbyId ?? '');
     const queryClient = useQueryClient();
-    const matchesCount = matches?.length;;
+    const matchesCount = matches.length;
+
+    if (!lobbyId) return <ErrorState error='Invalid route' />;
+    if (loadingMatches) return <LoadingState />;
+    if (errorMatches) return <ErrorState error={errorMatches} />;
+    if (!matchesCount) return (
+        <Stack
+            alignItems="center"
+            justifyContent="center"
+            gap={2}
+            p={2}
+        >
+            <EmptyState message='No history yet.' />
+            <CreateMatchForm />
+        </Stack>
+    );
+
+
     const handleDeleteMatch = async (matchId: string) => {
         try {
             await deleteMatch(matchId);
@@ -42,37 +59,15 @@ const Matches: React.FC = () => {
                 </Stack>
                 <CreateMatchForm />
             </Stack>
-            {
-                loadingMatches
-                    ? <LoadingState />
-                    : errorMatches
-                        ? <ErrorState error={errorMatches} />
-                        : (!matchesCount)
-                            ? (
-                                <Stack
-                                    alignItems="center"
-                                    justifyContent="center"
-                                    gap={2}
-                                    p={2}
-                                >
-                                    <EmptyState message='No history yet.' />
-                                    <CreateMatchForm />
-                                </Stack>
-                            )
-                            : (
-                                <Stack spacing={1.2}>
-                                    {
-                                        matches.map((match) => {
-                                            return <MatchCard
-                                                key={match.matchId}
-                                                match={match}
-                                                onDelete={handleDeleteMatch}
-                                            />
-                                        })
-                                    }
-                                </Stack>
-                            )
-            }
+            <Stack spacing={1.2}>
+                {matches.map((match) => (
+                    <MatchCard
+                        key={match.matchId}
+                        match={match}
+                        onDelete={handleDeleteMatch}
+                    />
+                ))}
+            </Stack>
         </Stack>
     )
 };

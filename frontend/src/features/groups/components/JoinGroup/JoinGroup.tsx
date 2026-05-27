@@ -16,11 +16,7 @@ const JoinGroupForm: React.FC = () => {
     const { user } = useAuth();
     const queryClient = useQueryClient();
     const [open, setOpen] = useState<boolean>(false);
-    const { control, handleSubmit, reset } = useForm<JoinGroupFormData>({
-        defaultValues: {
-            code: ''
-        },
-    });
+    const { control, handleSubmit, reset } = useForm<JoinGroupFormData>({ defaultValues: { code: '' } });
 
     const handleInviteCode = async (data: JoinGroupFormData) => {
         try {
@@ -35,34 +31,36 @@ const JoinGroupForm: React.FC = () => {
         }
     };
 
-    return <>
-        <Button
-            onClick={() => setOpen(true)}
-            sx={{ flex: 1 }}
-            variant='outlined'
-        >
-            Join
-        </Button>
-        <Dialog open={open}>
-            <DialogTitle>Join Group</DialogTitle>
-            <DialogContent>
-                <Controller
-                    name='code'
-                    control={control}
-                    render={({ field }) => (
-                        <TextField
-                            {...field}
-                            label='podaj kod'
-                        />
-                    )}
-                />
-            </DialogContent>
-            <DialogActions>
-                <Button onClick={() => setOpen(false)}>Cancel</Button>
-                <Button onClick={handleSubmit(handleInviteCode)} variant='contained'>Submit</Button>
-            </DialogActions>
-        </Dialog>
-    </>
+    return (
+        <>
+            <Button
+                onClick={() => setOpen(true)}
+                sx={{ flex: 1 }}
+                variant='outlined'
+            >
+                Join
+            </Button>
+            <Dialog open={open}>
+                <DialogTitle>Join Group</DialogTitle>
+                <DialogContent>
+                    <Controller
+                        name='code'
+                        control={control}
+                        render={({ field }) => (
+                            <TextField
+                                {...field}
+                                label='podaj kod'
+                            />
+                        )}
+                    />
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={() => setOpen(false)}>Cancel</Button>
+                    <Button onClick={handleSubmit(handleInviteCode)} variant='contained'>Submit</Button>
+                </DialogActions>
+            </Dialog>
+        </>
+    )
 };
 
 export default JoinGroupForm;

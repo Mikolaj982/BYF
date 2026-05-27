@@ -30,9 +30,7 @@ const CreateLobbyForm: React.FC<CreateLobbyFormProps> = (
     const { user } = useAuth();
     const queryClient = useQueryClient();
     const { id: groupId } = groupData;
-    const lobby: CreateLobbyFormData = {
-        gameType: '',
-    };
+    const lobby: CreateLobbyFormData = { gameType: '' };
     const { handleSubmit, control, formState: { errors }, reset } = useForm({
         defaultValues: lobby,
         resolver: yupResolver<CreateLobbyFormData>(createLobbySchema),

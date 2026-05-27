@@ -5,7 +5,7 @@ import { useQuery } from "@tanstack/react-query";
 export function useGroupLobbies(groupId: string) {
     const { user, loading: loadingAuth } = useAuth();
     const {
-        data: lobbies,
+        data: lobbies = [],
         isPending: loadingLobbies,
         error: errorLobbies,
     } = useQuery({

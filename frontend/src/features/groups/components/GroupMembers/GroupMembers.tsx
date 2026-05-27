@@ -13,25 +13,19 @@ type GroupMembersProps = {
 const GroupMembers: React.FC<GroupMembersProps> = ({ groupId }) => {
     const { groupMembers, loadingGroupMembers, errorGroupMembers } = useGroupMembers(groupId);
 
+    if (loadingGroupMembers) return <LoadingState />;
+    if (errorGroupMembers) return <ErrorState error={errorGroupMembers} />;
+    if (!groupMembers.length) return <EmptyState message='There is no members yet.' />;
+
     return (
         <Stack direction='row' spacing={1}>
-            {
-                loadingGroupMembers
-                    ? <LoadingState />
-                    : errorGroupMembers
-                        ? <ErrorState error={errorGroupMembers} />
-                        : (!groupMembers?.length)
-                            ? <EmptyState message='There is no members yet.' />
-                            : (
-                                groupMembers.map((member) => (
-                                    <GroupMemberBar
-                                        username={member.username}
-                                        role={member.role}
-                                        key={member.id}
-                                    />
-                                ))
-                            )
-            }
+            {groupMembers.map((member) => (
+                <GroupMemberBar
+                    username={member.username}
+                    role={member.role}
+                    key={member.id}
+                />
+            ))}
         </Stack>
     )
 };

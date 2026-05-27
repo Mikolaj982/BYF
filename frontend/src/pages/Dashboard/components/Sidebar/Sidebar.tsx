@@ -12,12 +12,7 @@ type SidebarProps = {
     onCloseSidebar: () => void;
 };
 
-const Sidebar: React.FC<SidebarProps> = (
-    {
-        isOpen,
-        onCloseSidebar
-    }
-) => {
+const Sidebar: React.FC<SidebarProps> = ({ isOpen, onCloseSidebar }) => {
     const theme = useTheme();
     const isMobile = useMediaQuery(theme.breakpoints.down('md'));
     const content = (

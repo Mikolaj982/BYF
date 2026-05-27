@@ -38,7 +38,6 @@ const UpdateGroupForm: React.FC<UpdateGroupFormProps> = (
     const [open, setOpen] = useState<boolean>(false);
 
     const submitGroupData = async (data: UpdateGroupFormData) => {
-        if (!user?.id) return;
         try {
             await updateGroup(groupData.id, data);
             queryClient.invalidateQueries({ queryKey: ['groups', user?.id] })

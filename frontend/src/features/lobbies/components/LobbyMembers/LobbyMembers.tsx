@@ -11,32 +11,24 @@ const LobbyMembers: React.FC = () => {
     const { lobbyId } = useParams();
     const { lobbyMembers, loadingLobbyMembers, errorLobbyMembers } = useLobbyMembers(lobbyId ?? '');
 
+    if (!lobbyId) return <ErrorState error='Invalid route' />;
+    if (loadingLobbyMembers) return <LoadingState />;
+    if (errorLobbyMembers) return <ErrorState error={errorLobbyMembers} />;
+    if (!lobbyMembers.length) return <EmptyState message='No lobby members yet.' />;
+
     return (
-        <>
-            {loadingLobbyMembers
-                ? <LoadingState />
-                : errorLobbyMembers
-                    ? <ErrorState error={errorLobbyMembers} />
-                    : (!lobbyMembers?.length)
-                        ? <EmptyState message='No lobby members yet.' />
-                        : (
-                            <Stack
-                                direction='row'
-                                flexWrap='wrap'
-                                gap={1}
-                            >
-                                {
-                                    lobbyMembers.map((member) => (
-                                        <LobbyMemberBarProps
-                                            username={member.username}
-                                            key={member.userId}
-                                        />
-                                    ))
-                                }
-                            </Stack>
-                        )
-            }
-        </>
+        <Stack
+            direction='row'
+            flexWrap='wrap'
+            gap={1}
+        >
+            {lobbyMembers.map((member) => (
+                <LobbyMemberBarProps
+                    username={member.username}
+                    key={member.userId}
+                />
+            ))}
+        </Stack>
     )
 };
 

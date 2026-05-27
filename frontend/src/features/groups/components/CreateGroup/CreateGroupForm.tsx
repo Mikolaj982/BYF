@@ -31,11 +31,9 @@ const CreateGroupForm: React.FC = () => {
     const [open, setOpen] = useState<boolean>(false);
 
     const submitGroupData = async (group: CreateGroupFormData) => {
-        if (!user?.id) return;
-
         const createGroupDataPlusOwnerId: CreateGroupSubmitData = {
             ...group,
-            owner: user.id,
+            owner: user!.id,
         };
 
         try {

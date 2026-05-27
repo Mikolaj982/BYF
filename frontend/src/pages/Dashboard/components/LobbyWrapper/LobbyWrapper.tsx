@@ -10,8 +10,10 @@ const LobbyWrapper: React.FC = () => {
     const { groupId, lobbyId } = useParams();
     const { lobbies, loadingLobbies } = useGroupLobbies(groupId ?? '');
 
+    if (!groupId || !lobbyId) return <ErrorState error='Invalid route.' />;
     if (loadingLobbies) return <LoadingState />;
-    const selectedLobby = lobbies?.find(lobby => lobby.id === lobbyId) ?? null;
+
+    const selectedLobby = lobbies.find(lobby => lobby.id === lobbyId) ?? null;
     if (!selectedLobby) return (
         <Stack
             alignItems="center"

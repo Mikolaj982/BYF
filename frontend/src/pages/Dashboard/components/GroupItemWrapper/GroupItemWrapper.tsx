@@ -10,9 +10,10 @@ const GroupItemWrapper: React.FC = () => {
     const { groups, loadingGroups } = useUserGroups();
     const { groupId } = useParams();
 
+    if (!groupId) return <ErrorState error='Invalid route.' />;
     if (loadingGroups) return <LoadingState />;
-    const selectedGroup = groups?.find(group => group.id === groupId) ?? null;
 
+    const selectedGroup = groups.find(group => group.id === groupId) ?? null;
     if (!selectedGroup) return (
         <Stack
             alignItems="center"
