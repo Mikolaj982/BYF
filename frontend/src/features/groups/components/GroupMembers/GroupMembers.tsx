@@ -1,7 +1,7 @@
 import React from 'react';
 import GroupMemberBar from '../GroupMemberBar/GroupMemberBar';
 import { useGroupMembers } from '../../hooks/useGroupMembers';
-import { Stack, Typography } from '@mui/material';
+import { Stack } from '@mui/material';
 import { LoadingState } from '../../../../shared/components/LoadingState/LoadingState';
 import { ErrorState } from '../../../../shared/components/ErrorState/ErrorState';
 import EmptyState from '../../../../shared/components/EmptyState/EmptyState';
@@ -14,29 +14,24 @@ const GroupMembers: React.FC<GroupMembersProps> = ({ groupId }) => {
     const { groupMembers, loadingGroupMembers, errorGroupMembers } = useGroupMembers(groupId);
 
     return (
-        <Stack padding={3} spacing={1}>
-            <Typography sx={{ fontSize: 14, color: 'text.secondary' }}>
-                MEMBERS
-            </Typography>
-            <Stack direction='row' spacing={1}>
-                {
-                    loadingGroupMembers
-                        ? <LoadingState />
-                        : errorGroupMembers
-                            ? <ErrorState error={errorGroupMembers} />
-                            : (!groupMembers?.length)
-                                ? <EmptyState message='There is no members yet.' />
-                                : (
-                                    groupMembers.map((member) => (
-                                        <GroupMemberBar
-                                            username={member.username}
-                                            role={member.role}
-                                            key={member.id}
-                                        />
-                                    ))
-                                )
-                }
-            </Stack>
+        <Stack direction='row' spacing={1}>
+            {
+                loadingGroupMembers
+                    ? <LoadingState />
+                    : errorGroupMembers
+                        ? <ErrorState error={errorGroupMembers} />
+                        : (!groupMembers?.length)
+                            ? <EmptyState message='There is no members yet.' />
+                            : (
+                                groupMembers.map((member) => (
+                                    <GroupMemberBar
+                                        username={member.username}
+                                        role={member.role}
+                                        key={member.id}
+                                    />
+                                ))
+                            )
+            }
         </Stack>
     )
 };

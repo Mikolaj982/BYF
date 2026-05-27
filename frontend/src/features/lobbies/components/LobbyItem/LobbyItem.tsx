@@ -14,6 +14,8 @@ import LobbyHeader from '../LobbyHeader/LobbyHeader';
 import Matches from '../Matches/Matches';
 import LobbyLeaderboard from '../LobbyLeaderboard/LobbyLeaderboard';
 import LobbyMembers from '../LobbyMembers/LobbyMembers';
+import SectionLabel from '../../../../shared/components/SectionLabel/SectionLabel';
+import SectionContainer from '../../../../shared/components/SectionContainer/SectionContainer';
 
 type LobbyItemProps = {
     lobbyData: Lobby;
@@ -57,11 +59,20 @@ const LobbyItem: React.FC<LobbyItemProps> = ({ lobbyData }) => {
                 lobbyData={lobbyData}
                 isOwner={isOwner}
             />
-            <LobbyMembers />
+            <SectionContainer>
+                <SectionLabel label='lobby members' />
+                <LobbyMembers />
+            </SectionContainer>
             {isLobbyMember && (
                 <>
-                    <Matches />
-                    <LobbyLeaderboard lobbyData={lobbyData} />
+                    <SectionContainer>
+                        <SectionLabel label='matches history' />
+                        <Matches />
+                    </SectionContainer>
+                    <SectionContainer>
+                        <SectionLabel label='leaderboard' />
+                        <LobbyLeaderboard lobbyData={lobbyData} />
+                    </SectionContainer>
                 </>
             )}
         </Stack>

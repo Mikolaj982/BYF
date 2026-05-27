@@ -1,5 +1,5 @@
 import React from 'react';
-import { Typography, Box, List, ListItemButton, ListItemText, Chip, Stack } from '@mui/material';
+import { List, ListItemButton, ListItemText, Chip, Stack } from '@mui/material';
 import { UserGroup } from '../../../../features/groups/types/group.types';
 import { useNavigate } from 'react-router-dom';
 import { LoadingState } from '../../../../shared/components/LoadingState/LoadingState';
@@ -16,10 +16,7 @@ const SidebarSection: React.FC = () => {
     };
 
     return (
-        <Box component='div' sx={{ padding: 2 }}>
-            <Typography sx={{ fontSize: 14, color: 'text.secondary' }}>
-                YOUR GROUPS
-            </Typography>
+        <>
             {
                 loadingGroups
                     ? <LoadingState />
@@ -51,7 +48,7 @@ const SidebarSection: React.FC = () => {
                                 </List>
                             )
             }
-        </Box>
+        </>
     )
 };
 

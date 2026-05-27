@@ -4,6 +4,8 @@ import { Drawer, useMediaQuery, useTheme } from '@mui/material';
 import SidebarSection from '../SidebarSection/SidebarSection';
 import SidebarBottom from '../SidebarBottom/SidebarBottom';
 import SidebarHeader from '../SidebarHeader/SidebarHeader';
+import SectionContainer from '../../../../shared/components/SectionContainer/SectionContainer';
+import SectionLabel from '../../../../shared/components/SectionLabel/SectionLabel';
 
 type SidebarProps = {
     isOpen: boolean;
@@ -31,13 +33,14 @@ const Sidebar: React.FC<SidebarProps> = (
         >
             <SidebarHeader />
             <Box
+                flexGrow={1}
+                overflow='auto'
                 component='div'
-                sx={{
-                    flexGrow: 1,
-                    overflow: 'auto'
-                }}
             >
-                <SidebarSection />
+                <SectionContainer>
+                    <SectionLabel label='your groups' />
+                    <SidebarSection />
+                </SectionContainer>
             </Box>
             <SidebarBottom />
         </Box>

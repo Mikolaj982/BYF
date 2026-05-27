@@ -33,7 +33,7 @@ const LobbyHeader: React.FC<LobbyHeaderProps> = (
             component='div'
             direction='row'
             justifyContent='space-between'
-            sx={{ px: 3, py: 3, borderBottom: 1, borderColor: 'divider' }}
+            sx={{ px: 2, py: 2, borderBottom: 1, borderColor: 'divider' }}
         >
             {isMobile ? (
                 <Stack direction='row' justifyContent='space-between' width='100%'>
@@ -43,7 +43,9 @@ const LobbyHeader: React.FC<LobbyHeaderProps> = (
                     >
                         <MenuIcon />
                     </IconButton>
-                    <Typography alignContent='center'>{gameType}</Typography>
+                    <Typography alignContent='center' fontWeight='600'>
+                        {gameType}
+                    </Typography>
                     <IconMenuMobile>
                         <LobbyMenuItems
                             onLeave={() => onLeave(id)}
@@ -55,7 +57,11 @@ const LobbyHeader: React.FC<LobbyHeaderProps> = (
                 </Stack>
             ) : (
                 <>
-                    <Typography variant='h6'>
+                    <Typography
+                        variant='h6'
+                        marginLeft={2}
+                        fontWeight='600'
+                    >
                         {gameType}
                     </Typography>
                     <Stack direction='row'>

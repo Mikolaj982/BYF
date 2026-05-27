@@ -13,6 +13,8 @@ import { getErrorMessage } from '../../../../utils/errorUtils/getErrorMessage';
 import { useNavigate } from 'react-router-dom';
 import { useQueryClient } from '@tanstack/react-query';
 import { useAuth } from '../../../auth/hooks/useAuth';
+import SectionContainer from '../../../../shared/components/SectionContainer/SectionContainer';
+import SectionLabel from '../../../../shared/components/SectionLabel/SectionLabel';
 
 type GroupItemProps = {
   groupData: UserGroup;
@@ -53,9 +55,18 @@ const GroupItem: React.FC<GroupItemProps> = ({ groupData }) => {
         groupData={groupData}
         handleLeaveGroup={handleLeaveGroup}
       />
-      <InviteBox inviteCode={inviteCode} />
-      <GroupMembers groupId={id} />
-      <Lobbies groupData={groupData} />
+      <SectionContainer>
+        <SectionLabel label='invitation code' />
+        <InviteBox inviteCode={inviteCode} />
+      </SectionContainer>
+      <SectionContainer>
+        <SectionLabel label='group members' />
+        <GroupMembers groupId={id} />
+      </SectionContainer>
+      <SectionContainer>
+        <SectionLabel label='lobbies' />
+        <Lobbies groupData={groupData} />
+      </SectionContainer>
     </Stack>
   )
 };

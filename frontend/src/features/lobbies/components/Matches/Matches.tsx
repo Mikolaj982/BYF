@@ -30,12 +30,9 @@ const Matches: React.FC = () => {
     };
 
     return (
-        <Stack padding={3} spacing={1}>
+        <Stack spacing={1}>
             <Stack direction='row' justifyContent='space-between'>
                 <Stack alignItems='baseline' gap={1}>
-                    <Typography fontSize={14} color='text.secondary'>
-                        MATCHES HISTORY
-                    </Typography>
                     <Typography variant="body2" color="text.secondary">
                         {matchesCount === 0
                             ? 'No played matches yet'
