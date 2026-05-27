@@ -3,13 +3,15 @@ import { getLobbyLeaderboard } from '../services/lobbyLeaderboard';
 
 export function useLobbyLeaderboard(lobbyId: string) {
     const {
-        data: leaderboard,
+        data: leaderboard = [],
         isPending: loadingLeaderboard,
         error: errorLeaderboard
-    } = useQuery({
-        queryKey: ['leaderboard', lobbyId],
-        queryFn: () => getLobbyLeaderboard(lobbyId)
-    })
+    } = useQuery(
+        {
+            queryKey: ['leaderboard', lobbyId],
+            queryFn: () => getLobbyLeaderboard(lobbyId)
+        }
+    )
 
     return {
         leaderboard,

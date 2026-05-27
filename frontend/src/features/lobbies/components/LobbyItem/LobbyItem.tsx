@@ -22,13 +22,12 @@ type LobbyItemProps = {
 };
 
 const LobbyItem: React.FC<LobbyItemProps> = ({ lobbyData }) => {
-    const { lobbyMembers } = useLobbyMembers(lobbyData.id ?? '');
+    const { lobbyMembers } = useLobbyMembers(lobbyData.id);
     const { user } = useAuth();
     const queryClient = useQueryClient();
     const navigate = useNavigate();
-    const isOwner = lobbyData.createdBy === user!.id;
-    const isLobbyMember = lobbyMembers?.some((member) => member.userId === user!.id);
-    const groupId = lobbyData.groupId;
+    const isOwner = lobbyData.createdBy === user?.id;
+    const isLobbyMember = lobbyMembers.some((member) => member.userId === user?.id);
 
     const handleLeaveLobby = async (lobbyId: string) => {
         try {
@@ -43,7 +42,7 @@ const LobbyItem: React.FC<LobbyItemProps> = ({ lobbyData }) => {
     const handleDeleteLobby = async (lobbyId: string) => {
         try {
             await deleteLobby(lobbyId);
-            navigate(`/dashboard/group/${groupId}`);
+            navigate(`/dashboard/group/${lobbyData.groupId}`);
             queryClient.invalidateQueries({ queryKey: ['lobbies', lobbyId] });
             toast.success(MESSAGES.SUCCESS.DELETED_LOBBY);
         } catch (error) {

@@ -15,38 +15,28 @@ type LobbyLeaderboardProps = {
 
 const LobbyLeaderboard: React.FC<LobbyLeaderboardProps> = ({ lobbyData }) => {
     const { leaderboard, loadingLeaderboard, errorLeaderboard } = useLobbyLeaderboard(lobbyData.id);
-    const lobbyName = lobbyData.gameType;
-    const leaderboardPlayersCount = leaderboard?.length;
-    const sortedLeaderboard = leaderboard?.toSorted((a, b) => b.score - a.score);
-    const sortedPlayersScoresWithDraw = assignPlaces(leaderboard ?? []);
-    const maxScore = sortedLeaderboard?.[0]?.score ?? 0;
+    const sortedLeaderboard = leaderboard.toSorted((a, b) => b.score - a.score);
+    const sortedPlayersScoresWithDraw = assignPlaces(leaderboard);
+    const maxScore = sortedLeaderboard[0]?.score ?? 0;
+
+    if (loadingLeaderboard) return <LoadingState />;
+    if (errorLeaderboard) return <ErrorState error={errorLeaderboard} />;
+    if (!leaderboard.length) return <EmptyState message='No results yet.' />;
 
     return (
         <Paper variant='outlined'>
-            <LeaderboardHeader
-                lobbyName={lobbyName}
-                participantsCount={leaderboardPlayersCount ?? 0}
-            />
+            <LeaderboardHeader lobbyName={lobbyData.gameType} participantsCount={leaderboard.length ?? 0} />
             <Stack py={1}>
-                {loadingLeaderboard
-                    ? <LoadingState />
-                    : errorLeaderboard
-                        ? <ErrorState error={errorLeaderboard} />
-                        : (!leaderboard?.length)
-                            ? <EmptyState message='No results yet.' />
-                            : (
-                                sortedPlayersScoresWithDraw.map((player, index) => (
-                                    <Fragment key={index}>
-                                        {index !== 0 && <Divider />}
-                                        <LobbyLeaderboardRow
-                                            key={player.userId}
-                                            playerData={player}
-                                            maxScore={maxScore}
-                                        />
-                                    </Fragment>
-                                ))
-                            )
-                }
+                {sortedPlayersScoresWithDraw.map((player, index) => (
+                    <Fragment key={index}>
+                        {index !== 0 && <Divider />}
+                        <LobbyLeaderboardRow
+                            key={player.userId}
+                            playerData={player}
+                            maxScore={maxScore}
+                        />
+                    </Fragment>
+                ))}
             </Stack>
         </Paper>
     )

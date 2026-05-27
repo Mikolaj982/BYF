@@ -15,57 +15,49 @@ const EmptyDashboard: React.FC = () => {
     const theme = useTheme();
     const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
+    if (loadingGroups) return <LoadingState />;
+    if (groupsError) return <ErrorState error={groupsError} />;
+    if (!groups.length) return (
+        <Box component='div'>
+            {isMobile && (
+                <IconButton
+                    onClick={onOpenSidebar}
+                    sx={{ m: 2 }}
+                >
+                    <MenuIcon />
+                </IconButton>
+            )}
+            <Stack
+                alignItems='center'
+                justifyContent='center'
+                gap={2}
+                p={2}
+            >
+                <EmptyState message='There is no groups yet. Create new one, invite your friends. Have fun!' />
+                <CreateGroupForm />
+            </Stack>
+        </Box>
+    );
+
     return (
-        <Box component='div' >
-            {
-                loadingGroups ?
-                    <LoadingState />
-                    : groupsError
-                        ? <ErrorState error={groupsError} />
-                        : (!groups?.length)
-                            ? (
-                                <Box component='div'>
-                                    {isMobile && (
-                                        <IconButton
-                                            onClick={onOpenSidebar}
-                                            sx={{ m: 2 }}
-                                        >
-                                            <MenuIcon />
-                                        </IconButton>
-                                    )}
-                                    <Stack
-                                        alignItems='center'
-                                        justifyContent='center'
-                                        gap={2}
-                                        p={2}
-                                    >
-                                        <EmptyState message='There is no groups yet. Create new one, invite your friends. Have fun!' />
-                                        <CreateGroupForm />
-                                    </Stack>
-                                </Box>
-                            )
-                            : (
-                                <Box component='div'>
-                                    {isMobile && (
-                                        <IconButton
-                                            onClick={onOpenSidebar}
-                                            sx={{ m: 2 }}
-                                        >
-                                            <MenuIcon />
-                                        </IconButton>
-                                    )}
-                                    <Stack
-                                        alignItems='center'
-                                        justifyContent='center'
-                                        gap={2}
-                                        p={2}
-                                    >
-                                        <EmptyState message='Choose your group or create another one.' />
-                                        <CreateGroupForm />
-                                    </Stack>
-                                </Box>
-                            )
-            }
+        <Box component='div'>
+            {isMobile && (
+                <IconButton
+                    onClick={onOpenSidebar}
+                    sx={{ m: 2 }}
+                >
+                    <MenuIcon />
+                </IconButton>
+            )}
+            <Stack
+                alignItems='center'
+                justifyContent='center'
+                gap={2}
+                p={2}
+            >
+                <EmptyState message='Choose your group or create another one.' />
+                <CreateGroupForm />
+            </Stack>
         </Box>
     )
 };

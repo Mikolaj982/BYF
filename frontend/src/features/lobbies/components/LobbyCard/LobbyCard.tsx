@@ -27,11 +27,11 @@ const LobbyCard: React.FC<LobbyCardProps> = (
     const queryClient = useQueryClient();
     const { lobbyMembers } = useLobbyMembers(lobbyData.id);
     const navigate = useNavigate();
-    const isMember = lobbyMembers?.some((member) => user!.id === member.userId);
+    const isMember = lobbyMembers.some((member) => user?.id === member.userId);
 
     const handleJoinLobby = async (lobbyId: string) => {
         const joinLobbySubmitData = {
-            user_id: user!.id,
+            user_id: user?.id,
             lobby_id: lobbyId,
         };
 
@@ -52,10 +52,7 @@ const LobbyCard: React.FC<LobbyCardProps> = (
     return (
         <Paper
             variant='outlined'
-            sx={{
-                p: 2,
-                width: { xs: '100%', md: 'auto' }
-            }}>
+            sx={{ p: 2, width: { xs: '100%', md: 'auto' } }}>
             <Stack>
                 <Typography>
                     {lobbyData.gameType}

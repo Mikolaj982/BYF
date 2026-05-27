@@ -15,41 +15,30 @@ const SidebarSection: React.FC = () => {
         navigate(`group/${id}`);
     };
 
+    if (loadingGroups) return <LoadingState />;
+    if (groupsError) return <ErrorState error={groupsError} />;
+    if (!groups.length) return (
+        <Stack alignItems="center" justifyContent="center" gap={2} p={2}>
+            <EmptyState message='You are not a member of any group yet.' />
+            <CreateGroupForm />
+        </Stack>
+    );
+
     return (
-        <>
-            {
-                loadingGroups
-                    ? <LoadingState />
-                    : groupsError
-                        ? <ErrorState error={groupsError} />
-                        : (!groups?.length)
-                            ? (
-                                <Stack alignItems="center" justifyContent="center" gap={2} p={2}>
-                                    <EmptyState message='You are not a member of any group yet.' />
-                                    <CreateGroupForm />
-                                </Stack>
-                            ) : (
-                                <List>
-                                    {
-                                        groups.map((group: UserGroup) => {
-                                            return (
-                                                <ListItemButton
-                                                    component='div'
-                                                    key={group.id}
-                                                    onClick={() => handleSelectGroup(group.id)}
-                                                    sx={{ fontSize: 14 }}
-                                                >
-                                                    <ListItemText primary={group.name} />
-                                                    <Chip label={group.role} />
-                                                </ListItemButton>
-                                            )
-                                        })
-                                    }
-                                </List>
-                            )
-            }
-        </>
-    )
+        <List>
+            {groups.map((group: UserGroup) => (
+                <ListItemButton
+                    component='div'
+                    key={group.id}
+                    onClick={() => handleSelectGroup(group.id)}
+                    sx={{ fontSize: 14 }}
+                >
+                    <ListItemText primary={group.name} />
+                    <Chip label={group.role} />
+                </ListItemButton>
+            ))}
+        </List>
+    );
 };
 
 export default SidebarSection;

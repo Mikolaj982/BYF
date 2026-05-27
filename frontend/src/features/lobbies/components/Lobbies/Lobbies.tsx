@@ -16,11 +16,19 @@ type LobbiesProps = {
 
 const Lobbies: React.FC<LobbiesProps> = ({ groupData }) => {
     const { lobbies, loadingLobbies, errorLobbies } = useGroupLobbies(groupData.id);
-    const lobbiesIds: string[] | undefined = useMemo(() => {
-        return lobbies?.map(lobby => lobby.id);
+    const lobbiesIds: string[] = useMemo(() => {
+        return lobbies.map(lobby => lobby.id);
     }, [lobbies]);
+    const { lobbiesMembersCount } = useLobbiesMembersCount(lobbiesIds);
 
-    const { lobbiesMembersCount } = useLobbiesMembersCount(lobbiesIds ?? []);
+    if (loadingLobbies) return <LoadingState />;
+    if (errorLobbies) return <ErrorState error={errorLobbies} />;
+    if (!lobbies.length) return (
+        <Stack alignItems="center" justifyContent="center" gap={2} p={2}>
+            <EmptyState message='There is no lobbies yet.' />
+            <CreateLobbyForm groupData={groupData} />
+        </Stack>
+    );
 
     return (
         <Stack
@@ -28,29 +36,15 @@ const Lobbies: React.FC<LobbiesProps> = ({ groupData }) => {
             flexWrap='wrap'
             gap={2}
         >
-            {loadingLobbies
-                ? <LoadingState />
-                : errorLobbies
-                    ? <ErrorState error={errorLobbies} />
-                    : (!lobbies?.length)
-                        ? (
-                            <Stack alignItems="center" justifyContent="center" gap={2} p={2}>
-                                <EmptyState message='There is no lobbies yet.' />
-                                <CreateLobbyForm groupData={groupData} />
-                            </Stack>
-                        )
-                        : (
-                            lobbies.map((lobby: Lobby) => {
-                                const lobbyMembersCount = lobbiesMembersCount?.[lobby.id] || 0;
-                                return <LobbyCard
-                                    lobbiesIds={lobbiesIds}
-                                    lobbyData={lobby}
-                                    lobbyMembersCount={lobbyMembersCount}
-                                    key={lobby.id}
-                                />
-                            })
-                        )
-            }
+            {lobbies.map((lobby: Lobby) => {
+                const lobbyMembersCount = lobbiesMembersCount?.[lobby.id] || 0;
+                return <LobbyCard
+                    lobbiesIds={lobbiesIds}
+                    lobbyData={lobby}
+                    lobbyMembersCount={lobbyMembersCount}
+                    key={lobby.id}
+                />
+            })}
         </Stack>
     )
 };

@@ -15,7 +15,7 @@ type MatchCardProps = {
 const MatchCard: React.FC<MatchCardProps> = ({ match, onDelete }) => {
     const { user } = useAuth();
     const { players, createdAt, owner, matchId, gameName } = match;
-    const isOwner = owner === user!.id;
+    const isOwner = owner === user?.id;
     const playersCount = match.players.length;
 
     return (

@@ -3,7 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 
 export function useGroupMembers(groupId: string) {
     const {
-        data: groupMembers,
+        data: groupMembers = [],
         isPending: loadingGroupMembers,
         error: errorGroupMembers,
     } = useQuery(
@@ -18,4 +18,4 @@ export function useGroupMembers(groupId: string) {
         loadingGroupMembers,
         errorGroupMembers,
     };
-};
+}
