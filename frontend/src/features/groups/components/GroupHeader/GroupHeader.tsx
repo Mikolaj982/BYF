@@ -34,8 +34,8 @@ const GroupHeader: React.FC<GroupHeaderProps> = (
             direction='row'
             justifyContent='space-between'
             sx={{
-                py: { xs: 1, md: 3 },
-                px: { xs: 1, md: 3 },
+                py: { xs: 1, md: 2 },
+                px: { xs: 1, md: 2 },
                 borderBottom: 1,
                 borderColor: 'divider',
                 flexWrap: 'wrap',
@@ -51,7 +51,9 @@ const GroupHeader: React.FC<GroupHeaderProps> = (
                         >
                             <MenuIcon />
                         </IconButton>
-                        <Typography alignContent='center'>{name}</Typography>
+                        <Typography alignContent='center' fontWeight='600'>
+                            {name}
+                        </Typography>
                         <IconMenuMobile>
                             <GroupMenuItems
                                 groupData={groupData}
@@ -63,7 +65,9 @@ const GroupHeader: React.FC<GroupHeaderProps> = (
                 )
                 : (
                     <>
-                        <Typography alignContent='center'>{name}</Typography>
+                        <Typography alignContent='center' fontWeight='600'>
+                            {name}
+                        </Typography>
                         <Stack direction='row' >
                             {
                                 role === GroupRole.Member

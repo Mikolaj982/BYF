@@ -1,5 +1,5 @@
 import React from 'react';
-import { Typography, Box, Avatar } from '@mui/material';
+import { Typography, Box, Avatar, Stack } from '@mui/material';
 import { useAuth } from '../../../../features/auth/hooks/useAuth';
 
 const SidebarHeader: React.FC = () => {
@@ -18,9 +18,18 @@ const SidebarHeader: React.FC = () => {
                 padding: 2
             }}
         >
-            <Box component='div'>
-                <Typography variant='h6'>Beat your friend</Typography>
-            </Box>
+            <Stack direction='row'>
+                <Typography variant='h6' fontWeight='600'>
+                    Beat your <Typography
+                        variant='h6'
+                        component='span'
+                        color='secondary.main'
+                        fontWeight='700'
+                    >
+                        friend
+                    </Typography>
+                </Typography>
+            </Stack>
             <Box component='div'
                 sx={{
                     display: 'flex',

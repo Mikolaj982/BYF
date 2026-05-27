@@ -1,6 +1,6 @@
 import React from 'react';
 import LobbyMemberBarProps from '../LobbyMemberBar/LobbyMemberBar';
-import { Stack, Typography } from '@mui/material';
+import { Stack } from '@mui/material';
 import { LoadingState } from '../../../../shared/components/LoadingState/LoadingState';
 import { ErrorState } from '../../../../shared/components/ErrorState/ErrorState';
 import EmptyState from '../../../../shared/components/EmptyState/EmptyState';
@@ -12,10 +12,7 @@ const LobbyMembers: React.FC = () => {
     const { lobbyMembers, loadingLobbyMembers, errorLobbyMembers } = useLobbyMembers(lobbyId ?? '');
 
     return (
-        <Stack padding={3} spacing={1}>
-            <Typography fontSize={14} color='text.secondary'>
-                LOBBY MEMBERS
-            </Typography>
+        <>
             {loadingLobbyMembers
                 ? <LoadingState />
                 : errorLobbyMembers
@@ -39,7 +36,7 @@ const LobbyMembers: React.FC = () => {
                             </Stack>
                         )
             }
-        </Stack>
+        </>
     )
 };
 
