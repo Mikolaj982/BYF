@@ -5,12 +5,14 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { Controller, useForm, useWatch } from 'react-hook-form';
 import { Button, DialogContent, TextField, DialogTitle, Dialog, DialogActions, Autocomplete, Chip, Typography, Stack } from '@mui/material';
 import { createMatchSchema } from '../../../../utils/createMatchSchema';
-import { Lobby, LobbyMatchData } from '../../types/lobby.types';
+import { LobbyMatchData } from '../../types/lobby.types';
 import { createMatch } from '../../services/createMatch';
 import { useLobbyMembers } from '../../hooks/useLobbyMembers';
 import { getErrorMessage } from '../../../../utils/errorUtils/getErrorMessage';
 import { LoadingState } from '../../../../shared/components/LoadingState/LoadingState';
 import { ErrorState } from '../../../../shared/components/ErrorState/ErrorState';
+import { useQueryClient } from '@tanstack/react-query';
+import { useParams } from 'react-router-dom';
 
 type CreateMatchFormData = {
     gameName: string;
@@ -20,21 +22,10 @@ type CreateMatchFormData = {
     }[];
 };
 
-type CreateMatchFormProps = {
-    refetchMatches: () => Promise<void>;
-    lobbyData: Lobby;
-    refetchLeaderboard: () => Promise<void>;
-};
-
-const CreateMatchForm: React.FC<CreateMatchFormProps> = (
-    {
-        refetchMatches,
-        lobbyData,
-        refetchLeaderboard
-    }
-) => {
-    const { lobbyMembers, loading: loadingLobbyMembers, error: lobbyMembersError } = useLobbyMembers(lobbyData.id);
-    const { id } = lobbyData;
+const CreateMatchForm: React.FC = () => {
+    const { lobbyId } = useParams();
+    const queryClient = useQueryClient();
+    const { lobbyMembers, loadingLobbyMembers, errorLobbyMembers } = useLobbyMembers(lobbyId ?? '');
     const match: CreateMatchFormData = {
         gameName: '',
         players: [],
@@ -48,7 +39,7 @@ const CreateMatchForm: React.FC<CreateMatchFormProps> = (
 
     const submitMatchData = async (match: CreateMatchFormData) => {
         const createMatchFormDataPlusLobbyId: LobbyMatchData = {
-            lobbyId: id,
+            lobbyId: lobbyId ?? '',
             gameName: match.gameName,
             participants: match.players.map((player) => ({
                 user_id: player.userId,
@@ -58,9 +49,9 @@ const CreateMatchForm: React.FC<CreateMatchFormProps> = (
 
         try {
             await createMatch(createMatchFormDataPlusLobbyId);
-            await refetchMatches();
-            await refetchLeaderboard();
-            toast.success(MESSAGES.SUCCESS.CREATED_MATCH)
+            queryClient.invalidateQueries({ queryKey: ['matches', lobbyId] });
+            queryClient.invalidateQueries({ queryKey: ['leaderboard', lobbyId] });
+            toast.success(MESSAGES.SUCCESS.CREATED_MATCH);
             setOpen(false);
             reset();
         } catch (error: unknown) {
@@ -103,9 +94,9 @@ const CreateMatchForm: React.FC<CreateMatchFormProps> = (
                     render={({ field, fieldState }) => (
                         <Autocomplete
                             multiple
-                            options={lobbyMembers}
+                            options={lobbyMembers ?? []}
                             getOptionLabel={(option) => option.username}
-                            value={lobbyMembers.filter(member =>
+                            value={lobbyMembers?.filter(member =>
                                 field.value.some(player => player.userId === member.userId)
                             )}
                             onChange={(_, selectedMembers) => {
@@ -142,8 +133,8 @@ const CreateMatchForm: React.FC<CreateMatchFormProps> = (
                 {
                     loadingLobbyMembers
                         ? <LoadingState />
-                        : lobbyMembersError
-                            ? <ErrorState error={lobbyMembersError} />
+                        : errorLobbyMembers
+                            ? <ErrorState error={errorLobbyMembers} />
                             : watchedPlayers.length >= 2 && (
                                 <Stack direction='column' gap={1.5}>
                                     <Typography variant="caption" color="text.secondary">
@@ -151,7 +142,7 @@ const CreateMatchForm: React.FC<CreateMatchFormProps> = (
                                     </Typography>
                                     {
                                         watchedPlayers.map((player, index) => {
-                                            const name = lobbyMembers.find(m => m.userId === player.userId)?.username ?? 'Unknown';
+                                            const name = lobbyMembers?.find(m => m.userId === player.userId)?.username ?? 'Unknown';
                                             return (
                                                 <Controller
                                                     key={player.userId}

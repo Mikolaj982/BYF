@@ -7,9 +7,11 @@ import EmptyState from '../../../../shared/components/EmptyState/EmptyState';
 import CreateGroupForm from '../../../../features/groups/components/CreateGroup/CreateGroupForm';
 import { Box, IconButton, Stack, useMediaQuery, useTheme } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
+import { useUserGroups } from '../../../../features/groups/hooks/useUserGroups';
 
 const EmptyDashboard: React.FC = () => {
-    const { groups, loadingGroups, refetchGroups, groupsError, onOpenSidebar } = useOutletContext<DashboardOutletContext>();
+    const { groups, loadingGroups, groupsError } = useUserGroups();
+    const { onOpenSidebar } = useOutletContext<DashboardOutletContext>();
     const theme = useTheme();
     const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
@@ -20,7 +22,7 @@ const EmptyDashboard: React.FC = () => {
                     <LoadingState />
                     : groupsError
                         ? <ErrorState error={groupsError} />
-                        : (!groups.length)
+                        : (!groups?.length)
                             ? (
                                 <Box component='div'>
                                     {isMobile && (
@@ -38,7 +40,7 @@ const EmptyDashboard: React.FC = () => {
                                         p={2}
                                     >
                                         <EmptyState message='There is no groups yet. Create new one, invite your friends. Have fun!' />
-                                        <CreateGroupForm onSuccess={refetchGroups} />
+                                        <CreateGroupForm />
                                     </Stack>
                                 </Box>
                             )
@@ -59,7 +61,7 @@ const EmptyDashboard: React.FC = () => {
                                         p={2}
                                     >
                                         <EmptyState message='Choose your group or create another one.' />
-                                        <CreateGroupForm onSuccess={refetchGroups} />
+                                        <CreateGroupForm />
                                     </Stack>
                                 </Box>
                             )

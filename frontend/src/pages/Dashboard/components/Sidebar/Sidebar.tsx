@@ -4,23 +4,14 @@ import { Drawer, useMediaQuery, useTheme } from '@mui/material';
 import SidebarSection from '../SidebarSection/SidebarSection';
 import SidebarBottom from '../SidebarBottom/SidebarBottom';
 import SidebarHeader from '../SidebarHeader/SidebarHeader';
-import { UserGroup } from '../../../../features/groups/types/group.types';
 
 type SidebarProps = {
-    groups: UserGroup[];
-    refetchGroups: () => Promise<void>;
-    groupsError: unknown;
-    loadingGroups: boolean;
     isOpen: boolean;
     onCloseSidebar: () => void;
 };
 
 const Sidebar: React.FC<SidebarProps> = (
     {
-        groups,
-        refetchGroups,
-        groupsError,
-        loadingGroups,
         isOpen,
         onCloseSidebar
     }
@@ -46,14 +37,9 @@ const Sidebar: React.FC<SidebarProps> = (
                     overflow: 'auto'
                 }}
             >
-                <SidebarSection
-                    loadingGroups={loadingGroups}
-                    groups={groups}
-                    groupsError={groupsError}
-                    refetchGroups={refetchGroups}
-                />
+                <SidebarSection />
             </Box>
-            <SidebarBottom refetchGroups={refetchGroups} />
+            <SidebarBottom />
         </Box>
     );
 

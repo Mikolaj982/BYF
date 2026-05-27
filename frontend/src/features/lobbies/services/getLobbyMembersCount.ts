@@ -1,10 +1,10 @@
 import { supabase } from "../../../shared/api/supabaseClient";
 
-export async function getLobbyMembersCounts(lobbyIds: string[]): Promise<Record<string, number>> {
+export async function getLobbiesMembersCount(lobbiesIds: string[]): Promise<Record<string, number>> {
     const { data, error } = await supabase
         .from('lobby_members')
         .select('lobby_id')
-        .in('lobby_id', lobbyIds);
+        .in('lobby_id', lobbiesIds);
 
     if (error) throw new Error(error.message);
     if (!data) return {};

@@ -1,5 +1,4 @@
 import React from 'react';
-import { Lobby, Match } from '../../types/lobby.types';
 import { deleteMatch } from '../../services/deleteMatch';
 import { toast } from 'react-toastify';
 import { MESSAGES } from '../../../../utils/messages';
@@ -10,32 +9,20 @@ import { getErrorMessage } from '../../../../utils/errorUtils/getErrorMessage';
 import EmptyState from '../../../../shared/components/EmptyState/EmptyState';
 import { LoadingState } from '../../../../shared/components/LoadingState/LoadingState';
 import { ErrorState } from '../../../../shared/components/ErrorState/ErrorState';
+import { useLobbyMatches } from '../../hooks/useLobbyMatches';
+import { useQueryClient } from '@tanstack/react-query';
+import { useParams } from 'react-router-dom';
 
-type MatchesProps = {
-    matches: Match[];
-    loadingMatches: boolean;
-    errorMatches: unknown;
-    refetchMatches: () => Promise<void>;
-    refetchLobbyLeaderboard: () => Promise<void>;
-    lobbyData: Lobby;
-};
-
-const Matches: React.FC<MatchesProps> = (
-    {
-        matches,
-        loadingMatches,
-        errorMatches,
-        refetchMatches,
-        refetchLobbyLeaderboard,
-        lobbyData
-    }
-) => {
-    const matchesCount = matches.length;
+const Matches: React.FC = () => {
+    const { lobbyId } = useParams();
+    const { matches, loadingMatches, errorMatches } = useLobbyMatches(lobbyId ?? '');
+    const queryClient = useQueryClient();
+    const matchesCount = matches?.length;;
     const handleDeleteMatch = async (matchId: string) => {
         try {
             await deleteMatch(matchId);
-            await refetchMatches();
-            await refetchLobbyLeaderboard();
+            queryClient.invalidateQueries({ queryKey: ['matches', lobbyId] });
+            queryClient.invalidateQueries({ queryKey: ['leaderboard', lobbyId] });
             toast.success(MESSAGES.SUCCESS.DELETED_MATCH);
         } catch (error) {
             toast.error(getErrorMessage(error));
@@ -56,18 +43,14 @@ const Matches: React.FC<MatchesProps> = (
                         }
                     </Typography>
                 </Stack>
-                <CreateMatchForm
-                    refetchMatches={refetchMatches}
-                    refetchLeaderboard={refetchLobbyLeaderboard}
-                    lobbyData={lobbyData}
-                />
+                <CreateMatchForm />
             </Stack>
             {
                 loadingMatches
                     ? <LoadingState />
                     : errorMatches
                         ? <ErrorState error={errorMatches} />
-                        : (!matches.length)
+                        : (!matchesCount)
                             ? (
                                 <Stack
                                     alignItems="center"
@@ -76,11 +59,7 @@ const Matches: React.FC<MatchesProps> = (
                                     p={2}
                                 >
                                     <EmptyState message='No history yet.' />
-                                    <CreateMatchForm
-                                        refetchMatches={refetchMatches}
-                                        refetchLeaderboard={refetchLobbyLeaderboard}
-                                        lobbyData={lobbyData}
-                                    />
+                                    <CreateMatchForm />
                                 </Stack>
                             )
                             : (

@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import { UserGroup } from '../../types/group.types';
 import { deleteGroup } from '../../services/deleteGroup';
 import { toast } from 'react-toastify';
@@ -9,29 +9,26 @@ import { leaveGroup } from '../../services/leaveGroup';
 import GroupHeader from '../GroupHeader/GroupHeader';
 import InviteBox from '../InviteBox/InviteBox';
 import Lobbies from '../../../lobbies/components/Lobbies/Lobbies';
-import { useOutletContext } from 'react-router-dom';
-import { DashboardLayoutOutletContext } from '../../../../pages/Dashboard/types/outletContext.types';
 import { getErrorMessage } from '../../../../utils/errorUtils/getErrorMessage';
 import { useNavigate } from 'react-router-dom';
+import { useQueryClient } from '@tanstack/react-query';
+import { useAuth } from '../../../auth/hooks/useAuth';
 
 type GroupItemProps = {
   groupData: UserGroup;
-  refetchGroups: () => Promise<void>;
 };
 
-const GroupItem: React.FC<GroupItemProps> = ({ groupData, refetchGroups }) => {
+const GroupItem: React.FC<GroupItemProps> = ({ groupData }) => {
+  const { user } = useAuth();
+  const queryClient = useQueryClient();
   const navigate = useNavigate();
   const { id, inviteCode } = groupData;
-  const { lobbies, refetchLobbies } = useOutletContext<DashboardLayoutOutletContext>();
-  const lobbiesIds: string[] = useMemo(() => {
-    return lobbies.map(lobby => lobby.id);
-  }, [lobbies]);
 
   const handleDeleteGroup = async (groupId: string) => {
     try {
       await deleteGroup(groupId);
       navigate('/dashboard');
-      await refetchGroups();
+      queryClient.invalidateQueries({ queryKey: ['groups', user?.id] });
       toast.success(MESSAGES.SUCCESS.DELETED_GROUP);
     } catch (error) {
       toast.error(getErrorMessage(error));
@@ -41,7 +38,8 @@ const GroupItem: React.FC<GroupItemProps> = ({ groupData, refetchGroups }) => {
   const handleLeaveGroup = async (groupId: string) => {
     try {
       await leaveGroup(groupId);
-      await refetchGroups();
+      queryClient.invalidateQueries({ queryKey: ['groups', user?.id] });
+      queryClient.invalidateQueries({ queryKey: ['group_members', id] });
       toast.success(MESSAGES.SUCCESS.LEFT_GROUP);
     } catch (error) {
       toast.error(getErrorMessage(error));
@@ -54,16 +52,10 @@ const GroupItem: React.FC<GroupItemProps> = ({ groupData, refetchGroups }) => {
         handleDeleteGroup={handleDeleteGroup}
         groupData={groupData}
         handleLeaveGroup={handleLeaveGroup}
-        refetchLobbies={refetchLobbies}
-        refetchGroups={refetchGroups}
       />
       <InviteBox inviteCode={inviteCode} />
       <GroupMembers groupId={id} />
-      <Lobbies
-        lobbies={lobbies}
-        lobbiesIds={lobbiesIds}
-        groupData={groupData}
-      />
+      <Lobbies groupData={groupData} />
     </Stack>
   )
 };

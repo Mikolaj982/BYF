@@ -8,13 +8,13 @@ import { createLobby, CreateLobbyData } from '../../services/createLobby';
 import { createLobbySchema } from '../../../../utils/createLobbySchema';
 import { UserGroup } from '../../../groups/types/group.types';
 import { useAuth } from '../../../auth/hooks/useAuth';
+import { useQueryClient } from '@tanstack/react-query';
 
 type CreateLobbyFormData = {
     gameType: string;
 };
 
 type CreateLobbyFormProps = {
-    onSuccess: () => Promise<void>;
     groupData: UserGroup;
     trigger?: React.ReactNode;
     onIconMenuClose?: () => void;
@@ -22,13 +22,13 @@ type CreateLobbyFormProps = {
 
 const CreateLobbyForm: React.FC<CreateLobbyFormProps> = (
     {
-        onSuccess,
         groupData,
         trigger,
         onIconMenuClose
     }
 ) => {
     const { user } = useAuth();
+    const queryClient = useQueryClient();
     const { id: groupId } = groupData;
     const lobby: CreateLobbyFormData = {
         gameType: '',
@@ -49,10 +49,10 @@ const CreateLobbyForm: React.FC<CreateLobbyFormProps> = (
 
         try {
             await createLobby(createLobbyFormDataPlusGroupId);
-            await onSuccess();
-            reset();
+            queryClient.invalidateQueries({ queryKey: ['lobbies', groupId] })
             toast.success(MESSAGES.SUCCESS.CREATED_LOBBY);
             setOpen(false);
+            reset();
         } catch (error: unknown) {
             if (error instanceof Error) {
                 toast.error(error.message);
@@ -107,8 +107,8 @@ const CreateLobbyForm: React.FC<CreateLobbyFormProps> = (
                         Cancel
                     </Button>
                     <Button
-                        onClick={handleSubmit(() => {
-                            submitLobbyData(lobby);
+                        onClick={handleSubmit((formData) => {
+                            submitLobbyData(formData);
                             onIconMenuClose?.();
                         })}
                         variant='contained'

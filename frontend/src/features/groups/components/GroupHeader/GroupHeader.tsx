@@ -12,18 +12,14 @@ import GroupMenuItems from './GroupMenuItems/GroupMenuItems';
 
 type GroupHeaderProps = {
     handleLeaveGroup: (id: string) => void;
-    refetchLobbies: () => Promise<void>;
     groupData: UserGroup;
-    refetchGroups: () => Promise<void>;
     handleDeleteGroup: (id: string) => void;
 };
 
 const GroupHeader: React.FC<GroupHeaderProps> = (
     {
         handleLeaveGroup,
-        refetchLobbies,
         groupData,
-        refetchGroups,
         handleDeleteGroup
     }
 ) => {
@@ -59,8 +55,6 @@ const GroupHeader: React.FC<GroupHeaderProps> = (
                         <IconMenuMobile>
                             <GroupMenuItems
                                 groupData={groupData}
-                                refetchGroups={refetchGroups}
-                                refetchLobbies={refetchLobbies}
                                 handleDeleteGroup={handleDeleteGroup}
                                 handleLeaveGroup={handleLeaveGroup}
                             />
@@ -89,14 +83,8 @@ const GroupHeader: React.FC<GroupHeaderProps> = (
                                                 onConfirm={() => handleDeleteGroup(id)}
                                                 label='delete'
                                             />
-                                            <UpdateGroupForm
-                                                onSuccess={refetchGroups}
-                                                groupData={groupData}
-                                            />
-                                            <CreateLobbyForm
-                                                onSuccess={refetchLobbies}
-                                                groupData={groupData}
-                                            />
+                                            <UpdateGroupForm groupData={groupData} />
+                                            <CreateLobbyForm groupData={groupData} />
                                         </Stack>
                                     )
                             }

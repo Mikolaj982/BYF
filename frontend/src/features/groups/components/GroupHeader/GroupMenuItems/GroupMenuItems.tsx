@@ -9,8 +9,6 @@ import CreateLobbyForm from '../../../../lobbies/components/CreateLobby/CreateLo
 type GroupMenuItemsProps = {
     handleLeaveGroup: (id: string) => void;
     handleDeleteGroup: (id: string) => void;
-    refetchGroups: () => Promise<void>;
-    refetchLobbies: () => Promise<void>;
     groupData: UserGroup;
     onClose?: () => void;
 };
@@ -19,8 +17,6 @@ const GroupMenuItems: React.FC<GroupMenuItemsProps> = (
     {
         handleLeaveGroup,
         handleDeleteGroup,
-        refetchGroups,
-        refetchLobbies,
         groupData,
         onClose
     }
@@ -49,13 +45,11 @@ const GroupMenuItems: React.FC<GroupMenuItemsProps> = (
                             onIconMenuClose={onClose}
                         />
                         <UpdateGroupForm
-                            onSuccess={refetchGroups}
                             groupData={groupData}
                             trigger={<MenuItem sx={{ justifyContent: 'center' }}>UPDATE GROUP</MenuItem>}
                             onIconMenuClose={onClose}
                         />
                         <CreateLobbyForm
-                            onSuccess={refetchLobbies}
                             groupData={groupData}
                             trigger={<MenuItem sx={{ justifyContent: 'center' }}>CREATE LOBBY</MenuItem>}
                             onIconMenuClose={onClose}

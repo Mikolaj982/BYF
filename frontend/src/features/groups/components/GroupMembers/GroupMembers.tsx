@@ -11,7 +11,7 @@ type GroupMembersProps = {
 };
 
 const GroupMembers: React.FC<GroupMembersProps> = ({ groupId }) => {
-    const { groupMembers, loading, error } = useGroupMembers(groupId);
+    const { groupMembers, loadingGroupMembers, errorGroupMembers } = useGroupMembers(groupId);
 
     return (
         <Stack padding={3} spacing={1}>
@@ -20,11 +20,11 @@ const GroupMembers: React.FC<GroupMembersProps> = ({ groupId }) => {
             </Typography>
             <Stack direction='row' spacing={1}>
                 {
-                    loading
+                    loadingGroupMembers
                         ? <LoadingState />
-                        : error
-                            ? <ErrorState error={error} />
-                            : (!groupMembers.length)
+                        : errorGroupMembers
+                            ? <ErrorState error={errorGroupMembers} />
+                            : (!groupMembers?.length)
                                 ? <EmptyState message='There is no members yet.' />
                                 : (
                                     groupMembers.map((member) => (

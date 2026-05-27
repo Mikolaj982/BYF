@@ -5,16 +5,16 @@ import { MESSAGES } from '../../../../utils/messages';
 import { toast } from 'react-toastify';
 import { useState } from 'react';
 import { getErrorMessage } from '../../../../utils/errorUtils/getErrorMessage';
+import { useQueryClient } from '@tanstack/react-query';
+import { useAuth } from '../../../auth/hooks/useAuth';
 
 type JoinGroupFormData = {
     code: string;
 };
 
-type JoinGroupFormProps = {
-    onSuccess: () => Promise<void>;
-};
-
-const JoinGroupForm: React.FC<JoinGroupFormProps> = ({ onSuccess }) => {
+const JoinGroupForm: React.FC = () => {
+    const { user } = useAuth();
+    const queryClient = useQueryClient();
     const [open, setOpen] = useState<boolean>(false);
     const { control, handleSubmit, reset } = useForm<JoinGroupFormData>({
         defaultValues: {
@@ -24,9 +24,11 @@ const JoinGroupForm: React.FC<JoinGroupFormProps> = ({ onSuccess }) => {
 
     const handleInviteCode = async (data: JoinGroupFormData) => {
         try {
-            await joinGroupByCode(data.code);
-            await onSuccess();
+            const groupId = await joinGroupByCode(data.code);
+            queryClient.invalidateQueries({ queryKey: ['groups', user?.id] });
+            queryClient.invalidateQueries({ queryKey: ['group_members', groupId] });
             toast.success(MESSAGES.SUCCESS.JOINED_GROUP);
+            setOpen(false);
             reset();
         } catch (error) {
             toast.error(getErrorMessage(error));

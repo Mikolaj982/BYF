@@ -9,18 +9,16 @@ import { Controller, useForm } from 'react-hook-form';
 import { Button, DialogContent, Dialog, DialogTitle, DialogActions, TextField } from '@mui/material';
 import { CreateGroupSubmitData } from '../../types/group.types';
 import { getErrorMessage } from '../../../../utils/errorUtils/getErrorMessage';
+import { useQueryClient } from '@tanstack/react-query';
 
 type CreateGroupFormData = {
     name: string;
     description: string;
 };
 
-type CreateGroupFormProps = {
-    onSuccess: () => Promise<void>;
-};
-
-const CreateGroupForm: React.FC<CreateGroupFormProps> = ({ onSuccess }) => {
+const CreateGroupForm: React.FC = () => {
     const { user } = useAuth();
+    const queryClient = useQueryClient();
     const group: CreateGroupFormData = {
         name: '',
         description: '',
@@ -42,7 +40,7 @@ const CreateGroupForm: React.FC<CreateGroupFormProps> = ({ onSuccess }) => {
 
         try {
             await createGroup(createGroupDataPlusOwnerId);
-            await onSuccess();
+            queryClient.invalidateQueries({ queryKey: ['groups', user?.id] })
             toast.success(MESSAGES.SUCCESS.CREATED_GROUP);
             setOpen(false);
             reset();

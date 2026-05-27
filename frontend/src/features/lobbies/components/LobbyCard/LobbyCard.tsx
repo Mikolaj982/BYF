@@ -1,35 +1,33 @@
 import React from 'react';
 import { Button, Paper, Stack, Typography } from '@mui/material';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, } from 'react-router-dom';
 import { joinLobby } from '../../services/joinLobby';
 import { toast } from 'react-toastify';
 import { MESSAGES } from '../../../../utils/messages';
 import { useAuth } from '../../../auth/hooks/useAuth';
 import { useLobbyMembers } from '../../hooks/useLobbyMembers';
 import { getErrorMessage } from '../../../../utils/errorUtils/getErrorMessage';
+import { useQueryClient } from '@tanstack/react-query';
+import { Lobby } from '../../types/lobby.types';
 
 type LobbyCardProps = {
-    lobbyId: string;
-    groupId: string;
-    gameType: string;
-    membersCount: number;
-    loadingLobbyMembersCounts: boolean;
-    refetchLobbyMembersCounts: () => Promise<void>;
+    lobbyData: Lobby;
+    lobbyMembersCount: number;
+    lobbiesIds: string[] | undefined;
 };
 
 const LobbyCard: React.FC<LobbyCardProps> = (
     {
-        lobbyId,
-        groupId,
-        gameType,
-        refetchLobbyMembersCounts,
-        membersCount
+        lobbyData,
+        lobbyMembersCount,
+        lobbiesIds
     }
 ) => {
     const { user } = useAuth();
-    const { refetchLobbyMembers, lobbyMembers } = useLobbyMembers(lobbyId);
+    const queryClient = useQueryClient();
+    const { lobbyMembers } = useLobbyMembers(lobbyData.id);
     const navigate = useNavigate();
-    const isMember = lobbyMembers.some((member) => user!.id === member.userId);
+    const isMember = lobbyMembers?.some((member) => user!.id === member.userId);
 
     const handleJoinLobby = async (lobbyId: string) => {
         const joinLobbySubmitData = {
@@ -39,16 +37,16 @@ const LobbyCard: React.FC<LobbyCardProps> = (
 
         try {
             await joinLobby(joinLobbySubmitData);
-            await refetchLobbyMembers();
-            await refetchLobbyMembersCounts();
-            toast.success(MESSAGES.SUCCESS.JOINED_LOBBY)
+            queryClient.invalidateQueries({ queryKey: ['lobby_members', lobbyId] });
+            queryClient.invalidateQueries({ queryKey: ['lobbies_members_count', lobbiesIds] });
+            toast.success(MESSAGES.SUCCESS.JOINED_LOBBY);
         } catch (error) {
             toast.error(getErrorMessage(error));
         }
     };
 
     const handleSelectLobby = (id: string) => {
-        navigate(`/dashboard/group/${groupId}/lobby/${id}`)
+        navigate(`/dashboard/group/${lobbyData.groupId}/lobby/${id}`)
     };
 
     return (
@@ -60,10 +58,10 @@ const LobbyCard: React.FC<LobbyCardProps> = (
             }}>
             <Stack>
                 <Typography>
-                    {gameType}
+                    {lobbyData.gameType}
                 </Typography>
                 <Typography sx={{ color: 'text.secondary' }}>
-                    {membersCount} members
+                    {lobbyMembersCount} members
                 </Typography>
                 <Stack
                     direction='row'
@@ -81,7 +79,7 @@ const LobbyCard: React.FC<LobbyCardProps> = (
                     }}
                 >
                     <Button
-                        onClick={() => handleJoinLobby(lobbyId)}
+                        onClick={() => handleJoinLobby(lobbyData.id)}
                         color={isMember ? 'success' : 'primary'}
                         variant={isMember ? 'contained' : 'outlined'}
                         disabled={isMember}
@@ -89,7 +87,7 @@ const LobbyCard: React.FC<LobbyCardProps> = (
                         {isMember ? 'JOINED' : 'JOIN'}
                     </Button>
                     <Button
-                        onClick={() => handleSelectLobby(lobbyId)}
+                        onClick={() => handleSelectLobby(lobbyData.id)}
                         color='primary'
                         variant='outlined'
                     >

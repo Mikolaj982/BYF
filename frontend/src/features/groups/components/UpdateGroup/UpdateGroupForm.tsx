@@ -10,9 +10,9 @@ import { updateGroup } from '../../services/updateGroup';
 import { UserGroup } from '../../types/group.types';
 import { UpdateGroupFormData } from '../../types/group.types';
 import { getErrorMessage } from '../../../../utils/errorUtils/getErrorMessage';
+import { useQueryClient } from '@tanstack/react-query';
 
 type UpdateGroupFormProps = {
-    onSuccess: () => Promise<void>;
     groupData: UserGroup;
     trigger?: React.ReactNode;
     onIconMenuClose?: () => void;
@@ -20,13 +20,13 @@ type UpdateGroupFormProps = {
 
 const UpdateGroupForm: React.FC<UpdateGroupFormProps> = (
     {
-        onSuccess,
         groupData,
         trigger,
         onIconMenuClose
     }
 ) => {
     const { user } = useAuth();
+    const queryClient = useQueryClient();
     const updateFormValues: UpdateGroupFormData = {
         name: groupData.name,
         description: groupData.description
@@ -41,7 +41,7 @@ const UpdateGroupForm: React.FC<UpdateGroupFormProps> = (
         if (!user?.id) return;
         try {
             await updateGroup(groupData.id, data);
-            await onSuccess();
+            queryClient.invalidateQueries({ queryKey: ['groups', user?.id] })
             toast.success(MESSAGES.SUCCESS.UPDATED_GROUP)
             setOpen(false);
             reset();
@@ -108,11 +108,11 @@ const UpdateGroupForm: React.FC<UpdateGroupFormProps> = (
                         Cancel
                     </Button>
                     <Button
-                        onClick={() => {
-                            handleSubmit(submitGroupData);
+                        onClick={handleSubmit((formData) => {
+                            submitGroupData(formData);
                             setOpen(false);
                             onIconMenuClose?.();
-                        }}
+                        })}
                         variant='contained'
                     >
                         Submit
