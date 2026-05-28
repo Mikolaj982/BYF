@@ -4,10 +4,8 @@ import { leaveLobby } from '../../services/leaveLobby';
 import { MESSAGES } from '../../../../utils/messages';
 import { toast } from 'react-toastify';
 import { deleteLobby } from '../../services/deleteLobby';
-import { useAuth } from '../../../auth/hooks/useAuth';
 import { getErrorMessage } from '../../../../utils/errorUtils/getErrorMessage';
 import { useNavigate } from 'react-router-dom';
-import { useLobbyMembers } from '../../hooks/useLobbyMembers';
 import { useQueryClient } from '@tanstack/react-query';
 import { Stack } from '@mui/material';
 import LobbyHeader from '../LobbyHeader/LobbyHeader';
@@ -22,18 +20,16 @@ type LobbyItemProps = {
 };
 
 const LobbyItem: React.FC<LobbyItemProps> = ({ lobbyData }) => {
-    const { lobbyMembers } = useLobbyMembers(lobbyData.id);
-    const { user } = useAuth();
     const queryClient = useQueryClient();
     const navigate = useNavigate();
-    const isOwner = lobbyData.createdBy === user?.id;
-    const isLobbyMember = lobbyMembers.some((member) => member.userId === user?.id);
 
     const handleLeaveLobby = async (lobbyId: string) => {
         try {
             await leaveLobby(lobbyId);
             queryClient.invalidateQueries({ queryKey: ['lobby_members', lobbyId] });
+            await queryClient.invalidateQueries({ queryKey: ['lobby_members_count', lobbyId] });
             toast.success(MESSAGES.SUCCESS.LEFT_LOBBY, { toastId: 'leave-lobby-success' });
+            navigate(`/dashboard/group/${lobbyData.groupId}`);
         } catch (error) {
             toast.error(getErrorMessage(error), { toastId: 'leave-lobby-error' });
         }
@@ -56,24 +52,19 @@ const LobbyItem: React.FC<LobbyItemProps> = ({ lobbyData }) => {
                 onLeave={handleLeaveLobby}
                 onDelete={handleDeleteLobby}
                 lobbyData={lobbyData}
-                isOwner={isOwner}
             />
             <SectionContainer>
                 <SectionLabel label='lobby members' />
                 <LobbyMembers />
             </SectionContainer>
-            {isLobbyMember && (
-                <>
-                    <SectionContainer>
-                        <SectionLabel label='matches history' />
-                        <Matches />
-                    </SectionContainer>
-                    <SectionContainer>
-                        <SectionLabel label='leaderboard' />
-                        <LobbyLeaderboard lobbyData={lobbyData} />
-                    </SectionContainer>
-                </>
-            )}
+            <SectionContainer>
+                <SectionLabel label='matches history' />
+                <Matches />
+            </SectionContainer>
+            <SectionContainer>
+                <SectionLabel label='leaderboard' />
+                <LobbyLeaderboard lobbyData={lobbyData} />
+            </SectionContainer>
         </Stack>
     )
 };

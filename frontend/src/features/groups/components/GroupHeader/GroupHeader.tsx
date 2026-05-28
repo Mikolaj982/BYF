@@ -69,14 +69,16 @@ const GroupHeader: React.FC<GroupHeaderProps> = (
                             {
                                 role === GroupRole.Member
                                     ? (
-                                        <ConfirmDialog
-                                            title='Leave group?'
-                                            description='You will be missed.'
-                                            onConfirm={() => handleLeaveGroup(id)}
-                                            label='leave'
-                                        />
-                                    )
-                                    : (
+                                        <Stack direction='row' spacing={{ xs: 1, md: 2 }}>
+                                            <ConfirmDialog
+                                                title='Leave group?'
+                                                description='You will be missed.'
+                                                onConfirm={() => handleLeaveGroup(id)}
+                                                label='leave'
+                                            />
+                                            <CreateLobbyForm groupData={groupData} />
+                                        </Stack>
+                                    ) : (
                                         <Stack direction='row' spacing={{ xs: 1, md: 2 }}>
                                             <ConfirmDialog
                                                 title='Delete group?'

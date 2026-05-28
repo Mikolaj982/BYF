@@ -7,12 +7,13 @@ import { useOutletContext } from 'react-router-dom';
 import { DashboardLayoutOutletContext } from '../../../../pages/Dashboard/types/outletContext.types';
 import IconMenuMobile from '../../../../shared/components/IconMenuMobile/IconMenuMobile';
 import LobbyMenuItems from './LobbyMenuItems/LobbyMenuItems';
+import { useAuth } from '../../../auth/hooks/useAuth';
+import { useIsLobbyMember } from '../../hooks/useIsLobbyMember';
 
 type LobbyHeaderProps = {
     onLeave: (id: string) => void;
     lobbyData: Lobby;
     onDelete: (id: string) => void;
-    isOwner: boolean;
 };
 
 const LobbyHeader: React.FC<LobbyHeaderProps> = (
@@ -20,13 +21,15 @@ const LobbyHeader: React.FC<LobbyHeaderProps> = (
         onLeave,
         lobbyData,
         onDelete,
-        isOwner
     }
 ) => {
+    const { user } = useAuth();
     const { onOpenSidebar } = useOutletContext<DashboardLayoutOutletContext>();
     const theme = useTheme();
     const isMobile = useMediaQuery(theme.breakpoints.down('md'));
     const { id, gameType } = lobbyData;
+    const isOwner = lobbyData.createdBy === user?.id;
+    const isLobbyMember = useIsLobbyMember(id);
 
     return (
         <Stack
@@ -62,17 +65,16 @@ const LobbyHeader: React.FC<LobbyHeaderProps> = (
                         {gameType}
                     </Typography>
                     <Stack direction='row'>
-                        {
-                            isOwner
-                                ? (
-                                    <ConfirmDialog
-                                        title='Delete lobby?'
-                                        description='This action cannot be undone.'
-                                        onConfirm={() => onDelete(id)}
-                                        label='delete'
-                                    />
-                                )
-                                : (
+                        {isOwner
+                            ? (
+                                <ConfirmDialog
+                                    title='Delete lobby?'
+                                    description='This action cannot be undone.'
+                                    onConfirm={() => onDelete(id)}
+                                    label='delete'
+                                />
+                            ) : (
+                                isLobbyMember && (
                                     <ConfirmDialog
                                         title='Leave lobby?'
                                         description='You will be missed.'
@@ -80,6 +82,7 @@ const LobbyHeader: React.FC<LobbyHeaderProps> = (
                                         label='leave'
                                     />
                                 )
+                            )
                         }
                     </Stack>
                 </>

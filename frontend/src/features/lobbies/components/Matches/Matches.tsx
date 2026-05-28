@@ -12,11 +12,13 @@ import { ErrorState } from '../../../../shared/components/ErrorState/ErrorState'
 import { useLobbyMatches } from '../../hooks/useLobbyMatches';
 import { useQueryClient } from '@tanstack/react-query';
 import { useParams } from 'react-router-dom';
+import { useIsLobbyMember } from '../../hooks/useIsLobbyMember';
 
 const Matches: React.FC = () => {
     const { lobbyId } = useParams();
     const { matches, loadingMatches, errorMatches } = useLobbyMatches(lobbyId ?? '');
     const queryClient = useQueryClient();
+    const isLobbyMember = useIsLobbyMember(lobbyId ?? '');
     const matchesCount = matches.length;
 
     if (!lobbyId) return <ErrorState error='Invalid route' />;
@@ -30,7 +32,7 @@ const Matches: React.FC = () => {
             p={2}
         >
             <EmptyState message='No history yet.' />
-            <CreateMatchForm />
+            {isLobbyMember && <CreateMatchForm />}
         </Stack>
     );
 
@@ -56,7 +58,7 @@ const Matches: React.FC = () => {
                         }
                     </Typography>
                 </Stack>
-                <CreateMatchForm />
+                {isLobbyMember && <CreateMatchForm />}
             </Stack>
             <Stack spacing={1.2}>
                 {matches.map((match) => (
