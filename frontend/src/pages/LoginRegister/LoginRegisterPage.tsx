@@ -15,7 +15,7 @@ const Register: React.FC = () => {
 
     const labels = isLoginMode ? loginLabels : registerLabels;
     return (<>
-        <div className='flex justify-center md:block p-[2rem] lg:p-[4rem] h-screen w-screen bg-richBlack'>
+        <div className='flex justify-center md:block p-[2rem] lg:p-[4rem] h-dvh w-screen bg-richBlack'>
             <div className='md:flex lg:justify-between lg:flex-row'>
                 <div className='text-offWhite hidden md:flex text-2xl md:text-3xl lg:text-5xl font-bold md:flex-1 break-words md:leading-normal lg:leading-snug mt-5 lg:mt-0'>
                     <Typewriter
