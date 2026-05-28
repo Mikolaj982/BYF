@@ -19,6 +19,7 @@ export const MESSAGES = {
         REQUIRED: 'This field is required.',
         INVALID_EMAIL: 'Invalid email address.',
         INVALID_PASSWORD: 'Password must be at least 8 characters long and include an uppercase letter, lowercase letter, number, and special character.',
+        INVALID_USERNAME_EMAIL: 'The field must contain an existing email address or username.',
         NOT_MATCHES_PASSWORD: 'Passwords must match.',
         LOGIN_FAILED: 'Login failed. Please check your credentials and try again.',
         REGISTER_FAILED: 'Registration failed. Please check your details and try again.',

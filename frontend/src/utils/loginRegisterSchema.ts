@@ -29,7 +29,7 @@ export const loginSchema = Yup.object({
         .string()
         .test(
             'username-or-email',
-            'Pole musi zawierać istniejący adres email lub nazwę użytkownika',
+            MESSAGES.ERROR.INVALID_USERNAME_EMAIL,
             (value) => {
                 if (!value) return false;
                 const isEmail = REGEX.EMAIL.test(value);
