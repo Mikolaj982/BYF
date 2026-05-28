@@ -34,7 +34,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onCloseSidebar }) => {
             >
                 <SectionContainer>
                     <SectionLabel label='your groups' />
-                    <SidebarSection />
+                    <SidebarSection handleCloseSidebar={onCloseSidebar} />
                 </SectionContainer>
             </Box>
             <SidebarBottom />
