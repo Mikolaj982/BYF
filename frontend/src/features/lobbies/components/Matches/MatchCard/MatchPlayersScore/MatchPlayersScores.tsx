@@ -11,7 +11,12 @@ type MatchPlayersScoresProps = {
 const MatchPlayersScores: React.FC<MatchPlayersScoresProps> = ({ players }) => {
     const sortedPlayersScoresWithDraw = assignPlaces(players);
     return (
-        <Stack direction='row' flexWrap='wrap' gap={0.8} spacing={0}>
+        <Stack
+            direction='row'
+            flexWrap='wrap'
+            gap={0.8}
+            spacing={0}
+        >
             {sortedPlayersScoresWithDraw.map(player => <MatchPlayer key={player.userId} playerData={player} />)}
         </Stack>
     )

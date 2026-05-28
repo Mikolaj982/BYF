@@ -56,7 +56,7 @@ const LobbyCard: React.FC<LobbyCardProps> = (
                 <Typography>
                     {lobbyData.gameType}
                 </Typography>
-                <Typography sx={{ color: 'text.secondary' }}>
+                <Typography color='text.secondary'>
                     {lobbyMembersCount} members
                 </Typography>
                 <Stack

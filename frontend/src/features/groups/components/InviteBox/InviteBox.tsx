@@ -9,7 +9,7 @@ const InviteBox: React.FC<InviteBoxProps> = ({ inviteCode }) => {
     return (
         <Paper variant='outlined' sx={{ px: 2, py: 1 }}>
             <Stack direction='row' alignItems='center' >
-                <Typography variant='body2' sx={{ fontFamily: 'monospace', flex: 1 }}>
+                <Typography variant='body2' fontFamily='monospace' flex={1}>
                     {inviteCode}
                 </Typography>
                 <Button

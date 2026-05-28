@@ -65,13 +65,7 @@ const UpdateGroupForm: React.FC<UpdateGroupFormProps> = (
             }
             <Dialog open={open}>
                 <DialogTitle>Update group</DialogTitle>
-                <DialogContent
-                    sx={{
-                        display: 'flex',
-                        flexDirection: 'column',
-                        gap: 2,
-                        pt: 2
-                    }}>
+                <DialogContent>
                     <Controller
                         name='name'
                         control={control}

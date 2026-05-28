@@ -36,10 +36,16 @@ const LobbyHeader: React.FC<LobbyHeaderProps> = (
             component='div'
             direction='row'
             justifyContent='space-between'
-            sx={{ px: 2, py: 2, borderBottom: 1, borderColor: 'divider' }}
+            padding={2}
+            borderBottom={1}
+            borderColor='divider'
         >
             {isMobile ? (
-                <Stack direction='row' justifyContent='space-between' width='100%'>
+                <Stack
+                    direction='row'
+                    justifyContent='space-between'
+                    width='100%'
+                >
                     <IconButton onClick={onOpenSidebar} sx={{ mr: 0 }}>
                         <MenuIcon />
                     </IconButton>

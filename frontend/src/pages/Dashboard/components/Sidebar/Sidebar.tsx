@@ -1,6 +1,6 @@
 import React from 'react';
 import Box from '@mui/material/Box';
-import { Drawer, useMediaQuery, useTheme } from '@mui/material';
+import { Drawer, Stack, useMediaQuery, useTheme } from '@mui/material';
 import SidebarSection from '../SidebarSection/SidebarSection';
 import SidebarBottom from '../SidebarBottom/SidebarBottom';
 import SidebarHeader from '../SidebarHeader/SidebarHeader';
@@ -16,15 +16,10 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onCloseSidebar }) => {
     const theme = useTheme();
     const isMobile = useMediaQuery(theme.breakpoints.down('md'));
     const content = (
-        <Box
-            component='div'
-            sx={{
-                display: 'flex',
-                width: { xs: '250px', md: '300px' },
-                height: '100vh',
-                flexDirection: 'column',
-                bgcolor: 'background.paper',
-            }}
+        <Stack
+            width={{ xs: '250px', md: '300px' }}
+            height='100vh'
+            bgcolor='background.paper'
         >
             <SidebarHeader />
             <Box
@@ -38,7 +33,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onCloseSidebar }) => {
                 </SectionContainer>
             </Box>
             <SidebarBottom />
-        </Box>
+        </Stack>
     );
 
     if (isMobile) {

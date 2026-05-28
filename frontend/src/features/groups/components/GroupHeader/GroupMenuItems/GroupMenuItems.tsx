@@ -31,12 +31,16 @@ const GroupMenuItems: React.FC<GroupMenuItemsProps> = (
                             description='You will be missed.'
                             onConfirm={() => handleLeaveGroup(groupData.id)}
                             label='leave'
-                            trigger={<MenuItem sx={{ justifyContent: 'center' }}>LEAVE GROUP</MenuItem>}
+                            trigger={
+                                <MenuItem sx={{ justifyContent: 'center' }}>LEAVE GROUP</MenuItem>
+                            }
                             onIconMenuClose={onClose}
                         />
                         <CreateLobbyForm
                             groupData={groupData}
-                            trigger={<MenuItem sx={{ justifyContent: 'center' }}>CREATE LOBBY</MenuItem>}
+                            trigger={
+                                <MenuItem sx={{ justifyContent: 'center' }}>CREATE LOBBY</MenuItem>
+                            }
                             onIconMenuClose={onClose}
                         />
                     </>
@@ -48,17 +52,23 @@ const GroupMenuItems: React.FC<GroupMenuItemsProps> = (
                             description='This action cannot be undone.'
                             onConfirm={() => handleDeleteGroup(groupData.id)}
                             label='delete'
-                            trigger={<MenuItem sx={{ justifyContent: 'center' }}>DELETE GROUP</MenuItem>}
+                            trigger={
+                                <MenuItem sx={{ justifyContent: 'center' }}>DELETE GROUP</MenuItem>
+                            }
                             onIconMenuClose={onClose}
                         />
                         <UpdateGroupForm
                             groupData={groupData}
-                            trigger={<MenuItem sx={{ justifyContent: 'center' }}>UPDATE GROUP</MenuItem>}
+                            trigger={
+                                <MenuItem sx={{ justifyContent: 'center' }}>UPDATE GROUP</MenuItem>
+                            }
                             onIconMenuClose={onClose}
                         />
                         <CreateLobbyForm
                             groupData={groupData}
-                            trigger={<MenuItem sx={{ justifyContent: 'center' }}>CREATE LOBBY</MenuItem>}
+                            trigger={
+                                <MenuItem sx={{ justifyContent: 'center' }}>CREATE LOBBY</MenuItem>
+                            }
                             onIconMenuClose={onClose}
                         />
                     </>
