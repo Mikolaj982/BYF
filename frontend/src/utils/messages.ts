@@ -24,6 +24,7 @@ export const MESSAGES = {
         REGISTER_FAILED: 'Registration failed. Please check your details and try again.',
         UNKNOWN: 'Something went wrong. Please try again.',
         ALREADY_EXISTS: 'Already exists.',
-        LOAD_GROUPS: 'Failed to load groups. Please try again.'
+        LOAD_GROUPS: 'Failed to load groups. Please try again.',
+        EMPTY_INVITE_CODE: 'Invite code is required.',
     }
 }

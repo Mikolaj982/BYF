@@ -18,6 +18,6 @@ export async function joinLobby(lobbyData: LobbyMember): Promise<void> {
         if (error.code === DB_ERROR_CODES.UNIQUE_VIOLATION) {
             throw new Error('You are already in the lobby.');
         }
-        throw new Error(error.message);
+        throw error;
     }
 }

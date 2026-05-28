@@ -41,7 +41,7 @@ const JoinGroupForm: React.FC = () => {
                 Join
             </Button>
             <Dialog open={open}>
-                <DialogTitle>Join Group</DialogTitle>
+                <DialogTitle>Join group</DialogTitle>
                 <DialogContent>
                     <Controller
                         name='code'
@@ -49,13 +49,13 @@ const JoinGroupForm: React.FC = () => {
                         render={({ field }) => (
                             <TextField
                                 {...field}
-                                label='podaj kod'
+                                label='enter the code'
                             />
                         )}
                     />
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={() => setOpen(false)}>Cancel</Button>
+                    <Button onClick={() => setOpen(false)} variant='outlined'>Cancel</Button>
                     <Button onClick={handleSubmit(handleInviteCode)} variant='contained'>Submit</Button>
                 </DialogActions>
             </Dialog>
