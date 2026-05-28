@@ -8,10 +8,15 @@ import CreateGroupForm from '../../../../features/groups/components/CreateGroup/
 import EmptyState from '../../../../shared/components/EmptyState/EmptyState';
 import { useUserGroups } from '../../../../features/groups/hooks/useUserGroups';
 
-const SidebarSection: React.FC = () => {
+type SidebarSectionProps = {
+    handleCloseSidebar: () => void;
+};
+
+const SidebarSection: React.FC<SidebarSectionProps> = ({ handleCloseSidebar }) => {
     const { groups, loadingGroups, groupsError } = useUserGroups();
     const navigate = useNavigate();
     const handleSelectGroup = (id: string) => {
+        handleCloseSidebar();
         navigate(`group/${id}`);
     };
 
