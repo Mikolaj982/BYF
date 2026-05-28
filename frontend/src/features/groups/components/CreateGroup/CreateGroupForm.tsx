@@ -39,11 +39,11 @@ const CreateGroupForm: React.FC = () => {
         try {
             await createGroup(createGroupDataPlusOwnerId);
             queryClient.invalidateQueries({ queryKey: ['groups', user?.id] })
-            toast.success(MESSAGES.SUCCESS.CREATED_GROUP);
+            toast.success(MESSAGES.SUCCESS.CREATED_GROUP, { toastId: 'create-group-success' });
             setOpen(false);
             reset();
         } catch (error) {
-            toast.error(getErrorMessage(error));
+            toast.error(getErrorMessage(error), { toastId: 'create-group-error' });
         }
     };
 

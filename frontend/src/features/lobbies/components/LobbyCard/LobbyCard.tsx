@@ -39,9 +39,9 @@ const LobbyCard: React.FC<LobbyCardProps> = (
             await joinLobby(joinLobbySubmitData);
             queryClient.invalidateQueries({ queryKey: ['lobby_members', lobbyId] });
             queryClient.invalidateQueries({ queryKey: ['lobbies_members_count', lobbiesIds] });
-            toast.success(MESSAGES.SUCCESS.JOINED_LOBBY);
+            toast.success(MESSAGES.SUCCESS.JOINED_LOBBY, { toastId: 'join-lobby-success' });
         } catch (error) {
-            toast.error(getErrorMessage(error));
+            toast.error(getErrorMessage(error), { toastId: 'join-lobby-error' });
         }
     };
 

@@ -11,6 +11,7 @@ import LobbyWrapper from './pages/Dashboard/components/LobbyWrapper/LobbyWrapper
 import PrivateRoute from './features/auth/components/PrivateRoute/PrivateRoute';
 import EmptyDashboard from './pages/Dashboard/components/EmptyDashboard/EmptyDashboard';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { ToastContainer } from 'react-toastify';
 
 function App() {
   const queryClient = new QueryClient();
@@ -34,6 +35,7 @@ function App() {
             </Route>
           </Routes>
         </Router >
+        <ToastContainer position='bottom-right' />
       </ThemeProvider>
     </QueryClientProvider>
   )

@@ -49,17 +49,17 @@ const Form: React.FC<FormProps> = ({ labels, isLogin }) => {
         try {
             if (isLogin) {
                 await userAuthService.login(userData as LoginData);
-                toast.success(MESSAGES.SUCCESS.USER_LOGGED);
+                toast.success(MESSAGES.SUCCESS.USER_LOGGED, { toastId: 'login-success' });
                 reset();
                 navigate('/dashboard');
             } else {
                 await userAuthService.register(userData as RegisterData);
-                toast.success(MESSAGES.SUCCESS.USER_REGISTERED);
+                toast.success(MESSAGES.SUCCESS.USER_REGISTERED, { toastId: 'register-success' });
                 reset();
                 navigate('/dashboard');
             }
         } catch (error: unknown) {
-            toast.error(getErrorMessage(error));
+            toast.error(getErrorMessage(error), { toastId: 'auth-error' });
         };
     };
 
