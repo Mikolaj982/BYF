@@ -31,9 +31,9 @@ const GroupItem: React.FC<GroupItemProps> = ({ groupData }) => {
       await deleteGroup(groupId);
       queryClient.invalidateQueries({ queryKey: ['groups', user?.id] });
       navigate('/dashboard');
-      toast.success(MESSAGES.SUCCESS.DELETED_GROUP);
+      toast.success(MESSAGES.SUCCESS.DELETED_GROUP, { toastId: 'delete-group-success' });
     } catch (error) {
-      toast.error(getErrorMessage(error));
+      toast.error(getErrorMessage(error), { toastId: 'delete-group-error' });
     }
   };
 
@@ -43,9 +43,9 @@ const GroupItem: React.FC<GroupItemProps> = ({ groupData }) => {
       queryClient.invalidateQueries({ queryKey: ['groups', user?.id] });
       queryClient.invalidateQueries({ queryKey: ['group_members', id] });
       navigate('/dashboard');
-      toast.success(MESSAGES.SUCCESS.LEFT_GROUP);
+      toast.success(MESSAGES.SUCCESS.LEFT_GROUP, { toastId: 'leave-group-success' });
     } catch (error) {
-      toast.error(getErrorMessage(error));
+      toast.error(getErrorMessage(error), { toastId: 'leave-group-error' });
     }
   };
 

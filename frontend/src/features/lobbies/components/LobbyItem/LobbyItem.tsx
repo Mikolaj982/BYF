@@ -33,9 +33,9 @@ const LobbyItem: React.FC<LobbyItemProps> = ({ lobbyData }) => {
         try {
             await leaveLobby(lobbyId);
             queryClient.invalidateQueries({ queryKey: ['lobby_members', lobbyId] });
-            toast.success(MESSAGES.SUCCESS.LEFT_LOBBY);
+            toast.success(MESSAGES.SUCCESS.LEFT_LOBBY, { toastId: 'leave-lobby-success' });
         } catch (error) {
-            toast.error(getErrorMessage(error));
+            toast.error(getErrorMessage(error), { toastId: 'leave-lobby-error' });
         }
     };
 
@@ -44,9 +44,9 @@ const LobbyItem: React.FC<LobbyItemProps> = ({ lobbyData }) => {
             await deleteLobby(lobbyId);
             navigate(`/dashboard/group/${lobbyData.groupId}`);
             queryClient.invalidateQueries({ queryKey: ['lobbies', lobbyId] });
-            toast.success(MESSAGES.SUCCESS.DELETED_LOBBY);
+            toast.success(MESSAGES.SUCCESS.DELETED_LOBBY, { toastId: 'delete-lobby-success' });
         } catch (error) {
-            toast.error(getErrorMessage(error));
+            toast.error(getErrorMessage(error), { toastId: 'delete-lobby-error' });
         }
     };
 

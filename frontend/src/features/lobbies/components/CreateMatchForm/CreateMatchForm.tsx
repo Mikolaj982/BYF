@@ -51,11 +51,11 @@ const CreateMatchForm: React.FC = () => {
             await createMatch(createMatchFormDataPlusLobbyId);
             queryClient.invalidateQueries({ queryKey: ['matches', lobbyId] });
             queryClient.invalidateQueries({ queryKey: ['leaderboard', lobbyId] });
-            toast.success(MESSAGES.SUCCESS.CREATED_MATCH);
+            toast.success(MESSAGES.SUCCESS.CREATED_MATCH, { toastId: 'create-match-success' });
             setOpen(false);
             reset();
         } catch (error: unknown) {
-            toast.error(getErrorMessage(error));
+            toast.error(getErrorMessage(error), { toastId: 'create-match-error' });
         }
     };
 

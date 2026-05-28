@@ -34,15 +34,14 @@ const Matches: React.FC = () => {
         </Stack>
     );
 
-
     const handleDeleteMatch = async (matchId: string) => {
         try {
             await deleteMatch(matchId);
             queryClient.invalidateQueries({ queryKey: ['matches', lobbyId] });
             queryClient.invalidateQueries({ queryKey: ['leaderboard', lobbyId] });
-            toast.success(MESSAGES.SUCCESS.DELETED_MATCH);
+            toast.success(MESSAGES.SUCCESS.DELETED_MATCH, { toastId: 'delete-match-success' });
         } catch (error) {
-            toast.error(getErrorMessage(error));
+            toast.error(getErrorMessage(error), { toastId: 'delete-match-error' });
         }
     };
 

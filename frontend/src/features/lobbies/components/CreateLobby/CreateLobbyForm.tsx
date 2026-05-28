@@ -9,6 +9,7 @@ import { createLobbySchema } from '../../../../utils/createLobbySchema';
 import { UserGroup } from '../../../groups/types/group.types';
 import { useAuth } from '../../../auth/hooks/useAuth';
 import { useQueryClient } from '@tanstack/react-query';
+import { getErrorMessage } from '../../../../utils/errorUtils/getErrorMessage';
 
 type CreateLobbyFormData = {
     gameType: string;
@@ -48,15 +49,11 @@ const CreateLobbyForm: React.FC<CreateLobbyFormProps> = (
         try {
             await createLobby(createLobbyFormDataPlusGroupId);
             queryClient.invalidateQueries({ queryKey: ['lobbies', groupId] })
-            toast.success(MESSAGES.SUCCESS.CREATED_LOBBY);
+            toast.success(MESSAGES.SUCCESS.CREATED_LOBBY, { toastId: 'create-lobby-success' });
             setOpen(false);
             reset();
         } catch (error: unknown) {
-            if (error instanceof Error) {
-                toast.error(error.message);
-            } else {
-                toast.error(MESSAGES.ERROR.UNKNOWN);
-            }
+            toast.error(getErrorMessage(error), { toastId: 'create-lobby-error' });
         };
     };
 

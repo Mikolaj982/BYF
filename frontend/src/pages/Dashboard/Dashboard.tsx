@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { ToastContainer } from 'react-toastify';
 import { Outlet } from "react-router-dom";
 import Box from '@mui/material/Box';
 import Sidebar from './components/Sidebar/Sidebar';
@@ -22,7 +21,6 @@ const Dashboard: React.FC = () => {
             <Box component='div' sx={{ flex: 1, overflow: 'auto' }}>
                 <Outlet context={{ onOpenSidebar }} />
             </Box>
-            <ToastContainer />
         </Box>
     )
 };

@@ -41,11 +41,11 @@ const UpdateGroupForm: React.FC<UpdateGroupFormProps> = (
         try {
             await updateGroup(groupData.id, data);
             queryClient.invalidateQueries({ queryKey: ['groups', user?.id] })
-            toast.success(MESSAGES.SUCCESS.UPDATED_GROUP)
+            toast.success(MESSAGES.SUCCESS.UPDATED_GROUP, { toastId: 'update-group-success' })
             setOpen(false);
             reset();
         } catch (error: unknown) {
-            toast.error(getErrorMessage(error));
+            toast.error(getErrorMessage(error), { toastId: 'update-group-error' });
         }
     };
 
