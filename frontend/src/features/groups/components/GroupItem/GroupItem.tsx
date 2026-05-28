@@ -29,8 +29,8 @@ const GroupItem: React.FC<GroupItemProps> = ({ groupData }) => {
   const handleDeleteGroup = async (groupId: string) => {
     try {
       await deleteGroup(groupId);
-      navigate('/dashboard');
       queryClient.invalidateQueries({ queryKey: ['groups', user?.id] });
+      navigate('/dashboard');
       toast.success(MESSAGES.SUCCESS.DELETED_GROUP);
     } catch (error) {
       toast.error(getErrorMessage(error));
@@ -42,6 +42,7 @@ const GroupItem: React.FC<GroupItemProps> = ({ groupData }) => {
       await leaveGroup(groupId);
       queryClient.invalidateQueries({ queryKey: ['groups', user?.id] });
       queryClient.invalidateQueries({ queryKey: ['group_members', id] });
+      navigate('/dashboard');
       toast.success(MESSAGES.SUCCESS.LEFT_GROUP);
     } catch (error) {
       toast.error(getErrorMessage(error));

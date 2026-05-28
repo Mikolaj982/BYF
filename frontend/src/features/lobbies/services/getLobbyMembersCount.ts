@@ -6,8 +6,7 @@ export async function getLobbiesMembersCount(lobbiesIds: string[]): Promise<Reco
         .select('lobby_id')
         .in('lobby_id', lobbiesIds);
 
-    if (error) throw new Error(error.message);
-    if (!data) return {};
+    if (error) throw error;
 
     const counts = data.reduce((acc, row) => {
         if (!row.lobby_id) return acc;
