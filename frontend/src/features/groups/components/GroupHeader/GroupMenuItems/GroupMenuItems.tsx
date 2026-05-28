@@ -25,14 +25,21 @@ const GroupMenuItems: React.FC<GroupMenuItemsProps> = (
         <>
             {groupData.role === GroupRole.Member
                 ? (
-                    <ConfirmDialog
-                        title='Leave group?'
-                        description='You will be missed.'
-                        onConfirm={() => handleLeaveGroup(groupData.id)}
-                        label='leave'
-                        trigger={<MenuItem sx={{ justifyContent: 'center' }}>LEAVE GROUP</MenuItem>}
-                        onIconMenuClose={onClose}
-                    />
+                    <>
+                        <ConfirmDialog
+                            title='Leave group?'
+                            description='You will be missed.'
+                            onConfirm={() => handleLeaveGroup(groupData.id)}
+                            label='leave'
+                            trigger={<MenuItem sx={{ justifyContent: 'center' }}>LEAVE GROUP</MenuItem>}
+                            onIconMenuClose={onClose}
+                        />
+                        <CreateLobbyForm
+                            groupData={groupData}
+                            trigger={<MenuItem sx={{ justifyContent: 'center' }}>CREATE LOBBY</MenuItem>}
+                            onIconMenuClose={onClose}
+                        />
+                    </>
                 )
                 : (
                     <>

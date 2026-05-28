@@ -5,15 +5,15 @@ import { joinLobby } from '../../services/joinLobby';
 import { toast } from 'react-toastify';
 import { MESSAGES } from '../../../../utils/messages';
 import { useAuth } from '../../../auth/hooks/useAuth';
-import { useLobbyMembers } from '../../hooks/useLobbyMembers';
 import { getErrorMessage } from '../../../../utils/errorUtils/getErrorMessage';
 import { useQueryClient } from '@tanstack/react-query';
 import { Lobby } from '../../types/lobby.types';
+import { useIsLobbyMember } from '../../hooks/useIsLobbyMember';
 
 type LobbyCardProps = {
     lobbyData: Lobby;
     lobbyMembersCount: number;
-    lobbiesIds: string[] | undefined;
+    lobbiesIds: string[];
 };
 
 const LobbyCard: React.FC<LobbyCardProps> = (
@@ -24,14 +24,13 @@ const LobbyCard: React.FC<LobbyCardProps> = (
     }
 ) => {
     const { user } = useAuth();
-    const queryClient = useQueryClient();
-    const { lobbyMembers } = useLobbyMembers(lobbyData.id);
     const navigate = useNavigate();
-    const isMember = lobbyMembers.some((member) => user?.id === member.userId);
+    const queryClient = useQueryClient();
+    const isLobbyMember = useIsLobbyMember(lobbyData.id);
 
     const handleJoinLobby = async (lobbyId: string) => {
         const joinLobbySubmitData = {
-            user_id: user?.id,
+            user_id: user!.id,
             lobby_id: lobbyId,
         };
 
@@ -77,11 +76,11 @@ const LobbyCard: React.FC<LobbyCardProps> = (
                 >
                     <Button
                         onClick={() => handleJoinLobby(lobbyData.id)}
-                        color={isMember ? 'success' : 'primary'}
-                        variant={isMember ? 'contained' : 'outlined'}
-                        disabled={isMember}
+                        color={isLobbyMember ? 'success' : 'primary'}
+                        variant={isLobbyMember ? 'contained' : 'outlined'}
+                        disabled={isLobbyMember}
                     >
-                        {isMember ? 'JOINED' : 'JOIN'}
+                        {isLobbyMember ? 'JOINED' : 'JOIN'}
                     </Button>
                     <Button
                         onClick={() => handleSelectLobby(lobbyData.id)}
