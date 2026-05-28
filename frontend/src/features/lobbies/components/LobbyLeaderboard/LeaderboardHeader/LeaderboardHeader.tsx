@@ -8,9 +8,7 @@ type LeaderboardHeaderProps = {
 
 const LeaderboardHeader: React.FC<LeaderboardHeaderProps> = ({ lobbyName, participantsCount }) => {
     return (
-        <Paper variant='outlined'
-            sx={{ borderRadius: '8px 8px 0 0' }}
-        >
+        <Paper variant='outlined' sx={{ borderRadius: '8px 8px 0 0' }}>
             <Stack
                 direction='row'
                 justifyContent='space-between'

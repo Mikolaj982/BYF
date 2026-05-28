@@ -33,14 +33,11 @@ const GroupHeader: React.FC<GroupHeaderProps> = (
             component='div'
             direction='row'
             justifyContent='space-between'
-            sx={{
-                py: { xs: 1, md: 2 },
-                px: { xs: 1, md: 2 },
-                borderBottom: 1,
-                borderColor: 'divider',
-                flexWrap: 'wrap',
-                overflow: 'hidden'
-            }}
+            padding={{ xs: 1, md: 2 }}
+            borderBottom={1}
+            borderColor='divider'
+            flexWrap='wrap'
+            overflow='hidden'
         >
             {isMobile
                 ? (
@@ -66,30 +63,29 @@ const GroupHeader: React.FC<GroupHeaderProps> = (
                             {name}
                         </Typography>
                         <Stack direction='row' >
-                            {
-                                role === GroupRole.Member
-                                    ? (
-                                        <Stack direction='row' spacing={{ xs: 1, md: 2 }}>
-                                            <ConfirmDialog
-                                                title='Leave group?'
-                                                description='You will be missed.'
-                                                onConfirm={() => handleLeaveGroup(id)}
-                                                label='leave'
-                                            />
-                                            <CreateLobbyForm groupData={groupData} />
-                                        </Stack>
-                                    ) : (
-                                        <Stack direction='row' spacing={{ xs: 1, md: 2 }}>
-                                            <ConfirmDialog
-                                                title='Delete group?'
-                                                description='This action cannot be undone.'
-                                                onConfirm={() => handleDeleteGroup(id)}
-                                                label='delete'
-                                            />
-                                            <UpdateGroupForm groupData={groupData} />
-                                            <CreateLobbyForm groupData={groupData} />
-                                        </Stack>
-                                    )
+                            {role === GroupRole.Member
+                                ? (
+                                    <Stack direction='row' spacing={{ xs: 1, md: 2 }}>
+                                        <ConfirmDialog
+                                            title='Leave group?'
+                                            description='You will be missed.'
+                                            onConfirm={() => handleLeaveGroup(id)}
+                                            label='leave'
+                                        />
+                                        <CreateLobbyForm groupData={groupData} />
+                                    </Stack>
+                                ) : (
+                                    <Stack direction='row' spacing={{ xs: 1, md: 2 }}>
+                                        <ConfirmDialog
+                                            title='Delete group?'
+                                            description='This action cannot be undone.'
+                                            onConfirm={() => handleDeleteGroup(id)}
+                                            label='delete'
+                                        />
+                                        <UpdateGroupForm groupData={groupData} />
+                                        <CreateLobbyForm groupData={groupData} />
+                                    </Stack>
+                                )
                             }
                         </Stack>
                     </>

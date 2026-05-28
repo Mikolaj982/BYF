@@ -9,14 +9,11 @@ const SidebarBottom: React.FC = () => {
     return (
         <Stack
             direction='row'
-            alignItems='center'
-            sx={{
-                padding: 2,
-                borderTop: 1,
-                borderColor: 'grey.800',
-                alignItems: 'stretch',
-                gap: 1
-            }}
+            alignItems='stretch'
+            padding={2}
+            borderTop={1}
+            borderColor='grey.800'
+            gap={1}
         >
             <CreateGroupForm />
             <JoinGroupForm />

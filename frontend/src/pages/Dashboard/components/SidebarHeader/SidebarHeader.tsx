@@ -1,5 +1,5 @@
 import React from 'react';
-import { Typography, Box, Avatar, Stack } from '@mui/material';
+import { Typography, Avatar, Stack } from '@mui/material';
 import { useAuth } from '../../../../features/auth/hooks/useAuth';
 
 const SidebarHeader: React.FC = () => {
@@ -8,15 +8,11 @@ const SidebarHeader: React.FC = () => {
     const usernameFirstLetter: string = username.split('')[0];
 
     return (
-        <Box component='div'
-            sx={{
-                display: 'flex',
-                gap: 1,
-                flexDirection: 'column',
-                borderBottom: 1,
-                borderColor: 'grey.800',
-                padding: 2
-            }}
+        <Stack
+            gap={1}
+            borderBottom={1}
+            borderColor='grey.800'
+            padding={2}
         >
             <Stack direction='row'>
                 <Typography variant='h6' fontWeight='600'>
@@ -30,20 +26,15 @@ const SidebarHeader: React.FC = () => {
                     </Typography>
                 </Typography>
             </Stack>
-            <Box component='div'
-                sx={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: 1
-                }}>
+            <Stack direction='row' alignItems='center' gap={1}>
                 <Avatar sx={{ bgcolor: 'secondary.main' }}>
                     {usernameFirstLetter.toUpperCase()}
                 </Avatar>
                 <Typography variant='h6'>
                     {username.toUpperCase()}
                 </Typography>
-            </Box>
-        </Box>
+            </Stack>
+        </Stack>
     )
 };
 

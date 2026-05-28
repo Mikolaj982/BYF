@@ -39,10 +39,9 @@ const CreateLobbyForm: React.FC<CreateLobbyFormProps> = (
     const [open, setOpen] = useState<boolean>(false);
 
     const submitLobbyData = async (lobby: CreateLobbyFormData) => {
-        if (!user?.id) return;
         const createLobbyFormDataPlusGroupId: CreateLobbyData = {
             ...lobby,
-            owner: user.id,
+            owner: user!.id,
             groupId: groupId,
         };
 
@@ -71,13 +70,7 @@ const CreateLobbyForm: React.FC<CreateLobbyFormProps> = (
                 <DialogTitle>
                     Create lobby
                 </DialogTitle>
-                <DialogContent
-                    sx={{
-                        display: 'flex',
-                        flexDirection: 'column',
-                        gap: 2,
-                        pt: 2
-                    }}>
+                <DialogContent>
                     <Controller
                         name='gameType'
                         control={control}

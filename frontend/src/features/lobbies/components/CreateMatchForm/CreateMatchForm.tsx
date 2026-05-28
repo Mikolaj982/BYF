@@ -86,7 +86,7 @@ const CreateMatchForm: React.FC = () => {
                         name="players"
                         control={control}
                         defaultValue={[]}
-                        rules={{ validate: (value) => value.length >= 2 || 'Minimum 2 graczy' }}
+                        rules={{ validate: (value) => value.length >= 2 || 'minimum 2 players' }}
                         render={({ field, fieldState }) => (
                             <Autocomplete
                                 multiple
