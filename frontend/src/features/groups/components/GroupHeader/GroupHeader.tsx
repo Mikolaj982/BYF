@@ -66,24 +66,24 @@ const GroupHeader: React.FC<GroupHeaderProps> = (
                             {role === GroupRole.Member
                                 ? (
                                     <Stack direction='row' spacing={{ xs: 1, md: 2 }}>
+                                        <CreateLobbyForm groupData={groupData} />
                                         <ConfirmDialog
                                             title='Leave group?'
                                             description='You will be missed.'
                                             onConfirm={() => handleLeaveGroup(id)}
                                             label='leave'
                                         />
-                                        <CreateLobbyForm groupData={groupData} />
                                     </Stack>
                                 ) : (
                                     <Stack direction='row' spacing={{ xs: 1, md: 2 }}>
+                                        <UpdateGroupForm groupData={groupData} />
+                                        <CreateLobbyForm groupData={groupData} />
                                         <ConfirmDialog
                                             title='Delete group?'
                                             description='This action cannot be undone.'
                                             onConfirm={() => handleDeleteGroup(id)}
                                             label='delete'
                                         />
-                                        <UpdateGroupForm groupData={groupData} />
-                                        <CreateLobbyForm groupData={groupData} />
                                     </Stack>
                                 )
                             }
