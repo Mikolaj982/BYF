@@ -27,5 +27,6 @@ export const MESSAGES = {
         ALREADY_EXISTS: 'Already exists.',
         LOAD_GROUPS: 'Failed to load groups. Please try again.',
         EMPTY_INVITE_CODE: 'Invite code is required.',
+        NOT_AUTH: 'User not authenticated',
     }
 }

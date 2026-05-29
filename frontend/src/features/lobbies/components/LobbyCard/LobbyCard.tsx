@@ -1,14 +1,10 @@
 import React from 'react';
 import { Button, Paper, Stack, Typography } from '@mui/material';
 import { useNavigate, } from 'react-router-dom';
-import { joinLobby } from '../../services/joinLobby';
-import { toast } from 'react-toastify';
-import { MESSAGES } from '../../../../utils/messages';
-import { useAuth } from '../../../auth/hooks/useAuth';
-import { getErrorMessage } from '../../../../utils/errorUtils/getErrorMessage';
 import { useQueryClient } from '@tanstack/react-query';
 import { Lobby } from '../../types/lobby.types';
 import { useIsLobbyMember } from '../../hooks/useIsLobbyMember';
+import { useJoinLobby } from '../../../../shared/hooks/useJoinLobby';
 
 type LobbyCardProps = {
     lobbyData: Lobby;
@@ -23,25 +19,18 @@ const LobbyCard: React.FC<LobbyCardProps> = (
         lobbiesIds
     }
 ) => {
-    const { user } = useAuth();
     const navigate = useNavigate();
     const queryClient = useQueryClient();
     const isLobbyMember = useIsLobbyMember(lobbyData.id);
+    const { mutate: joinLobby } = useJoinLobby();
 
-    const handleJoinLobby = async (lobbyId: string) => {
-        const joinLobbySubmitData = {
-            user_id: user!.id,
-            lobby_id: lobbyId,
-        };
-
-        try {
-            await joinLobby(joinLobbySubmitData);
-            queryClient.invalidateQueries({ queryKey: ['lobby_members', lobbyId] });
-            queryClient.invalidateQueries({ queryKey: ['lobbies_members_count', lobbiesIds] });
-            toast.success(MESSAGES.SUCCESS.JOINED_LOBBY, { toastId: 'join-lobby-success' });
-        } catch (error) {
-            toast.error(getErrorMessage(error), { toastId: 'join-lobby-error' });
-        }
+    const handleJoinLobby = (lobbyId: string) => {
+        joinLobby(lobbyId, {
+            onSuccess: () => {
+                queryClient.invalidateQueries({ queryKey: ['lobby_members', lobbyId] });
+                queryClient.invalidateQueries({ queryKey: ['lobbies_members_count', lobbiesIds] });
+            }
+        });
     };
 
     const handleSelectLobby = (id: string) => {

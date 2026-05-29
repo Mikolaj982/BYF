@@ -26,6 +26,13 @@ const GroupMenuItems: React.FC<GroupMenuItemsProps> = (
             {groupData.role === GroupRole.Member
                 ? (
                     <>
+                        <CreateLobbyForm
+                            groupData={groupData}
+                            trigger={
+                                <MenuItem sx={{ justifyContent: 'center' }}>CREATE LOBBY</MenuItem>
+                            }
+                            onIconMenuClose={onClose}
+                        />
                         <ConfirmDialog
                             title='Leave group?'
                             description='You will be missed.'
@@ -36,27 +43,10 @@ const GroupMenuItems: React.FC<GroupMenuItemsProps> = (
                             }
                             onIconMenuClose={onClose}
                         />
-                        <CreateLobbyForm
-                            groupData={groupData}
-                            trigger={
-                                <MenuItem sx={{ justifyContent: 'center' }}>CREATE LOBBY</MenuItem>
-                            }
-                            onIconMenuClose={onClose}
-                        />
                     </>
                 )
                 : (
                     <>
-                        <ConfirmDialog
-                            title='Delete group?'
-                            description='This action cannot be undone.'
-                            onConfirm={() => handleDeleteGroup(groupData.id)}
-                            label='delete'
-                            trigger={
-                                <MenuItem sx={{ justifyContent: 'center' }}>DELETE GROUP</MenuItem>
-                            }
-                            onIconMenuClose={onClose}
-                        />
                         <UpdateGroupForm
                             groupData={groupData}
                             trigger={
@@ -68,6 +58,16 @@ const GroupMenuItems: React.FC<GroupMenuItemsProps> = (
                             groupData={groupData}
                             trigger={
                                 <MenuItem sx={{ justifyContent: 'center' }}>CREATE LOBBY</MenuItem>
+                            }
+                            onIconMenuClose={onClose}
+                        />
+                        <ConfirmDialog
+                            title='Delete group?'
+                            description='This action cannot be undone.'
+                            onConfirm={() => handleDeleteGroup(groupData.id)}
+                            label='delete'
+                            trigger={
+                                <MenuItem sx={{ justifyContent: 'center' }}>DELETE GROUP</MenuItem>
                             }
                             onIconMenuClose={onClose}
                         />

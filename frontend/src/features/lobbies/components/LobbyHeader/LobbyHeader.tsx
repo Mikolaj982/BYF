@@ -1,5 +1,5 @@
 import React from 'react';
-import { IconButton, Stack, Typography, useMediaQuery, useTheme } from '@mui/material';
+import { Button, IconButton, Stack, Typography, useMediaQuery, useTheme } from '@mui/material';
 import ConfirmDialog from '../../../../shared/components/ConfirmDialog/ConfirmDialog';
 import { Lobby } from '../../types/lobby.types';
 import MenuIcon from '@mui/icons-material/Menu';
@@ -9,6 +9,8 @@ import IconMenuMobile from '../../../../shared/components/IconMenuMobile/IconMen
 import LobbyMenuItems from './LobbyMenuItems/LobbyMenuItems';
 import { useAuth } from '../../../auth/hooks/useAuth';
 import { useIsLobbyMember } from '../../hooks/useIsLobbyMember';
+import { useQueryClient } from '@tanstack/react-query';
+import { useJoinLobby } from '../../../../shared/hooks/useJoinLobby';
 
 type LobbyHeaderProps = {
     onLeave: (id: string) => void;
@@ -30,6 +32,14 @@ const LobbyHeader: React.FC<LobbyHeaderProps> = (
     const { id, gameType } = lobbyData;
     const isOwner = lobbyData.createdBy === user?.id;
     const isLobbyMember = useIsLobbyMember(id);
+    const { mutate: joinLobby } = useJoinLobby();
+    const queryClient = useQueryClient();
+
+    const handleJoinLobby = (lobbyId: string) => {
+        joinLobby(lobbyId, {
+            onSuccess: () => queryClient.invalidateQueries({ queryKey: ['lobby_members', lobbyId] })
+        });
+    };
 
     return (
         <Stack
@@ -80,13 +90,17 @@ const LobbyHeader: React.FC<LobbyHeaderProps> = (
                                     label='delete'
                                 />
                             ) : (
-                                isLobbyMember && (
+                                isLobbyMember ? (
                                     <ConfirmDialog
                                         title='Leave lobby?'
                                         description='You will be missed.'
                                         onConfirm={() => onLeave(id)}
                                         label='leave'
                                     />
+                                ) : (
+                                    <Button onClick={() => handleJoinLobby(id)} variant='outlined'>
+                                        JOIN
+                                    </Button>
                                 )
                             )
                         }
