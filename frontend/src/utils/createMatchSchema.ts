@@ -11,15 +11,16 @@ export const createMatchSchema = Yup.object({
                     .required(MESSAGES.ERROR.REQUIRED),
 
                 score: Yup.number()
+                    .transform((value, original) => original === '' ? undefined : value)
                     .required(MESSAGES.ERROR.REQUIRED)
-                    .min(0),
+                    .min(0, 'Score must be 0 or higher'),
             })
         )
         .required()
-        .min(2, 'Mecz musi mieć minimum 2 graczy')
+        .min(2, 'The match requires two players.')
         .test(
             'unique-users',
-            'Nie możesz wybrać tego samego użytkownika',
+            "you can't select the same player",
             (players) => {
                 if (!players) return true;
 

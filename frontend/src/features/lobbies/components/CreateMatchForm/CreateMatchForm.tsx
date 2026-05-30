@@ -33,6 +33,7 @@ const CreateMatchForm: React.FC = () => {
     const { handleSubmit, reset, control } = useForm({
         defaultValues: match,
         resolver: yupResolver<CreateMatchFormData>(createMatchSchema),
+        mode: 'onChange',
     });
     const [open, setOpen] = useState<boolean>(false);
     const watchedPlayers = useWatch({ control, name: 'players' });
@@ -86,7 +87,6 @@ const CreateMatchForm: React.FC = () => {
                         name="players"
                         control={control}
                         defaultValue={[]}
-                        rules={{ validate: (value) => value.length >= 2 || 'minimum 2 players' }}
                         render={({ field, fieldState }) => (
                             <Autocomplete
                                 multiple
@@ -117,7 +117,7 @@ const CreateMatchForm: React.FC = () => {
                                     <TextField
                                         {...params}
                                         label="Participants"
-                                        error={!!fieldState.error}
+                                        error={!!fieldState.error && !Array.isArray(fieldState.error)}
                                         helperText={fieldState.error?.message}
                                     />
                                 )}
@@ -136,11 +136,11 @@ const CreateMatchForm: React.FC = () => {
                                         key={player.userId}
                                         name={`players.${index}.score`}
                                         control={control}
-                                        rules={{ required: true, min: { value: 0, message: 'Min 0' } }}
                                         render={({ field, fieldState }) => (
                                             <TextField
                                                 {...field}
-                                                onChange={e => field.onChange(Number(e.target.value))}
+                                                onChange={e => field.onChange(e.target.value)}
+                                                onFocus={e => e.target.select()}
                                                 label={name}
                                                 type="number"
                                                 size="small"
@@ -156,8 +156,8 @@ const CreateMatchForm: React.FC = () => {
                     )}
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={handleSubmit(submitMatchData)}>Create</Button>
-                    <Button onClick={() => { setOpen(false) }}>Cancel</Button>
+                    <Button onClick={handleSubmit(submitMatchData)} variant='contained'>Create</Button>
+                    <Button onClick={() => { setOpen(false); reset() }} variant='outlined'>Cancel</Button>
                 </DialogActions>
             </Dialog >
         </>
