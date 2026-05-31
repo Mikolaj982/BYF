@@ -26,7 +26,11 @@ const ConfirmDialog: React.FC<ConfirmDialogProps> = (
     return (
         <>
             {trigger
-                ? <Box component='span' onClick={() => setOpen(true)}>
+                ? <Box
+                    component='span'
+                    onClick={() => setOpen(true)}
+                    sx={{ display: 'inline-flex', alignItems: 'center' }}
+                >
                     {trigger}
                 </Box >
                 : <Button variant={label === 'delete' ? 'text' : 'outlined'} onClick={() => setOpen(true)}>

@@ -24,6 +24,7 @@ const GroupMembers: React.FC<GroupMembersProps> = ({ groupId }) => {
     if (errorGroupMembers) return <ErrorState error={errorGroupMembers} />;
     if (!groupMembers.length) return <EmptyState message='There is no members yet.' />;
 
+    const groupOwner = groupMembers?.find(member => member.role === GroupRole.Owner);
     const handleDeleteGroupMember = (memberId: string) => {
         deleteGroupMember({ groupId, targetUserId: memberId }, {
             onSuccess: () => {
@@ -35,17 +36,18 @@ const GroupMembers: React.FC<GroupMembersProps> = ({ groupId }) => {
 
     return (
         <Stack direction='row' spacing={1}>
-            {groupMembers.map((member) => (
-                <GroupMemberBar
+            {groupMembers.map((member) => {
+                return <GroupMemberBar
+                    role={member.role}
                     username={member.username}
                     onDelete={
-                        member.role !== GroupRole.Owner && member.id !== user?.id
+                        groupOwner?.id === user?.id && member.id !== groupOwner?.id
                             ? () => handleDeleteGroupMember(member.id)
                             : undefined
                     }
                     key={member.id}
                 />
-            ))}
+            })}
         </Stack>
     )
 };
