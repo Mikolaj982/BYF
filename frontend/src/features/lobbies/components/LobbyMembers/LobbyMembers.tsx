@@ -43,9 +43,10 @@ const LobbyMembers: React.FC<LobbyMembersProps> = ({ createdBy }) => {
             {lobbyMembers.map((member) => {
                 const isOwner = createdBy === member.userId;
                 return <LobbyMemberBarProps
+                    isOwner={isOwner}
                     username={member.username}
                     onDelete={
-                        !isOwner && user?.id !== member.userId
+                        user?.id === createdBy && createdBy !== member.userId
                             ? () => handleDeleteLobbyMember(member.userId)
                             : undefined
                     }
