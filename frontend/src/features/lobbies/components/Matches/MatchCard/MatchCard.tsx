@@ -59,7 +59,6 @@ const MatchCard: React.FC<MatchCardProps> = ({ match, onDelete }) => {
                             title='Delete match?'
                             description='This action cannot be undone.'
                             onConfirm={() => onDelete(matchId)}
-                            label='DELETE'
                             trigger={<DeleteOutlineIcon />}
                         />
                     </Stack>

@@ -5,10 +5,11 @@ type ConfirmDialogProps = {
     title: string;
     description: string;
     onConfirm: (id?: string) => void;
-    trigger?: React.ReactNode;
-    label: string;
     onIconMenuClose?: () => void;
-};
+} & (
+        | { trigger?: React.ReactNode; label?: never }
+        | { trigger?: never; label: string }
+    );
 
 const ConfirmDialog: React.FC<ConfirmDialogProps> = (
     {

@@ -28,4 +28,8 @@ export type UpdateGroupFormData = {
     description: string;
 };
 
+export type DeleteGroupMemberProps = {
+    groupId: string;
+    targetUserId: string;
+};
 

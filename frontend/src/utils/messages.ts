@@ -13,7 +13,8 @@ export const MESSAGES = {
         CREATED_MATCH: 'Match created!',
         LEFT_LOBBY: 'You left the lobby.',
         DELETED_LOBBY: 'Lobby deleted.',
-        DELETED_MATCH: 'Match deleted.'
+        DELETED_MATCH: 'Match deleted.',
+        DELETED_MEMBER: 'Member deleted.'
     },
     ERROR: {
         REQUIRED: 'This field is required.',
