@@ -38,3 +38,8 @@ export type Leaderboard = {
     score: number;
     userId: string;
 };
+
+export type DeleteLobbyMemberProps = {
+    targetUserId: string;
+    lobbyId: string;
+};

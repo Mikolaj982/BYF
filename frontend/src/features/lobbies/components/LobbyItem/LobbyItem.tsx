@@ -55,7 +55,7 @@ const LobbyItem: React.FC<LobbyItemProps> = ({ lobbyData }) => {
             />
             <SectionContainer>
                 <SectionLabel label='lobby members' />
-                <LobbyMembers />
+                <LobbyMembers createdBy={lobbyData.createdBy} />
             </SectionContainer>
             <SectionContainer>
                 <SectionLabel label='matches history' />

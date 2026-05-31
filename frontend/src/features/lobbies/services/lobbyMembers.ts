@@ -5,11 +5,11 @@ export async function getLobbyMembers(lobbyId: string): Promise<LobbyMember[]> {
     const { data, error } = await supabase
         .from('lobby_members')
         .select(`
-        user_id,
+            user_id,
             profiles!inner (
             username
-            )`
-        )
+            )
+        `)
         .eq('lobby_id', lobbyId);
 
     if (error) throw error;

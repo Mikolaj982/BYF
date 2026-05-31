@@ -1,11 +1,14 @@
 import { Avatar, Chip } from '@mui/material';
 import React from 'react';
+import ConfirmDialog from '../../../../shared/components/ConfirmDialog/ConfirmDialog';
+import CancelIcon from '@mui/icons-material/Cancel';
 
 type LobbyMemberBarProps = {
     username: string;
+    onDelete?: () => void;
 };
 
-const LobbyMemberBar: React.FC<LobbyMemberBarProps> = ({ username }) => {
+const LobbyMemberBar: React.FC<LobbyMemberBarProps> = ({ username, onDelete }) => {
     const usernameFirstLetter: string = username.split('')[0] ?? 'P';
     return (
         <Chip
@@ -16,6 +19,17 @@ const LobbyMemberBar: React.FC<LobbyMemberBarProps> = ({ username }) => {
             }
             label={username}
             variant='outlined'
+            onDelete={onDelete ? () => { } : undefined}
+            deleteIcon={
+                onDelete
+                    ? <ConfirmDialog
+                        title='Delete lobby member?'
+                        description='This action cannot be undone.'
+                        onConfirm={onDelete}
+                        trigger={<CancelIcon sx={{ color: 'text.secondary' }} />}
+                    />
+                    : undefined
+            }
             sx={{
                 fontWeight: 500,
                 height: { xs: '26px', md: '34px' },
