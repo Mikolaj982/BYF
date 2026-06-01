@@ -3,6 +3,8 @@ import { MESSAGES } from './messages';
 
 export const createMatchSchema = Yup.object({
     gameName: Yup.string()
+        .min(3, MESSAGES.ERROR.MATCH_NAME_TOO_SHORT)
+        .max(14, MESSAGES.ERROR.MATCH_NAME_TOO_LONG)
         .required(MESSAGES.ERROR.REQUIRED),
     players: Yup.array()
         .of(
