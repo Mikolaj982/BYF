@@ -77,8 +77,6 @@ const CreateGroupForm: React.FC = () => {
                         <TextField
                             {...field}
                             label='description'
-                            error={!!errors.name}
-                            helperText={errors.name?.message}
                         />
                     )}
                 />

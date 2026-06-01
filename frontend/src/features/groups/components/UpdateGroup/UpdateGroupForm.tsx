@@ -85,8 +85,6 @@ const UpdateGroupForm: React.FC<UpdateGroupFormProps> = (
                             <TextField
                                 {...field}
                                 label='description'
-                                error={!!errors.description}
-                                helperText={errors.description?.message}
                             />
                         )}
                     />

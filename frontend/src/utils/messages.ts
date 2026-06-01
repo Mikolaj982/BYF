@@ -29,5 +29,11 @@ export const MESSAGES = {
         LOAD_GROUPS: 'Failed to load groups. Please try again.',
         EMPTY_INVITE_CODE: 'Invite code is required.',
         NOT_AUTH: 'User not authenticated',
+        GROUP_NAME_TOO_SHORT: 'Group name must have at least 3 characters',
+        GROUP_NAME_TOO_LONG: 'Group name must have maximum 16 characters',
+        LOBBY_NAME_TOO_SHORT: 'Lobby name must have at least 3 characters',
+        LOBBY_NAME_TOO_LONG: 'Lobby name must have maximum 25 characters',
+        MATCH_NAME_TOO_SHORT: 'Match name must have at least 3 characters',
+        MATCH_NAME_TOO_LONG: 'Match name mast have maximum 14 characters'
     }
 }
