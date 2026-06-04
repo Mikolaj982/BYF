@@ -59,7 +59,11 @@ const GroupHeader: React.FC<GroupHeaderProps> = (
                 )
                 : (
                     <>
-                        <Typography alignContent='center' fontWeight='600'>
+                        <Typography
+                            variant='h6'
+                            alignContent='center'
+                            fontWeight='600'
+                        >
                             {name}
                         </Typography>
                         <Stack direction='row' >

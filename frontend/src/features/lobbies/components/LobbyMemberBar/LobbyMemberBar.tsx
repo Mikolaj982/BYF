@@ -1,7 +1,7 @@
-import { Avatar, Chip, Typography } from '@mui/material';
 import React from 'react';
+import { Avatar, Chip, Typography } from '@mui/material';
 import ConfirmDialog from '../../../../shared/components/ConfirmDialog/ConfirmDialog';
-import CancelIcon from '@mui/icons-material/Cancel';
+import CloseIcon from '@mui/icons-material/Close';
 
 type LobbyMemberBarProps = {
     username: string;
@@ -19,11 +19,7 @@ const LobbyMemberBar: React.FC<LobbyMemberBarProps> = (
     const usernameFirstLetter: string = username.split('')[0] ?? 'P';
     return (
         <Chip
-            avatar={
-                <Avatar>
-                    {usernameFirstLetter.toUpperCase()}
-                </Avatar>
-            }
+            avatar={<Avatar>{usernameFirstLetter.toUpperCase()}</Avatar>}
             label={
                 <Typography fontSize={{ xs: 12, md: 14 }} fontWeight={600}>
                     {username}
@@ -38,29 +34,34 @@ const LobbyMemberBar: React.FC<LobbyMemberBarProps> = (
                         description='This action cannot be undone.'
                         onConfirm={onDelete}
                         trigger={
-                            <CancelIcon
-                                sx={{
-                                    color: 'text.secondary',
-                                    opacity: 0.5,
-                                    height: { xs: '20px', md: '26px' },
-                                    width: { xs: '20px', md: '26px' }
-                                }}
-                            />
+                            <CloseIcon sx={{
+                                color: 'primary.main',
+                                opacity: 0.7,
+                                height: { xs: '16px', md: '20px' },
+                                width: { xs: '16px', md: '20px' },
+                                marginRight: '4px',
+                                '@media (hover: hover)': {
+                                    '&:hover': {
+                                        color: 'secondary.main',
+                                        cursor: 'pointer'
+                                    },
+                                }
+                            }} />
                         }
                     />
                     : undefined
             }
             sx={{
-                borderColor: isOwner ? 'white' : 'text.secondary',
-                fontWeight: 500,
+                borderColor: isOwner ? 'text.primary' : 'text.secondary',
                 height: { xs: '26px', md: '34px' },
                 '& .MuiChip-avatar': {
                     height: { xs: '20px', md: '26px' },
                     width: { xs: '20px', md: '26px' },
-                    fontSize: { xs: '8px', md: '10px' },
-                    bgcolor: 'text.secondary',
+                    fontSize: '10px',
+                    backgroundColor: 'primary.main',
                     marginRight: 0,
-                    marginLeft: { xs: '3px', md: '4px' }
+                    marginLeft: { xs: '3px', md: '4px' },
+                    color: 'background.default'
                 },
                 '& .MuiChip-label': {
                     padding: { xs: 0.7, md: 1 },

@@ -50,14 +50,14 @@ const LobbyCard: React.FC<LobbyCardProps> = (
                 </Typography>
                 <Stack
                     direction='row'
-                    spacing={2}
+                    spacing={{ xs: 1, md: 2 }}
                     paddingTop={2}
                     justifyContent='space-between'
                     sx={{
                         '& .MuiButton-root': {
                             width: { xs: 'stretch', md: 80 },
                             minWidth: { xs: 'fit-content', md: 80 },
-                            height: { xs: '30px', md: 'auto' },
+                            height: '30px',
                             fontSize: 10,
                             padding: '2px 6px',
                         },

@@ -5,7 +5,7 @@ export const createGroupSchema = Yup.object({
     name: Yup
         .string()
         .min(5, MESSAGES.ERROR.GROUP_NAME_TOO_SHORT)
-        .max(16, MESSAGES.ERROR.GROUP_NAME_TOO_LONG)
+        .max(10, MESSAGES.ERROR.GROUP_NAME_TOO_LONG)
         .required(MESSAGES.ERROR.REQUIRED),
     description: Yup
         .string()

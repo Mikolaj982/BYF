@@ -34,6 +34,9 @@ const LobbyLeaderboardRow: React.FC<LobbyLeaderboardRowProps> = ({ playerData, m
             <Typography
                 color={medal?.color ?? "#2a2a2a"}
                 fontWeight='bold'
+                width='12px'
+                textAlign='center'
+                display='inline-block'
             >
                 {playerData.place}
             </Typography>

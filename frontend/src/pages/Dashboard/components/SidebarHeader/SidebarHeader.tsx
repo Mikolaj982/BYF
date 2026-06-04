@@ -15,9 +15,9 @@ const SidebarHeader: React.FC = () => {
             padding={2}
         >
             <Stack direction='row'>
-                <Typography variant='h6' fontWeight='600'>
+                <Typography variant='h5' fontWeight='600' marginBottom={1}>
                     Beat your <Typography
-                        variant='h6'
+                        variant='h5'
                         component='span'
                         color='secondary.main'
                         fontWeight='700'
@@ -31,7 +31,7 @@ const SidebarHeader: React.FC = () => {
                     {usernameFirstLetter.toUpperCase()}
                 </Avatar>
                 <Typography variant='h6'>
-                    {username.toUpperCase()}
+                    {username}
                 </Typography>
             </Stack>
         </Stack>

@@ -30,7 +30,7 @@ export const MESSAGES = {
         EMPTY_INVITE_CODE: 'Invite code is required.',
         NOT_AUTH: 'User not authenticated',
         GROUP_NAME_TOO_SHORT: 'Group name must have at least 3 characters',
-        GROUP_NAME_TOO_LONG: 'Group name must have maximum 16 characters',
+        GROUP_NAME_TOO_LONG: 'Group name must have maximum 10 characters',
         LOBBY_NAME_TOO_SHORT: 'Lobby name must have at least 3 characters',
         LOBBY_NAME_TOO_LONG: 'Lobby name must have maximum 25 characters',
         MATCH_NAME_TOO_SHORT: 'Match name must have at least 3 characters',

@@ -35,7 +35,11 @@ const GroupMembers: React.FC<GroupMembersProps> = ({ groupId }) => {
     };
 
     return (
-        <Stack direction='row' spacing={1}>
+        <Stack
+            direction='row'
+            flexWrap='wrap'
+            gap={1}
+        >
             {groupMembers.map((member) => {
                 return <GroupMemberBar
                     role={member.role}

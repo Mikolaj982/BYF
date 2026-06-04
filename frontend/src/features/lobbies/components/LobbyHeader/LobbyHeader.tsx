@@ -46,7 +46,7 @@ const LobbyHeader: React.FC<LobbyHeaderProps> = (
             component='div'
             direction='row'
             justifyContent='space-between'
-            padding={2}
+            padding={{ xs: 1, md: 2 }}
             borderBottom={1}
             borderColor='divider'
         >
@@ -75,8 +75,8 @@ const LobbyHeader: React.FC<LobbyHeaderProps> = (
                 <>
                     <Typography
                         variant='h6'
-                        marginLeft={2}
                         fontWeight='600'
+                        alignContent='center'
                     >
                         {gameType}
                     </Typography>

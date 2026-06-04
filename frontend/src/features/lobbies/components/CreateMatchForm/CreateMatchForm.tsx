@@ -69,8 +69,13 @@ const CreateMatchForm: React.FC = () => {
             <Button variant='outlined' onClick={() => setOpen(true)}>
                 +MATCH
             </Button>
-            <Dialog open={open}>
-                <DialogTitle>create match</DialogTitle>
+            <Dialog
+                open={open}
+                PaperProps={{
+                    sx: { width: 400, maxWidth: 400 }
+                }}
+            >
+                <DialogTitle>Create match</DialogTitle>
                 <DialogContent>
                     <Controller
                         name="gameName"
@@ -80,7 +85,7 @@ const CreateMatchForm: React.FC = () => {
                                 {...field}
                                 label='Name'
                                 error={!!fieldState.error}
-                                helperText={fieldState.error?.message}
+                                helperText={fieldState.error?.message ?? ''}
                             />
                         )} />
                     <Controller
@@ -118,7 +123,7 @@ const CreateMatchForm: React.FC = () => {
                                         {...params}
                                         label="Participants"
                                         error={!!fieldState.error && !Array.isArray(fieldState.error)}
-                                        helperText={fieldState.error?.message}
+                                        helperText={fieldState.error?.message ?? ''}
                                     />
                                 )}
                             />
@@ -146,7 +151,7 @@ const CreateMatchForm: React.FC = () => {
                                                 size="small"
                                                 inputProps={{ min: 0 }}
                                                 error={!!fieldState.error}
-                                                helperText={fieldState.error?.message}
+                                                helperText={fieldState.error?.message ?? ''}
                                             />
                                         )}
                                     />

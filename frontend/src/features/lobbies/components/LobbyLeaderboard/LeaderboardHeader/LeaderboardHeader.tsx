@@ -18,7 +18,11 @@ const LeaderboardHeader: React.FC<LeaderboardHeaderProps> = ({ lobbyName, partic
                 bgcolor='#1e1e1e'
                 borderRadius='8px 8px 0 0'
             >
-                <Typography color='text.primary' fontWeight='600'>
+                <Typography
+                    color='text.primary'
+                    fontWeight='600'
+                    variant='h6'
+                >
                     {lobbyName}
                 </Typography>
                 <Chip

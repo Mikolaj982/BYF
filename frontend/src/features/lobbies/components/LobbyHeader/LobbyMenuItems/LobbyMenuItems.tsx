@@ -1,10 +1,13 @@
 import React from 'react';
 import { Lobby } from '../../../types/lobby.types';
 import ConfirmDialog from '../../../../../shared/components/ConfirmDialog/ConfirmDialog';
-import { MenuItem } from '@mui/material';
+import { MenuItem, Typography } from '@mui/material';
 import { useIsLobbyMember } from '../../../hooks/useIsLobbyMember';
 import { useJoinLobby } from '../../../../../shared/hooks/useJoinLobby';
 import { useQueryClient } from '@tanstack/react-query';
+import DeleteIcon from '@mui/icons-material/Delete';
+import ExitToAppIcon from '@mui/icons-material/ExitToApp';
+import AddIcon from '@mui/icons-material/Add';
 
 type LobbyMenuItemsProps = {
     onLeave: (id: string) => void;
@@ -41,8 +44,24 @@ const LobbyMenuItems: React.FC<LobbyMenuItemsProps> = (
                         title='Delete lobby?'
                         description='This action cannot be undone.'
                         onConfirm={() => onDelete(lobbyData.id)}
-                        label='delete'
-                        trigger={<MenuItem sx={{ justifyContent: 'center' }}>DELETE</MenuItem>}
+                        trigger={
+                            <MenuItem
+                                sx={{
+                                    bgcolor: 'background.default',
+                                    border: '1px solid',
+                                    borderColor: 'rgba(255,255,255,0.08)',
+                                    overflow: 'hidden',
+                                    minWidth: 180,
+                                    gap: 2,
+                                    letterSpacing: 0.5,
+                                }}
+                            >
+                                <DeleteIcon fontSize='small' />
+                                <Typography fontWeight={500}>
+                                    DELETE LOBBY
+                                </Typography>
+                            </MenuItem>
+                        }
                         onIconMenuClose={onClose}
                     />
                 )
@@ -52,18 +71,46 @@ const LobbyMenuItems: React.FC<LobbyMenuItemsProps> = (
                             title='Leave lobby?'
                             description='You will be missed.'
                             onConfirm={() => onLeave(lobbyData.id)}
-                            label='leave'
-                            trigger={<MenuItem sx={{ justifyContent: 'center' }}>LEAVE</MenuItem>}
+                            trigger={
+                                <MenuItem
+                                    sx={{
+                                        bgcolor: 'background.default',
+                                        border: '1px solid',
+                                        borderColor: 'rgba(255,255,255,0.08)',
+                                        overflow: 'hidden',
+                                        minWidth: 180,
+                                        gap: 2,
+                                        letterSpacing: 0.5,
+                                    }}
+                                >
+                                    <ExitToAppIcon fontSize='small' />
+                                    <Typography fontWeight={500}>
+                                        LEAVE LOBBY
+                                    </Typography>
+                                </MenuItem>
+                            }
                             onIconMenuClose={onClose}
                         />
                     ) : (
-                        <MenuItem onClick={() => {
-                            handleJoinLobby(lobbyData.id);
-                            onClose?.();
-                        }}
-                            sx={{ justifyContent: 'center' }}
+                        <MenuItem
+                            onClick={() => {
+                                handleJoinLobby(lobbyData.id);
+                                onClose?.();
+                            }}
+                            sx={{
+                                bgcolor: 'background.default',
+                                border: '1px solid',
+                                borderColor: 'rgba(255,255,255,0.08)',
+                                overflow: 'hidden',
+                                minWidth: 180,
+                                gap: 2,
+                                letterSpacing: 0.5,
+                            }}
                         >
-                            JOIN
+                            <AddIcon fontSize='small' />
+                            <Typography fontWeight={500}>
+                                JOIN
+                            </Typography>
                         </MenuItem >
                     )
                 )}
