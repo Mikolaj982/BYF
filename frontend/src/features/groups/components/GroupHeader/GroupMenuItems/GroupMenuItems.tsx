@@ -2,9 +2,13 @@ import React from 'react';
 import { UserGroup } from '../../../types/group.types';
 import ConfirmDialog from '../../../../../shared/components/ConfirmDialog/ConfirmDialog';
 import { GroupRole } from '../../../types/group.types';
-import { MenuItem } from '@mui/material';
+import { MenuItem, Typography } from '@mui/material';
 import UpdateGroupForm from '../../UpdateGroup/UpdateGroupForm';
 import CreateLobbyForm from '../../../../lobbies/components/CreateLobby/CreateLobbyForm';
+import EditIcon from '@mui/icons-material/Edit';
+import AddIcon from '@mui/icons-material/Add';
+import DeleteIcon from '@mui/icons-material/Delete';
+import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 
 type GroupMenuItemsProps = {
     handleLeaveGroup: (id: string) => void;
@@ -29,7 +33,22 @@ const GroupMenuItems: React.FC<GroupMenuItemsProps> = (
                         <CreateLobbyForm
                             groupData={groupData}
                             trigger={
-                                <MenuItem sx={{ justifyContent: 'center' }}>CREATE LOBBY</MenuItem>
+                                <MenuItem
+                                    sx={{
+                                        bgcolor: 'background.default',
+                                        border: '1px solid',
+                                        borderColor: 'rgba(255,255,255,0.08)',
+                                        overflow: 'hidden',
+                                        minWidth: 180,
+                                        gap: 2,
+                                        letterSpacing: 0.5,
+                                    }}
+                                >
+                                    <AddIcon fontSize='small' />
+                                    <Typography fontWeight={500}>
+                                        Create lobby
+                                    </Typography>
+                                </MenuItem>
                             }
                             onIconMenuClose={onClose}
                         />
@@ -37,9 +56,23 @@ const GroupMenuItems: React.FC<GroupMenuItemsProps> = (
                             title='Leave group?'
                             description='You will be missed.'
                             onConfirm={() => handleLeaveGroup(groupData.id)}
-                            label='leave'
                             trigger={
-                                <MenuItem sx={{ justifyContent: 'center' }}>LEAVE GROUP</MenuItem>
+                                <MenuItem
+                                    sx={{
+                                        bgcolor: 'background.default',
+                                        border: '1px solid',
+                                        borderColor: 'rgba(255,255,255,0.08)',
+                                        overflow: 'hidden',
+                                        minWidth: 180,
+                                        gap: 2,
+                                        letterSpacing: 0.5,
+                                    }}
+                                >
+                                    <ExitToAppIcon fontSize='small' />
+                                    <Typography fontWeight={500}>
+                                        LEAVE GROUP
+                                    </Typography>
+                                </MenuItem>
                             }
                             onIconMenuClose={onClose}
                         />
@@ -50,14 +83,44 @@ const GroupMenuItems: React.FC<GroupMenuItemsProps> = (
                         <UpdateGroupForm
                             groupData={groupData}
                             trigger={
-                                <MenuItem sx={{ justifyContent: 'center' }}>UPDATE GROUP</MenuItem>
+                                <MenuItem
+                                    sx={{
+                                        bgcolor: 'background.default',
+                                        border: '1px solid',
+                                        borderColor: 'rgba(255,255,255,0.08)',
+                                        overflow: 'hidden',
+                                        minWidth: 180,
+                                        gap: 2,
+                                        letterSpacing: 0.5,
+                                    }}
+                                >
+                                    <EditIcon fontSize='small' />
+                                    <Typography fontWeight={500}>
+                                        EDIT GROUP
+                                    </Typography>
+                                </MenuItem>
                             }
                             onIconMenuClose={onClose}
                         />
                         <CreateLobbyForm
                             groupData={groupData}
                             trigger={
-                                <MenuItem sx={{ justifyContent: 'center' }}>CREATE LOBBY</MenuItem>
+                                <MenuItem
+                                    sx={{
+                                        bgcolor: 'background.default',
+                                        border: '1px solid',
+                                        borderColor: 'rgba(255,255,255,0.08)',
+                                        overflow: 'hidden',
+                                        minWidth: 180,
+                                        gap: 2,
+                                        letterSpacing: 0.5,
+                                    }}
+                                >
+                                    <AddIcon fontSize='small' />
+                                    <Typography fontWeight={500}>
+                                        CREATE LOBBY
+                                    </Typography>
+                                </MenuItem>
                             }
                             onIconMenuClose={onClose}
                         />
@@ -65,9 +128,23 @@ const GroupMenuItems: React.FC<GroupMenuItemsProps> = (
                             title='Delete group?'
                             description='This action cannot be undone.'
                             onConfirm={() => handleDeleteGroup(groupData.id)}
-                            label='delete'
                             trigger={
-                                <MenuItem sx={{ justifyContent: 'center' }}>DELETE GROUP</MenuItem>
+                                <MenuItem
+                                    sx={{
+                                        bgcolor: 'background.default',
+                                        border: '1px solid',
+                                        borderColor: 'rgba(255,255,255,0.08)',
+                                        overflow: 'hidden',
+                                        minWidth: 180,
+                                        gap: 2,
+                                        letterSpacing: 0.5,
+                                    }}
+                                >
+                                    <DeleteIcon fontSize='small' />
+                                    <Typography fontWeight={500}>
+                                        DELETE GROUP
+                                    </Typography>
+                                </MenuItem>
                             }
                             onIconMenuClose={onClose}
                         />

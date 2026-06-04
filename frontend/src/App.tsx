@@ -35,7 +35,7 @@ function App() {
             </Route>
           </Routes>
         </Router >
-        <ToastContainer position='bottom-right' />
+        <ToastContainer position='bottom-right' autoClose={1300} />
       </ThemeProvider>
     </QueryClientProvider>
   )

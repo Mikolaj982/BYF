@@ -63,10 +63,15 @@ const CreateLobbyForm: React.FC<CreateLobbyFormProps> = (
                     {trigger}
                 </Box>
                 : <Button onClick={() => setOpen(true)} variant='outlined'>
-                    +Lobby
+                    create lobby
                 </Button>
             }
-            <Dialog open={open}>
+            <Dialog
+                open={open}
+                PaperProps={{
+                    sx: { width: 400, maxWidth: 400 }
+                }}
+            >
                 <DialogTitle>
                     Create lobby
                 </DialogTitle>

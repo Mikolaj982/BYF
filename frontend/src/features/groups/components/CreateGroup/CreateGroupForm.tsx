@@ -53,9 +53,14 @@ const CreateGroupForm: React.FC = () => {
             sx={{ flex: 1 }}
             variant='outlined'
         >
-            +Create
+            Create
         </Button>
-        <Dialog open={open}>
+        <Dialog
+            open={open}
+            PaperProps={{
+                sx: { width: 400, maxWidth: 400 }
+            }}
+        >
             <DialogTitle>Create group</DialogTitle>
             <DialogContent>
                 <Controller

@@ -60,11 +60,16 @@ const UpdateGroupForm: React.FC<UpdateGroupFormProps> = (
                     sx={{ flex: 1 }}
                     variant='outlined'
                 >
-                    Update
+                    edit group
                 </Button>
             }
-            <Dialog open={open}>
-                <DialogTitle>Update group</DialogTitle>
+            <Dialog
+                open={open}
+                PaperProps={{
+                    sx: { width: 400, maxWidth: 400 }
+                }}
+            >
+                <DialogTitle>Edit group</DialogTitle>
                 <DialogContent>
                     <Controller
                         name='name'

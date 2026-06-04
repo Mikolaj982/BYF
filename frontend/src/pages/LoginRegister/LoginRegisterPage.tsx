@@ -44,7 +44,7 @@ const Register: React.FC = () => {
                     <path d="M0,0V5.63C149.93,59,314.09,71.32,475.83,42.57c43-7.64,84.23-20.12,127.61-26.46,59-8.63,112.48,12.24,165.56,35.4C827.93,77.22,886,95.24,951.2,90c86.53-7,172.46-45.71,248.8-84.81V0Z" opacity=".75" className="fill-current text-sandyOrange"></path>
                 </svg>
                 <Form labels={labels} isLogin={isLoginMode} />
-                <div className={`${isLoginMode ? "bottom-16" : "bottom-6"} text-offWhite lg:text-lg absolute font-bold left-1/2 -translate-x-1/2 w-full md:left-[0%] md:translate-x-0 md:w-[53%] p-[2rem] md:bottom-36 text-sm flex flex-col`}>
+                <div className={`${isLoginMode ? "bottom-16" : "bottom-6"} text-offWhite lg:text-lg fixed font-bold left-1/2 -translate-x-1/2 w-full md:left-[0%] md:translate-x-0 md:w-[53%] p-[2rem] md:bottom-36 text-sm flex flex-col`}>
                     <span className='mb-1'>
                         {isLoginMode ?
                             'Chcesz założyć konto? Zarejestruj się teraz!'

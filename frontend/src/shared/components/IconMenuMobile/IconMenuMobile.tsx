@@ -18,7 +18,22 @@ const IconMenuMobile: React.FC<IconMenuMobileProps> = ({ children }) => {
             <IconButton onClick={handleOpen}>
                 <MoreVertIcon />
             </IconButton>
-            <Menu anchorEl={anchorEl} open={open} onClose={handleClose}>
+            <Menu
+                anchorEl={anchorEl}
+                open={open}
+                onClose={handleClose}
+                elevation={0}
+                slotProps={{
+                    paper: {
+                        sx: {
+                            bgcolor: 'background.default',
+                            border: '1px solid rgba(255,255,255,0.1)',
+                            borderRadius: 1,
+                            minWidth: 160,
+                        }
+                    }
+                }}
+            >
                 {React.cloneElement(children as React.ReactElement, { onClose: handleClose })}
             </Menu>
         </Box>

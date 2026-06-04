@@ -26,8 +26,7 @@ const MatchInfo: React.FC<MatchInfoProps> = (
                 fontSize={14}
                 color='text.primary'
                 overflow='hidden'
-                textOverflow='ellipsis'
-                whiteSpace='nowrap'
+                sx={{ wordBreak: 'break-word' }}
             >
                 {gameName}
             </Typography>

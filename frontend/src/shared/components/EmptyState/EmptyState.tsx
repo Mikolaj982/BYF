@@ -14,7 +14,8 @@ const EmptyState: React.FC<EmptyStateProps> = ({ message, actionLabel, onAction 
         gap={2}
         p={2}
     >
-        <Typography variant="body2"
+        <Typography
+            fontSize={14}
             color="text.secondary"
             textAlign="center"
         >

@@ -36,9 +36,15 @@ const SidebarSection: React.FC<SidebarSectionProps> = ({ handleCloseSidebar }) =
                     component='div'
                     key={group.id}
                     onClick={() => handleSelectGroup(group.id)}
-                    sx={{ fontSize: 14 }}
                 >
-                    <ListItemText primary={group.name} />
+                    <ListItemText
+                        primaryTypographyProps={{
+                            fontSize: 18,
+                            variant: 'inherit',
+                            overflow: 'hidden'
+                        }}
+                        primary={group.name}
+                    />
                     <Chip label={group.role} />
                 </ListItemButton>
             ))}

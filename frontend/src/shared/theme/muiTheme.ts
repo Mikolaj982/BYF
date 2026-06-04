@@ -18,22 +18,13 @@ export const muiTheme = createTheme({
             secondary: '#7F8C8D',
         },
     },
+    typography: {
+        fontFamily: 'DM Sans, sans-serif',
+    },
     shape: {
         borderRadius: 8,
     },
     components: {
-        MuiButton: {
-            styleOverrides: {
-                root: ({ theme }) => ({
-                    [theme.breakpoints.down('md')]: {
-                        fontSize: '0.75rem',
-                    },
-                    [theme.breakpoints.up('md')]: {
-                        fontSize: '0.85rem',
-                    },
-                }),
-            },
-        },
         MuiTypography: {
             styleOverrides: {
                 h4: ({ theme }) => ({
@@ -99,6 +90,19 @@ export const muiTheme = createTheme({
                 },
             },
         },
+        MuiButton: {
+            styleOverrides: {
+                root: {
+                    borderWidth: '2px',
+                    fontWeight: 500,
+                    letterSpacing: '0.04em',
+                    textWrap: 'nowrap',
+                    '&:hover': {
+                        borderWidth: '2px',
+                    },
+                }
+            }
+        }
     },
 
 });
