@@ -1,10 +1,11 @@
-import React from 'react';
-import { Button, Paper, Stack, Typography } from '@mui/material';
+import React, { useState } from 'react';
+import { Button, Dialog, DialogContent, Paper, Stack, Typography } from '@mui/material';
 import { useNavigate, } from 'react-router-dom';
 import { useQueryClient } from '@tanstack/react-query';
 import { Lobby } from '../../types/lobby.types';
 import { useIsLobbyMember } from '../../hooks/useIsLobbyMember';
 import { useJoinLobby } from '../../../../shared/hooks/useJoinLobby';
+import LobbyLeaderboard from '../LobbyLeaderboard/LobbyLeaderboard';
 
 type LobbyCardProps = {
     lobbyData: Lobby;
@@ -23,6 +24,7 @@ const LobbyCard: React.FC<LobbyCardProps> = (
     const queryClient = useQueryClient();
     const isLobbyMember = useIsLobbyMember(lobbyData.id);
     const { mutate: joinLobby } = useJoinLobby();
+    const [open, setOpen] = useState<boolean>(false);
 
     const handleJoinLobby = (lobbyId: string) => {
         joinLobby(lobbyId, {
@@ -78,9 +80,28 @@ const LobbyCard: React.FC<LobbyCardProps> = (
                     >
                         ENTER LOBBY
                     </Button>
-                    <Button color='primary' variant='outlined'>
+                    <Button
+                        onClick={() => setOpen(true)}
+                        color='primary'
+                        variant='outlined'
+                    >
                         RESULTS
                     </Button>
+                    <Dialog
+                        open={open}
+                        onClose={() => setOpen(false)}
+                        PaperProps={{
+                            sx: {
+                                m: 0,
+                                p: 0,
+                                width: '90%'
+                            }
+                        }}
+                    >
+                        <DialogContent sx={{ p: '0 !important' }}>
+                            <LobbyLeaderboard lobbyData={lobbyData} />
+                        </DialogContent>
+                    </Dialog>
                 </Stack>
             </Stack>
         </Paper>
