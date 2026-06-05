@@ -338,6 +338,14 @@ export type Database = {
       }
       delete_lobby: { Args: { input_lobby_id: string }; Returns: undefined }
       delete_match: { Args: { input_match_id: string }; Returns: undefined }
+      get_group_leaderboard: {
+        Args: { input_group_id: string }
+        Returns: {
+          total_score: number
+          user_id: string
+          username: string
+        }[]
+      }
       get_lobby_leaderboard: {
         Args: { input_lobby_id: string }
         Returns: {
