@@ -15,6 +15,7 @@ import { useQueryClient } from '@tanstack/react-query';
 import { useAuth } from '../../../auth/hooks/useAuth';
 import SectionContainer from '../../../../shared/components/SectionContainer/SectionContainer';
 import SectionLabel from '../../../../shared/components/SectionLabel/SectionLabel';
+import GroupLeaderboard from '../GroupLeaderboard/GroupLeaderboard';
 
 type GroupItemProps = {
   groupData: UserGroup;
@@ -67,6 +68,10 @@ const GroupItem: React.FC<GroupItemProps> = ({ groupData }) => {
       <SectionContainer>
         <SectionLabel label='lobbies' />
         <Lobbies groupData={groupData} />
+      </SectionContainer>
+      <SectionContainer>
+        <SectionLabel label='leaderboard' />
+        <GroupLeaderboard groupData={groupData} />
       </SectionContainer>
     </Stack>
   )
