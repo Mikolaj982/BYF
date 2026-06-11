@@ -46,7 +46,7 @@ const GroupMenuItems: React.FC<GroupMenuItemsProps> = (
                                 >
                                     <AddIcon fontSize='small' />
                                     <Typography fontWeight={500}>
-                                        Create lobby
+                                        CREATE LOBBY
                                     </Typography>
                                 </MenuItem>
                             }

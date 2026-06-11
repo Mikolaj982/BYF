@@ -1,8 +1,7 @@
 import React from 'react';
-import { useParams } from 'react-router-dom';
+import { Navigate, useParams } from 'react-router-dom';
 import LobbyItem from '../../../../features/lobbies/components/LobbyItem/LobbyItem';
 import { ErrorState } from '../../../../shared/components/ErrorState/ErrorState';
-import { Stack } from '@mui/material';
 import { LoadingState } from '../../../../shared/components/LoadingState/LoadingState';
 import { useGroupLobbies } from '../../../../features/lobbies/hooks/useGroupLobbies';
 
@@ -14,16 +13,9 @@ const LobbyWrapper: React.FC = () => {
     if (loadingLobbies) return <LoadingState />;
 
     const selectedLobby = lobbies.find(lobby => lobby.id === lobbyId) ?? null;
-    if (!selectedLobby) return (
-        <Stack
-            alignItems="center"
-            justifyContent="center"
-            gap={2}
-            p={2}
-        >
-            <ErrorState error='Lobby not found.' />
-        </Stack>
-    );
+    if (!selectedLobby) {
+        return <Navigate to={`/dashboard/group/${groupId}`} replace />;
+    }
 
     return (
         <LobbyItem lobbyData={selectedLobby} />
