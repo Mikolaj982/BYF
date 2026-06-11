@@ -1,14 +1,15 @@
 import React from 'react';
-import { IconButton, Stack, Typography, useMediaQuery, useTheme } from '@mui/material';
+import { Stack, useMediaQuery, useTheme } from '@mui/material';
 import UpdateGroupForm from '../UpdateGroup/UpdateGroupForm';
 import CreateLobbyForm from '../../../lobbies/components/CreateLobby/CreateLobbyForm';
 import { GroupRole, UserGroup } from '../../types/group.types';
 import ConfirmDialog from '../../../../shared/components/ConfirmDialog/ConfirmDialog';
-import { useOutletContext } from 'react-router-dom';
-import { DashboardLayoutOutletContext } from '../../../../pages/Dashboard/types/outletContext.types';
-import MenuIcon from '@mui/icons-material/Menu';
 import IconMenuMobile from '../../../../shared/components/IconMenuMobile/IconMenuMobile';
 import GroupMenuItems from './GroupMenuItems/GroupMenuItems';
+import MobileHeader from '../../../../shared/components/MobileHeader/MobileHeader';
+import { useOutletContext } from 'react-router-dom';
+import { DashboardOutletContext } from '../../../../pages/Dashboard/types/outletContext.types';
+import DesktopHeader from '../../../../shared/components/DesktopHeader/DesktopHeader';
 
 type GroupHeaderProps = {
     handleLeaveGroup: (id: string) => void;
@@ -23,31 +24,18 @@ const GroupHeader: React.FC<GroupHeaderProps> = (
         handleDeleteGroup
     }
 ) => {
-    const { onOpenSidebar } = useOutletContext<DashboardLayoutOutletContext>();
     const theme = useTheme();
     const isMobile = useMediaQuery(theme.breakpoints.down('md'));
     const { id, role, name } = groupData;
+    const { onOpenSidebar } = useOutletContext<DashboardOutletContext>();
 
     return (
-        <Stack
-            component='div'
-            direction='row'
-            justifyContent='space-between'
-            padding={{ xs: 1, md: 2 }}
-            borderBottom={1}
-            borderColor='divider'
-            flexWrap='wrap'
-            overflow='hidden'
-        >
-            {isMobile
-                ? (
-                    <Stack direction='row' justifyContent='space-between' width='100%'>
-                        <IconButton onClick={onOpenSidebar} sx={{ mr: 0 }}>
-                            <MenuIcon />
-                        </IconButton>
-                        <Typography alignContent='center' fontWeight='600'>
-                            {name}
-                        </Typography>
+        <>{isMobile
+            ? (
+                <MobileHeader
+                    title={name}
+                    onOpenSidebar={onOpenSidebar}
+                    rightContent={
                         <IconMenuMobile>
                             <GroupMenuItems
                                 groupData={groupData}
@@ -55,17 +43,13 @@ const GroupHeader: React.FC<GroupHeaderProps> = (
                                 handleLeaveGroup={handleLeaveGroup}
                             />
                         </IconMenuMobile>
-                    </Stack>
-                )
-                : (
-                    <>
-                        <Typography
-                            variant='h6'
-                            alignContent='center'
-                            fontWeight='600'
-                        >
-                            {name}
-                        </Typography>
+                    }
+                />
+            )
+            : (
+                <DesktopHeader
+                    title={name}
+                    rightContent={
                         <Stack direction='row' >
                             {role === GroupRole.Member
                                 ? (
@@ -92,9 +76,10 @@ const GroupHeader: React.FC<GroupHeaderProps> = (
                                 )
                             }
                         </Stack>
-                    </>
-                )}
-        </Stack >
+                    }
+                />
+            )}
+        </>
     )
 };
 

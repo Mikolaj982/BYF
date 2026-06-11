@@ -1,16 +1,17 @@
 import React from 'react';
-import { Button, IconButton, Stack, Typography, useMediaQuery, useTheme } from '@mui/material';
+import { Button, Stack, useMediaQuery, useTheme } from '@mui/material';
 import ConfirmDialog from '../../../../shared/components/ConfirmDialog/ConfirmDialog';
 import { Lobby } from '../../types/lobby.types';
-import MenuIcon from '@mui/icons-material/Menu';
 import { useOutletContext } from 'react-router-dom';
-import { DashboardLayoutOutletContext } from '../../../../pages/Dashboard/types/outletContext.types';
 import IconMenuMobile from '../../../../shared/components/IconMenuMobile/IconMenuMobile';
 import LobbyMenuItems from './LobbyMenuItems/LobbyMenuItems';
 import { useAuth } from '../../../auth/hooks/useAuth';
 import { useIsLobbyMember } from '../../hooks/useIsLobbyMember';
 import { useQueryClient } from '@tanstack/react-query';
 import { useJoinLobby } from '../../../../shared/hooks/useJoinLobby';
+import MobileHeader from '../../../../shared/components/MobileHeader/MobileHeader';
+import { DashboardOutletContext } from '../../../../pages/Dashboard/types/outletContext.types';
+import DesktopHeader from '../../../../shared/components/DesktopHeader/DesktopHeader';
 
 type LobbyHeaderProps = {
     onLeave: (id: string) => void;
@@ -26,7 +27,6 @@ const LobbyHeader: React.FC<LobbyHeaderProps> = (
     }
 ) => {
     const { user } = useAuth();
-    const { onOpenSidebar } = useOutletContext<DashboardLayoutOutletContext>();
     const theme = useTheme();
     const isMobile = useMediaQuery(theme.breakpoints.down('md'));
     const { id, gameType } = lobbyData;
@@ -34,6 +34,7 @@ const LobbyHeader: React.FC<LobbyHeaderProps> = (
     const isLobbyMember = useIsLobbyMember(id);
     const { mutate: joinLobby } = useJoinLobby();
     const queryClient = useQueryClient();
+    const { onOpenSidebar } = useOutletContext<DashboardOutletContext>();
 
     const handleJoinLobby = (lobbyId: string) => {
         joinLobby(lobbyId, {
@@ -42,44 +43,25 @@ const LobbyHeader: React.FC<LobbyHeaderProps> = (
     };
 
     return (
-        <Stack
-            component='div'
-            direction='row'
-            justifyContent='space-between'
-            padding={{ xs: 1, md: 2 }}
-            borderBottom={1}
-            borderColor='divider'
-        >
+        <>
             {isMobile ? (
-                <Stack
-                    direction='row'
-                    justifyContent='space-between'
-                    width='100%'
-                >
-                    <IconButton onClick={onOpenSidebar} sx={{ mr: 0 }}>
-                        <MenuIcon />
-                    </IconButton>
-                    <Typography alignContent='center' fontWeight='600'>
-                        {gameType}
-                    </Typography>
-                    <IconMenuMobile>
-                        <LobbyMenuItems
-                            onLeave={() => onLeave(id)}
-                            onDelete={() => onDelete(id)}
-                            lobbyData={lobbyData}
-                            isOwner={isOwner}
-                        />
-                    </IconMenuMobile>
-                </Stack>
-            ) : (
-                <>
-                    <Typography
-                        variant='h6'
-                        fontWeight='600'
-                        alignContent='center'
-                    >
-                        {gameType}
-                    </Typography>
+                <MobileHeader
+                    title={gameType}
+                    onOpenSidebar={onOpenSidebar}
+                    rightContent={
+                        <IconMenuMobile>
+                            <LobbyMenuItems
+                                onLeave={() => onLeave(id)}
+                                onDelete={() => onDelete(id)}
+                                lobbyData={lobbyData}
+                                isOwner={isOwner}
+                            />
+                        </IconMenuMobile>
+                    }
+                />
+            ) : <DesktopHeader
+                title={gameType}
+                rightContent={
                     <Stack direction='row'>
                         {isOwner
                             ? (
@@ -105,9 +87,9 @@ const LobbyHeader: React.FC<LobbyHeaderProps> = (
                             )
                         }
                     </Stack>
-                </>
-            )}
-        </Stack>
+                }
+            />}
+        </>
     )
 };
 
