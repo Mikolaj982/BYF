@@ -1,6 +1,6 @@
 import { fireEvent, render, screen } from "@testing-library/react";
 import Form from "./Form";
-import { FormFields } from "../../../../pages/LoginRegister/LoginRegisterPage";
+import { FormFields } from "../../types/auth.types";
 import { MemoryRouter } from 'react-router-dom';
 
 describe('Form Component', () => {
