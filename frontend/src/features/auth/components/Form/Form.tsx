@@ -30,8 +30,8 @@ const Form: React.FC<FormProps> = ({ labels, isLogin }) => {
         password: '',
     };
     const defaultYupValues = isLogin
-        ? userData
-        : userCredientials;
+        ? userCredientials
+        : userData;
 
     const defaultResolver = isLogin
         ? loginSchema : registerSchema;

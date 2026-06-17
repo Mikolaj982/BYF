@@ -122,4 +122,4 @@ describe('Create group form component', () => {
         expect(screen.getByRole('dialog'))
             .toBeInTheDocument();
     });
-});
+}); 
