@@ -3,7 +3,7 @@ import LobbyLeaderboardRow from '../LobbyLeaderboardRow/LobbyLeaderboardRow';
 import { Divider, Paper, Stack } from '@mui/material';
 import { Lobby } from '../../types/lobby.types';
 import LeaderboardHeader from './LeaderboardHeader/LeaderboardHeader';
-import { assignPlaces } from '../../../../utils/podiumUtils';
+import { assignPlaces } from '../../../../utils/podiumUtils/podiumUtils';
 import { LoadingState } from '../../../../shared/components/LoadingState/LoadingState';
 import { ErrorState } from '../../../../shared/components/ErrorState/ErrorState';
 import EmptyState from '../../../../shared/components/EmptyState/EmptyState';

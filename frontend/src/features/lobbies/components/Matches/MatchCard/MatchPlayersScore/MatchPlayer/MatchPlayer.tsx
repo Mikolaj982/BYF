@@ -1,6 +1,6 @@
 import React from 'react';
 import { Avatar, Chip, Stack, Typography } from '@mui/material';
-import { getMedal } from '../../../../../../../utils/podiumUtils';
+import { getMedal } from '../../../../../../../utils/podiumUtils/podiumUtils';
 import { Player } from '../../../../../types/lobby.types';
 
 type MatchPlayerProps = {

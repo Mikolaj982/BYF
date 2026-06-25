@@ -2,7 +2,7 @@ import React from 'react';
 import { Stack } from '@mui/material';
 import MatchPlayer from './MatchPlayer/MatchPlayer';
 import { Player } from '../../../../types/lobby.types';
-import { assignPlaces } from '../../../../../../utils/podiumUtils';
+import { assignPlaces } from '../../../../../../utils/podiumUtils/podiumUtils';
 
 type MatchPlayersScoresProps = {
     players: Player[];

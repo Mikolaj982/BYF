@@ -1,4 +1,4 @@
-import { podiumConfig, PodiumEntry, WithScore } from "../constants/podiumConfig";
+import { podiumConfig, PodiumEntry, WithScore } from "../../constants/podiumConfig";
 
 export const getMedal = (place: number): PodiumEntry => {
     return podiumConfig[place] ?? null;
