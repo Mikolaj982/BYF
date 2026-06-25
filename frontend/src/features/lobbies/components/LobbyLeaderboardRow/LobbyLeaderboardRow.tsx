@@ -1,7 +1,7 @@
 import React from 'react';
 import { Avatar, LinearProgress, Stack, Typography } from '@mui/material';
 import { Leaderboard } from '../../types/lobby.types';
-import { getMedal } from '../../../../utils/podiumUtils';
+import { getMedal } from '../../../../utils/podiumUtils/podiumUtils';
 
 type LobbyLeaderboardRowProps = {
     playerData: Leaderboard & { place: number };
