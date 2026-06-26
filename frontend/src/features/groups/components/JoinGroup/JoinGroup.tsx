@@ -8,6 +8,8 @@ import { getErrorMessage } from '../../../../utils/errorUtils/getErrorMessage';
 import { useQueryClient } from '@tanstack/react-query';
 import { useAuth } from '../../../auth/hooks/useAuth';
 import { useNavigate } from 'react-router-dom';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { joinGroupByCodeSchema } from '../../../../utils/joinGroupByCodeSchema';
 
 type JoinGroupFormData = {
     code: string;
@@ -18,7 +20,13 @@ const JoinGroupForm: React.FC = () => {
     const queryClient = useQueryClient();
     const navigate = useNavigate();
     const [open, setOpen] = useState<boolean>(false);
-    const { control, handleSubmit, reset } = useForm<JoinGroupFormData>({ defaultValues: { code: '' } });
+    const defaultYupValues = {
+        code: ''
+    };
+    const { control, handleSubmit, reset } = useForm<JoinGroupFormData>({
+        defaultValues: defaultYupValues,
+        resolver: yupResolver<JoinGroupFormData>(joinGroupByCodeSchema)
+    });
 
     const handleInviteCode = async (data: JoinGroupFormData) => {
         try {
@@ -49,10 +57,13 @@ const JoinGroupForm: React.FC = () => {
                     <Controller
                         name='code'
                         control={control}
-                        render={({ field }) => (
+                        render={({ field, fieldState }) => (
                             <TextField
                                 {...field}
+                                inputProps={{ "data-testid": 'input-invite-code' }}
                                 label='enter the code'
+                                error={!!fieldState.error}
+                                helperText={fieldState.error?.message ?? ''}
                             />
                         )}
                     />

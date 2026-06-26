@@ -186,7 +186,6 @@ describe('Form Component', () => {
 
         fireEvent.click(submitRegisterDataBtn);
 
-
         await waitFor(() => {
             expect(userAuthService.register).toHaveBeenCalled();
         });
