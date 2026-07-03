@@ -1,4 +1,5 @@
 import { supabase } from "../../../shared/api/supabaseClient";
+import { MESSAGES } from "../../../utils/messages";
 import { RegisterData, LoginData } from "../types/auth.types";
 
 export const userAuthService = {
@@ -25,17 +26,40 @@ export const userAuthService = {
             .insert({
                 id: data.user?.id,
                 username: username,
+                email: email,
             });
 
         if (insertError) throw insertError;
         return data;
     },
     login: async (userData: LoginData) => {
-        const { usernameOrEmail: email, password } = userData;
+        const { usernameOrEmail, password } = userData;
+        const isEmail = usernameOrEmail.includes('@');
+        let email: string = '';
+
+        if (isEmail) {
+            email = usernameOrEmail
+        } else {
+            if (!isEmail) {
+                const { data, error } = await supabase
+                    .from('profiles')
+                    .select('email')
+                    .eq('username', usernameOrEmail)
+
+                if (error) throw error;
+
+                if (data.length === 0) throw new Error(MESSAGES.ERROR.USERNAME_DOES_NOT_EXIST);
+
+                const result = data[0].email;
+                email = result;
+            }
+        }
+
         const { data, error } = await supabase.auth.signInWithPassword({
             email,
             password
         });
+
         if (error) throw error;
         return data;
     },

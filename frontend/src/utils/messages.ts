@@ -25,6 +25,7 @@ export const MESSAGES = {
         LOGIN_FAILED: 'Login failed. Please check your credentials and try again.',
         REGISTER_FAILED: 'Registration failed. Please check your details and try again.',
         UNKNOWN: 'Something went wrong. Please try again.',
+        USERNAME_DOES_NOT_EXIST: 'Username does not exist.',
         ALREADY_EXISTS: 'Already exists.',
         LOAD_GROUPS: 'Failed to load groups. Please try again.',
         EMPTY_INVITE_CODE: 'Invite code is required.',
