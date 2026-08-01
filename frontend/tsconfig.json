@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "types": ["@react-three/fiber", "jest", "node"],
+    "types": ["jest", "node"],
     "target": "es2020",
     "lib": [
       "dom",
