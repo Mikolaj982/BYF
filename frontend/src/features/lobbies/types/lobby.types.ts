@@ -33,12 +33,6 @@ export type Match = {
     owner: string;
 };
 
-export type Leaderboard = {
-    username: string;
-    score: number;
-    userId: string;
-};
-
 export type DeleteLobbyMemberProps = {
     targetUserId: string;
     lobbyId: string;
