@@ -26,13 +26,13 @@ const Register: React.FC = () => {
                         }}
                         onInit={(typewriter) => {
                             typewriter
-                                .typeString(isLoginMode ? 'Zaloguj się, aby dołączyć do przyjaciół i kontynuować zabawę!' : 'Dołącz do zabawy i pokaż, kto jest mistrzem!')
+                                .typeString(isLoginMode ? 'Log in to join your friends and keep the fun going!' : "Join the fun and show who's the champion!")
                                 .pauseFor(4000)
                                 .deleteAll()
-                                .typeString(isLoginMode ? 'Rywalizuj, wygrywaj, baw się!' : 'Dziel się wyzwaniami i zwycięstwami z przyjaciółmi!')
+                                .typeString(isLoginMode ? 'Compete, win, have fun!' : 'Share challenges and victories with your friends!')
                                 .pauseFor(7000)
                                 .deleteAll()
-                                .typeString(isLoginMode ? 'Twórz historie zwycięstw z przyjaciółmi!' : 'Dołącz do naszej społeczności i bądź częścią czegoś wielkiego!')
+                                .typeString(isLoginMode ? 'Create victory stories with your friends!' : 'Join our community and be part of something great!')
                                 .pauseFor(8000)
                                 .start();
                         }}
@@ -47,11 +47,11 @@ const Register: React.FC = () => {
                 <div className={`${isLoginMode ? "bottom-16" : "bottom-6"} text-offWhite lg:text-lg fixed font-bold left-1/2 -translate-x-1/2 w-full md:left-[0%] md:translate-x-0 md:w-[53%] p-[2rem] md:bottom-36 text-sm flex flex-col`}>
                     <span className='mb-1'>
                         {isLoginMode ?
-                            'Chcesz założyć konto? Zarejestruj się teraz!'
+                            'Want to create an account? Sign up now!'
                             :
-                            'Masz już konto? Zaloguj się, aby kontynuować i śledzić swoje postępy!'}
+                            'Already have an account? Log in to continue and track your progress!'}
                     </span>
-                    <button onClick={toggleMode} className='text-left lg:text-xl md:ml-4 w-fit bg-gradient-to-r from-carmineRed to-red-300 bg-clip-text text-transparent lg:hover:text-sandyOrange transition-all duration-300 z-10'>{isLoginMode ? 'Zarejestruj się' : 'Zaloguj się'}</button>
+                    <button onClick={toggleMode} className='text-left lg:text-xl md:ml-4 w-fit bg-gradient-to-r from-carmineRed to-red-300 bg-clip-text text-transparent lg:hover:text-sandyOrange transition-all duration-300 z-10'>{isLoginMode ? 'Sign up' : 'Log in'}</button>
                 </div>
             </div>
         </div >
