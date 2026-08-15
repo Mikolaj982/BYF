@@ -1,6 +1,7 @@
 import { yupResolver } from '@hookform/resolvers/yup';
 import { registerSchema, loginSchema } from '../../../../utils/loginRegisterSchema';
 import { ThemeProvider } from '@mui/material';
+import Box from '@mui/material/Box';
 import React, { useEffect } from 'react'
 import { userAuthService } from '../../service/userAuthService';
 import { useNavigate } from 'react-router-dom';
@@ -25,12 +26,12 @@ const Form: React.FC<FormProps> = ({ labels, isLogin }) => {
         password: '',
         confirmPassword: '',
     };
-    const userCredientials = {
+    const userCredentials = {
         usernameOrEmail: '',
         password: '',
     };
     const defaultYupValues = isLogin
-        ? userCredientials
+        ? userCredentials
         : userData;
 
     const defaultResolver = isLogin
@@ -64,11 +65,29 @@ const Form: React.FC<FormProps> = ({ labels, isLogin }) => {
     };
 
     return (
-        <div className={`${isLogin ? "mt-10" : "mt-0"} flex flex-col z-20 justify-self-end md:mt-10 w-[250px] md:w-[300px] lg:w-[350px] xl:w-[400px] h-max md:h-fit p-5 md:p-7 md:ml-[3rem] rounded-lg bg-gradient-to-b from-coolGray to-richBlack shadow-fancy`}>
-            <h1 className='font-bold text-2xl md:text-3xl mb-6'>{isLogin ? 'Log in' : 'Sign up'}</h1>
-            <form
+        <Box
+            sx={{
+                mt: { xs: isLogin ? '2.5rem' : 0, md: '2.5rem' },
+                display: 'flex',
+                flexDirection: 'column',
+                zIndex: 20,
+                width: { xs: '250px', md: '300px', lg: '350px', xl: '400px' },
+                height: { xs: 'max-content', md: 'fit-content' },
+                p: { xs: '1.25rem', md: '1.75rem' },
+                ml: { md: '3rem' },
+                borderRadius: 1,
+                backgroundImage: 'linear-gradient(to bottom, #757575, #121212)',
+                boxShadow: '0 0 10px 3px rgba(255, 69, 0, 0.6), 0 0 30px 10px rgba(230, 57, 70, 0.4)',
+            }}
+        >
+            <Box component="h1" sx={{ m: 0, mb: '1.5rem', fontWeight: 700, fontSize: { xs: '1.5rem', md: '1.875rem' } }}>
+                {isLogin ? 'Log in' : 'Sign up'}
+            </Box>
+            <Box
+                component="form"
                 onSubmit={handleSubmit(onSubmit)}
-                className='flex flex-col h-full justify-end w-full'>
+                sx={{ display: 'flex', flexDirection: 'column', height: '100%', justifyContent: 'flex-end', width: '100%' }}
+            >
                 <ThemeProvider theme={muiTheme}>
                     {labels.map((label) => (
                         <CustomInputField
@@ -79,15 +98,62 @@ const Form: React.FC<FormProps> = ({ labels, isLogin }) => {
                             error={!!errors[label as keyof UserFormData]}
                         />))}
                 </ThemeProvider>
-                <button
+                <Box
+                    component="button"
                     type="submit"
-                    className="relative mt-6 w-full rounded-lg py-2.5 px-5 lg:transition-all duration-100 lg:hover:shadow-hoverFancy lg:active:shadow-activeFancy lg:hover:scale-105 lg:active:scale-95">
-                    <span className="absolute inset-0 rounded-lg bg-gradient-to-r from-sandyOrange to-carmineRed lg:transition-opacity lg:duration-100 lg:hover:opacity-0"></span>
-                    <span className="absolute inset-0 rounded-lg bg-carmineRed lg:transition-opacity lg:duration-100 opacity-0 lg:hover:opacity-100"></span>
-                    <span className="relative z-10 pointer-events-none text-offWhite">{isLogin ? 'log in' : 'sign up'}</span>
-                </button>
-            </form>
-        </div>
+                    sx={(theme) => ({
+                        position: 'relative',
+                        mt: '1.5rem',
+                        width: '100%',
+                        borderRadius: 1,
+                        py: '0.625rem',
+                        px: '1.25rem',
+                        border: 0,
+                        background: 'none',
+                        cursor: 'pointer',
+                        font: 'inherit',
+                        [theme.breakpoints.up('lg')]: {
+                            transition: 'transform 100ms, box-shadow 100ms',
+                            '&:hover': {
+                                transform: 'scale(1.05)',
+                                boxShadow: '0 0 8px 3px rgba(255, 165, 0, 0.4), 0 0 18px 6px rgba(255, 87, 34, 0.3)',
+                            },
+                            '&:hover .gradient-layer': { opacity: 0 },
+                            '&:hover .solid-layer': { opacity: 1 },
+                            '&:active': {
+                                transform: 'scale(0.95)',
+                                boxShadow: '0 0 5px 2px rgba(255, 140, 0, 0.3), 0 0 10px 4px rgba(255, 69, 0, 0.25)',
+                            },
+                        },
+                    })}
+                >
+                    <Box
+                        className="gradient-layer"
+                        sx={(theme) => ({
+                            position: 'absolute',
+                            inset: 0,
+                            borderRadius: 1,
+                            backgroundImage: 'linear-gradient(to right, #F4A261, #E63946)',
+                            [theme.breakpoints.up('lg')]: { transition: 'opacity 100ms' },
+                        })}
+                    />
+                    <Box
+                        className="solid-layer"
+                        sx={(theme) => ({
+                            position: 'absolute',
+                            inset: 0,
+                            borderRadius: 1,
+                            backgroundColor: '#E63946',
+                            opacity: 0,
+                            [theme.breakpoints.up('lg')]: { transition: 'opacity 100ms' },
+                        })}
+                    />
+                    <Box component="span" sx={{ position: 'relative', zIndex: 10, pointerEvents: 'none', color: 'text.primary' }}>
+                        {isLogin ? 'log in' : 'sign up'}
+                    </Box>
+                </Box>
+            </Box>
+        </Box>
     )
 };
 
