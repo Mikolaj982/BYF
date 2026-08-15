@@ -1,14 +1,14 @@
 import React from 'react';
 import { Avatar, LinearProgress, Stack, Typography } from '@mui/material';
-import { Leaderboard } from '../../types/lobby.types';
+import { LeaderboardEntry } from '../../../types/leaderboard.types';
 import { getMedal } from '../../../../utils/podiumUtils/podiumUtils';
 
-type LobbyLeaderboardRowProps = {
-    playerData: Leaderboard & { place: number };
+type LeaderboardRowProps = {
+    playerData: LeaderboardEntry & { place: number };
     maxScore: number;
 };
 
-const LobbyLeaderboardRow: React.FC<LobbyLeaderboardRowProps> = ({ playerData, maxScore }) => {
+const LeaderboardRow: React.FC<LeaderboardRowProps> = ({ playerData, maxScore }) => {
     const progressValue = maxScore > 0
         ? (playerData.score / maxScore) * 100
         : 0;
@@ -79,4 +79,4 @@ const LobbyLeaderboardRow: React.FC<LobbyLeaderboardRowProps> = ({ playerData, m
     )
 };
 
-export default LobbyLeaderboardRow;
+export default LeaderboardRow;

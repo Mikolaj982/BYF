@@ -1,5 +1,5 @@
 import { supabase } from "../../../shared/api/supabaseClient";
-import { Leaderboard } from "../types/lobby.types";
+import { LeaderboardEntry } from "../../../shared/types/leaderboard.types";
 
 type LeaderboardDb = {
     username: string;
@@ -7,7 +7,7 @@ type LeaderboardDb = {
     user_id: string;
 };
 
-export async function getLobbyLeaderboard(lobbyId: string): Promise<Leaderboard[]> {
+export async function getLobbyLeaderboard(lobbyId: string): Promise<LeaderboardEntry[]> {
     const { data, error } = await supabase.rpc('get_lobby_leaderboard', { input_lobby_id: lobbyId });
     if (error) throw error;
 

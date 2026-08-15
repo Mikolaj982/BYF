@@ -1,12 +1,12 @@
 import React from 'react';
 import { Chip, Paper, Stack, Typography } from '@mui/material';
 
-type GroupLeaderboardHeaderProps = {
-    groupName: string;
+type LeaderboardHeaderProps = {
+    title: string;
     participantsCount: number;
 };
 
-const GroupLeaderboardHeader: React.FC<GroupLeaderboardHeaderProps> = ({ groupName, participantsCount }) => {
+const LeaderboardHeader: React.FC<LeaderboardHeaderProps> = ({ title, participantsCount }) => {
     return (
         <Paper variant='outlined' sx={{ borderRadius: '8px 8px 0 0' }}>
             <Stack
@@ -23,7 +23,7 @@ const GroupLeaderboardHeader: React.FC<GroupLeaderboardHeaderProps> = ({ groupNa
                     fontWeight='600'
                     variant='h6'
                 >
-                    {groupName}
+                    {title}
                 </Typography>
                 <Chip
                     label={
@@ -45,4 +45,4 @@ const GroupLeaderboardHeader: React.FC<GroupLeaderboardHeaderProps> = ({ groupNa
     )
 };
 
-export default GroupLeaderboardHeader;
+export default LeaderboardHeader;
