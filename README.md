@@ -40,9 +40,6 @@ The project allows users to save scores for a group of friends in different cate
 * [Testing](#testing)
 
 ## Known issues (Work in progress)
-* This application is still ongoing. For now RLS on profiles table is open publicly - will be changed to view 
-* create_group RPC accepts owner id as parameter instead of reading it from JWT - user could potentially pass another user's id
-* LoginPage and RegisterPage styling uses Tailwind instead of MUI - planned refactor to keep consistency
 * Yup validation schemas are placed in utils instead of their corresponding feature folders
 * Folder structure requires refactoring - matches and leaderboard are nested inside other features instead of being separate feature folders
 
