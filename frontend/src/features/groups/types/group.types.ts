@@ -18,7 +18,6 @@ export type GroupMember = {
 };
 
 export type CreateGroupSubmitData = {
-    owner: string;
     name: string;
     description: string;
 };

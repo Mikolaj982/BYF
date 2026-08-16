@@ -41,17 +41,16 @@ export const userAuthService = {
             email = usernameOrEmail
         } else {
             if (!isEmail) {
-                const { data, error } = await supabase
-                    .from('profiles')
-                    .select('email')
-                    .eq('username', usernameOrEmail)
+                const { data, error } = await supabase.rpc(
+                    'get_email_by_username',
+                    { input_username: usernameOrEmail }
+                );
 
                 if (error) throw error;
 
-                if (data.length === 0) throw new Error(MESSAGES.ERROR.USERNAME_DOES_NOT_EXIST);
+                if (!data) throw new Error(MESSAGES.ERROR.USERNAME_DOES_NOT_EXIST);
 
-                const result = data[0].email;
-                email = result;
+                email = data;
             }
         }
 
