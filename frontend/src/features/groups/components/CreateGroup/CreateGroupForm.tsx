@@ -7,7 +7,6 @@ import { createGroupSchema } from '../../../../utils/createGroupSchema';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Controller, useForm } from 'react-hook-form';
 import { Button, DialogContent, Dialog, DialogTitle, DialogActions, TextField } from '@mui/material';
-import { CreateGroupSubmitData } from '../../types/group.types';
 import { getErrorMessage } from '../../../../utils/errorUtils/getErrorMessage';
 import { useQueryClient } from '@tanstack/react-query';
 
@@ -31,13 +30,8 @@ const CreateGroupForm: React.FC = () => {
     const [open, setOpen] = useState<boolean>(false);
 
     const submitGroupData = async (group: CreateGroupFormData) => {
-        const createGroupDataPlusOwnerId: CreateGroupSubmitData = {
-            ...group,
-            owner: user!.id,
-        };
-
         try {
-            await createGroup(createGroupDataPlusOwnerId);
+            await createGroup(group);
             queryClient.invalidateQueries({ queryKey: ['groups', user?.id] })
             toast.success(MESSAGES.SUCCESS.CREATED_GROUP, { toastId: 'create-group-success' });
             setOpen(false);

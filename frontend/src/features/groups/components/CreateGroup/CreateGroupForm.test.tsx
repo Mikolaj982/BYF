@@ -68,7 +68,6 @@ describe('Create group form component', () => {
             expect(createGroup).toHaveBeenCalledWith({
                 name: 'test name',
                 description: 'test description',
-                owner: 'test-user-id',
             }));
 
         await waitFor(() =>
